@@ -1,0 +1,442 @@
+<%- include('../layout/admin/header')%>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex align-items-center"> <!-- Added align-items-center class -->
+                <div class="headOne">
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/Homy-logos_transparent.png" alt="Logo" width="120"  height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+                <div class="headTwo mx-auto d-flex justify-content-center align-items-center w-100"> <!-- Added w-100 class for 100% width -->
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/homy.png" style="margin-left: 420px" alt="Logo" width="180" height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar bg-body-warning fixed-top-10px">
+        <div class="container mt-2 mb-2">
+          <!-- <a class="navbar-brand" href="#">Offcanvas navbar</a> -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h3 class="offcanvas-title mt-3 " id="offcanvasNavbarLabel">Homy Admin Panel</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body m-3 ">
+                <form class="d-flex mt-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-5 ">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOrders">All Orders</a>
+                  </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allUsers">Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allProducts">Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCategory">Categories</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOffers">Offers</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCoupons">Coupons</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allBanners">Banners</a>
+                  </li>
+                  
+              </ul>
+              
+            </div>
+          </div>
+          <div class="custom-background d-flex justify-content-between align-items-center">
+            <div class="navOne">
+                <span class="me-3 text-light ">Dashboard</span>
+            </div>
+            <div class="navTwo d-flex align-items-center">
+                <span class="me-3 text-light">Hi, Sreekuttan</span> 
+                <span class="me-3 text-light">Logout</span> 
+            </div>
+        </div>
+        </div>
+      </nav>
+</header>
+
+        <section>
+            <div class="container">
+             
+                <div class="row">
+                    <div class="cols col-6">
+                        <h1>All Products</h1>
+                    </div>
+                    <div class="cols col-6 d-flex">
+                     
+                      <button type="button" class="btn align text-bg-primary  text-light rounded-0 ms-auto" data-bs-toggle="modal" data-bs-target="#staticBackdropAdd">Add New Product</button>
+                  </div>
+                </div>
+            
+
+              
+              <table class="table mt-4">
+                  <thead class="table-light">
+                    <th>SI No</th>
+                    <th>ProductID</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                 
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th></th>
+                    <th></th>
+                    
+                  </thead>
+                  <tbody>
+                  
+                    <%
+                    if(products.length>0)
+                    {
+                      for(let i=0;i<products.length;i++)
+                      {
+                        %>
+                        <tr>
+                          <td><%=i+1%></td>
+                          <td>111</td>
+                          <td><%= products[i].productImage%></td>
+                          <td><%= products[i].productName%></td>
+                          <td><%= products[i].productCategory%></td>
+                          <td><%= products[i].productDescription%></td>
+                          <td><%= products[i].productPrice%></td>
+                          <td><%= products[i].productQuantity%></td>
+                          <td>
+                            <input type="hidden" name="id" value="<%= products[i]._id %>">
+                          <td>
+                    
+                            <button type="button" class="btn bg-primary text-light rounded-0 edit-product" 
+                                  data-bs-toggle="modal" 
+                                  data-bs-target="#staticBackdropEdit"
+                                  data-product-id="<%= products[i]._id %>">
+                              Edit
+                            </button>
+                          </td>
+                          <td>
+                                <button type="button" class="btn bg-danger  text-light  rounded-0  " data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">Delete</button>
+                          </td>
+                        </tr>
+                        <%
+                      }
+                    }
+                    %>
+                  
+                  </tbody>
+                </table>
+             </div>
+    
+   
+</section>
+
+<section>
+
+<!-- Modal one start - Add Product-->
+<div class="modal fade" id="staticBackdropAdd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background-color: #f8f9fa; /* Set your desired background color here */">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Product</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="/admin/addProducts" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+              <div class="mb-3">
+                  <input type="text" class="form-control" name="productName" placeholder="Product Name"  required>
+              </div>
+    
+              <div class="mb-3">
+                  <select class="form-select border-0" id="newbtn" name="productCategory" aria-label="Select Category" >
+                      <option value="select" disabled selected>Select Category</option>
+                      <option value="Chair">Chair</option>
+                      <option value="Bed">Bed</option>
+                      <option value="Table">Table</option>
+                      <option value="Sofa">Sofa</option>
+                  </select>
+              </div>
+              <div class="mb-3">
+                  <input type="number" class="form-control" name="productPrice" placeholder="Price" required>
+              </div>
+              <div class="mb-3">
+                  <input type="number" class="form-control" name="productQuantity" placeholder="Quantity" required>
+              </div>
+              <div class="mb-3">
+                  <input type="text" class="form-control" name="productDescription" placeholder="Description" required>
+              </div>
+              <div class="mb-3">
+                  <input type="file" class="form-control" name="productImage" required>
+              </div>
+             
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropAddSuccess">Submit</button>
+        </div>
+      </form>
+        
+      </div>
+  </div>
+</div>
+
+<!-- Modal one end-->
+ <!-- Modal one-success start-->
+ <div class="modal fade" id="staticBackdropAddSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+         
+          <div class="modal-body">
+              
+              <div class="mb-3 row">
+                 
+                  <div class="col-sm-10">
+                      
+                      <div class="d-flex flex-wrap">
+                          <h4 class="text-success  ">New Prodcut Added Successfully</h4>
+                          
+                      </div>
+                  </div>
+              </div>  
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+             
+              <a href="" data-bs-toggle="modal" ><button type="button" class="btn btn-primary " data-bs-dismiss="modal">OK</button></a>
+          </div>
+         
+      </div>
+  </div>
+</div>
+
+<!-- Modal one-sucess end-->
+</section>
+<section>
+
+  <!-- Modal two start - Edit Product-->
+  <div class="modal fade" id="staticBackdropEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #f8f9fa; /* Set your desired background color here */">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Product</h1>
+                
+            </div>
+          
+            <div class="modal-body">
+              <input type="hidden" name="id" value="<%= products._id %>">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="productName" placeholder="Products Name" value="">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="brand" placeholder="Brand">
+                </div>
+                <div class="mb-3">
+                    <select class="form-select border-0" id="newbtn" aria-label="Select Category">
+                        <option value="select" disabled selected>Select Category</option>
+                        <option value="Chair">Chair</option>
+                        <option value="Bed">Bed</option>
+                        <option value="Table">Table</option>
+                        <option value="Sofa">Sofa</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input type="number" class="form-control" name="price" placeholder="Price">
+                </div>
+                <div class="mb-3">
+                    <input type="number" class="form-control" name="quantity" placeholder="Quantity">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="description" placeholder="Description">
+                </div>
+                <div class="mb-3">
+                    <input type="file" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <div class="mb-3 d-flex justify-content-between">
+                    <div class="img-container">
+                      <picture>
+                        <source srcset="..." type="image/svg+xml">
+                        <img src="..." class="img-fluid img-thumbnail" alt="...">
+                      </picture>
+                    </div>
+                    <div class="img-container">
+                      <picture>
+                        <source srcset="..." type="image/svg+xml">
+                        <img src="..." class="img-fluid img-thumbnail" alt="...">
+                      </picture>
+                    </div>
+                    <div class="img-container">
+                      <picture>
+                        <source srcset="..." type="image/svg+xml">
+                        <img src="..." class="img-fluid img-thumbnail" alt="...">
+                      </picture>
+                    </div>
+                    <div class="img-container">
+                      <picture>
+                        <source srcset="..." type="image/svg+xml">
+                        <img src="..." class="img-fluid img-thumbnail" alt="...">
+                      </picture>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropEditSuccess">Update</button>
+          </div>
+          
+        </div>
+    </div>
+  </div>
+  
+  <!-- Modal two end-->
+   <!-- Modal two-success start-->
+ <div class="modal fade" id="staticBackdropEditSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+         
+          <div class="modal-body">
+              
+              <div class="mb-3 row">
+                 
+                  <div class="col-sm-10">
+                      
+                      <div class="d-flex flex-wrap">
+                          <h4 class="text-success  ">Updated Successfully</h4>
+                          
+                      </div>
+                  </div>
+              </div>  
+          </div> 
+            <div class="modal-footer d-flex justify-content-center">
+              <a href="" data-bs-toggle="modal" ><button type="button" class="btn btn-primary " data-bs-dismiss="modal">OK</button></a>
+         
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Modal two-success end-->
+  </section>
+  
+  <section>
+     <!-- Modal three Delete-->
+ <div class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+         
+          <div class="modal-body">
+              
+              <div class="mb-3 row">
+                 
+                  <div class="col-sm-10">
+                      
+                      <div class="d-flex flex-wrap">
+                          <h4 class="text-primary   ">Please confirm to Delete the Product ?</h4>
+                          
+                      </div>
+                  </div>
+              </div>  
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropDeleteSuccess">Confirm</button>
+              
+          </div>
+         
+      </div>
+  </div>
+</div>
+
+<!-- Modal three end-->
+  <!-- Modal three-success start-->
+  <div class="modal fade" id="staticBackdropDeleteSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+           
+            <div class="modal-body">
+                
+                <div class="mb-3 row">
+                   
+                    <div class="col-sm-10">
+                        
+                      <div class="d-flex flex-wrap justify-content-center text-center">
+                        <h4 class="text-success">Deleted Successfully</h4>
+                    </div>
+                    
+                    </div>
+                </div>  
+            </div> 
+              <div class="modal-footer d-flex justify-content-center">
+                <a href="" data-bs-toggle="modal" ><button type="button" class="btn btn-primary " data-bs-dismiss="modal">OK</button></a>
+           
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <!-- Modal three-success end-->
+  </section>
+
+
+<!-- ... Your existing code ... -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Get all buttons with the "Edit" class
+      const editButtons = document.querySelectorAll('.edit-product');
+
+      // Add a click event listener to each "Edit" button
+      editButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+              // Retrieve the product ID from the data attribute
+              const productId = this.getAttribute('data-product-id');
+
+              fetch(`/api/products/${productId}`) // Replace with your actual API endpoint
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update modal fields with fetched data
+                        const modalProductName = document.querySelector('#staticBackdropEdit input[name="productName"]');
+                        modalProductName.value = data.productName;
+
+                        // Update other modal fields similarly...
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        // Handle the error, e.g., show an error message
+                    });
+
+              // Use productId to make a request to fetch product details
+              // (You may use AJAX or any other method to fetch data)
+
+              // For demonstration, let's update the modal's title with the product ID
+              const modalTitle = document.querySelector('#staticBackdropEdit .modal-title');
+              modalTitle.textContent = `Edit Product - ID: ${productId}`;
+          });
+      });
+  });
+</script>
+
+<!-- ... Your existing code ... -->
+
+
+
+<%- include('../layout/admin/footer')%>

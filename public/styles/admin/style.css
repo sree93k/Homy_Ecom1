@@ -1,0 +1,297 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+} 
+
+
+.custom-background {
+    background-color: #3b5d70; /* Replace with your desired color */
+    height: 50px; /* Adjust the height as needed */
+    width:95%
+    
+}
+
+a.text-light {
+    text-decoration: none; /* Remove underline */
+    transition: font-size 0.3s ease; /* Add smooth transition effect */
+}
+
+a.text-light:hover {
+    font-size: 1.2em; /* Increase text size on hover */
+}
+
+.offcanvas-body .navbar-nav .nav-item a.nav-link {
+    transition: color 2.0s ease; /* Add smooth transition effect */
+}
+
+.offcanvas-body .navbar-nav .nav-item a.nav-link:hover {
+    color: #6d7672; /* Change the color to your desired hover color */
+    font-size: 1.7em;
+}
+
+.image-preview {
+    height: 150px; /* Set the desired height for the image container */
+    background-size: contain; /* Ensure the image fits within the container */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.card-body {
+    text-align: center; /* Center the input within the card body */
+}
+
+.middleCard {
+    max-width: 200px;
+    text-align: center;
+}
+
+.card-img-top {
+    max-width: 100%;
+    height: auto;
+}
+.image-table {
+    border-collapse: collapse;
+}
+
+.card {
+    width: 200px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+.card-body {
+   
+    text-align: center;
+}
+
+.image-input {
+    display: block;
+   
+}
+
+
+.image-preview img {
+    max-width: 180px;
+   max-height: 100px;
+    
+}
+
+.address-line{
+    margin-bottom: 0;
+}
+
+
+
+
+/* --- */
+.modal-body {
+    display: grid;
+    
+    gap: 10px; /* Adjust gap as needed */
+  }
+  .modal-body input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  appearance: none; /* Remove default styles */
+  cursor: pointer;
+}
+
+.modal-body input[type="radio"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.modal-body label {
+  display: inline-block;
+  line-height: 20px; /* Match height of radio button */
+  cursor: pointer;
+}
+
+
+
+#statusBtn{
+    width: 170px;
+}
+
+.productListOrderAdmin{
+    margin: 4px;
+}
+.orderItem-TotalPrice{
+    
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.dashMainCard{
+    display: flex;
+    justify-content: center;
+}
+.dashBoardMain{
+    text-align: center;
+}
+.dashboardSectionTwo {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    
+    background-color: #ffffff;
+  }
+  
+.innerChart{
+    width: 80%;
+ padding-top: 10px;
+padding-bottom: 20px;
+padding-left: 20px;
+padding-right: 20px;
+background-color: #557495;
+}
+#chart{
+    background-color: white;
+}
+.chartTops{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.reportMain{
+    min-height: 600px;
+    background-color: #f0f0f0;
+}
+  
+
+
+
+
+
+
+
+
+/* sales report table */
+
+/* Custom CSS */
+.reportMain {
+    margin-top: 20px;
+  }
+  
+  .revenueLeft h1 {
+    color: #007bff; /* Blue color */
+  }
+  
+  /* Style for the search input */
+  input[type="search"] {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+  }
+  
+  /* Style for the filter button */
+  .btn-primary {
+    background-color: #007bff; /* Blue color */
+    border-color: #007bff; /* Blue color */
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3; /* Darker blue color */
+    border-color: #0056b3; /* Darker blue color */
+  }
+  
+  /* Style for the table header and footer */
+  .table-dark th {
+    background-color: #343a40; /* Dark gray color */
+    color: #fff; /* White color */
+  }
+
+
+
+
+  /* Custom CSS */
+input[type="date"] {
+    height: 38px;
+    
+  }
+  
+  .btn-primary {
+    width: 100%;
+    max-width: 140px;
+    height: 38px;
+  }
+  
+  .text-primary {
+    font-size: 24px;
+  }
+  
+  .text-dark {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .revenueShowBtn{
+    width:350px;
+    height: 40px;
+  }
+  .revenueCatBtn{
+    margin-left: 20px;
+    width:220px;
+    height: 40px;
+
+  }
+.reportlink{
+    color: white;
+}
+
+.offerImageShow {
+  width: 300px;
+  height: 200px;
+  padding: 0;
+  background-size: contain; /* Ensure the image fits within the container */
+  background-repeat: no-repeat;
+  background-position: center;
+
+  background-image: url('../../images/IconImages/offerUpload.jpg');
+}
+
+.offerImageShow img {
+  width: 100%;
+  height: 100%; /* Adjust the height to 100% */
+  object-fit: cover; /* Ensure the image covers the entire container */
+}
+
+.offerRightSide{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.offer-Decription{
+  margin-left: 50px;
+  
+}
+
+#OfferMultilineInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical; /* Allow vertical resizing */
+  font-family: Arial, sans-serif;
+ 
+}
+
+#OfferMultilineInput:focus {
+  border-color: #007bff; /* Change border color on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow on focus */
+}

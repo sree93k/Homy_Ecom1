@@ -1,0 +1,499 @@
+<%- include('../layout/user/header') %>
+<header>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <!-- Left Side - Images -->
+      <div class="d-flex">
+        <a class="navbar-brand" href="#">
+          <img
+            src="./images/userpage/Homy-logos_transparent.png"
+             width="100"
+            height="80"
+            class="d-inline-block align-text-top"
+          />
+        </a>
+        <a class="navbar-brand" href="#">
+          <img
+            src="./images/userpage/homy.png"
+            alt="Logo"
+            width="140"
+            height="80"
+            class="d-inline-block align-text-top"
+          />
+        </a>
+      </div>
+
+      <!-- Center - Navigation Links -->
+      <div class="d-flex justify-content-center">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Collections</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Projects</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Search, Login, Wishlist, Cart -->
+      <div class="d-flex ml-auto">
+        <!-- Add your search bar, login, wishlist, and cart links here -->
+        <!-- Example: -->
+        <input type="text" class="form-control m-3" placeholder="Search" />
+        <a href="/home/login" class="nav-link m-3">Login</a>
+        <a href="#" class="nav-link m-3">Wishlist</a>
+        <a href="#" class="nav-link m-3">Cart</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<section>
+  <div class="container">
+    <div class="row justify-content-center m-5">
+      <div class="col-md-6 mt-5 p-4 bg-light rounded">
+        <h1 class="text-center mb-4" style="margin-top: 50px">User SignUp</h1>
+        <h4 id="registerError"></h4>
+        <!-- <form action="/home/register" method="post"> -->
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              placeholder="Name"
+              required
+              id="nameId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              placeholder="Email"
+              required
+              id="emailId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              name="mobile"
+              placeholder="Mobile"
+              required
+              id="mobileId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              placeholder="Password"
+              required
+              id="passwordId"
+            />
+          </div>
+
+          <div class="mb-3">
+            <input
+              type="password"
+              class="form-control"
+              name="password_1"
+              placeholder="Confirm Password"
+              required
+              id="passwordId_1"
+            />
+          </div>
+
+          <div class="mb-3 text-center">
+            <!-- <input type="submit" class="btn btn-success btn-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="sendOtpButton" value="Send OTP"> -->
+            <button type="button" class="btn btn-primary" id="sendOtpButton">
+              Send OTP
+            </button>
+          </div>
+        <!-- </form> -->
+
+        <!-- modal one -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-body otpModalSignup">
+                <h3 class="text-dark mb-3">Verify Email ID</h2>
+                <div class="mb-2 row">
+                  
+                  <h5 id="otpTimer" class="timer "></h5><br>
+                  <div class="col-sm-12 mt-3 mb-3">
+                    
+                    <div class="d-flex flex-wrap justify-content-center  ">
+                      <input type="hidden" name="UserId" id="UserID">
+                      <input type="text" name="otpOne" id="OtpOne" class="form-control otpBox mb-2 mx-2" maxlength="1" style="width: 4em; height: 4em" pattern="[0-9]" title="Please enter only numeric digits" />
+                      <input type="text" name="otpTwo" id="OtpTwo" class="form-control otpBox mb-2 mx-2" maxlength="1" style="width: 4em; height: 4em"pattern="[0-9]" title="Please enter only numeric digits" />
+                      <input type="text" name="otpThree" id="OtpThree" class="form-control otpBox mb-2 mx-2" maxlength="1" style="width: 4em; height: 4em" pattern="[0-9]" title="Please enter only numeric digits"/>
+                      <input type="text" name="otpFour" id="OtpFour" class="form-control otpBox mb-2 mx-2" maxlength="1" style="width: 4em; height: 4em" pattern="[0-9]" title="Please enter only numeric digits" />
+                      <input type="text" name="otpFive" id="OtpFive" class="form-control otpBox mb-2 mx-2" maxlength="1" style="width: 4em; height: 4em" pattern="[0-9]" title="Please enter only numeric digits" />
+                      <input type="text" name="otpSix" id="OtpSix" class="form-control otpBox mb-2 mx-2" maxlength="1" style="width: 4em; height: 4em" pattern="[0-9]" title="Please enter only numeric digits" />
+                    </div>
+                  </div>
+                </div>
+                <div class=" d-flex justify-content-center">
+                  <button type="button" class="btn btn-outline-primary me-2" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary ms-2" id="OtpSubmitBtn">Verify Email</button>
+                </div>
+                <div class="rendOtp" id="rendOtp" >
+                  If you haven't received the code, please <a href="#"><span>Click Here To Resend OTP</span></a> again.
+  
+                </div>
+              </div>
+           
+            </div>
+          </div>
+        </div>
+        
+        <!-- modal two -->
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<script>
+  document
+    .getElementById("sendOtpButton")
+    .addEventListener("click", function () {
+      // $('#staticBackdrop').modal('show');
+      console.log("working");
+     
+      const userDetails = {
+        name: document.getElementById("nameId").value,
+        email: document.getElementById("emailId").value,
+        mobile: document.getElementById("mobileId").value,
+        password: document.getElementById("passwordId").value,
+        password_1: document.getElementById("passwordId_1").value,
+      
+      };
+      console.log(userDetails);
+      const UserID=document.getElementById('UserID')
+      
+     const registerError=document.getElementById("registerError")
+      fetch("/home/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userDetails),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data[0])
+          console.log(data[1])
+         
+          if(typeof(data)==="string"){
+            registerError.textContent=data
+            
+          }else 
+          {
+            UserID.value=data[0]
+            console.log(UserID.value)
+            $("#staticBackdrop").modal("show");
+          }
+        
+         
+          
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+</script>
+
+
+<!-- otp send -->
+<script>
+const otpSubmitBtn=document.getElementById('OtpSubmitBtn')
+console.log('otp sendinf start')
+
+
+otpSubmitBtn.addEventListener('click',()=>{
+
+
+  const otpUserId=document.getElementById('UserID').value
+  console.log(typeof(otpUserId))
+  const otpOne=document.getElementById('OtpOne').value
+  const otpTwo=document.getElementById('OtpTwo').value
+  const otpThree=document.getElementById('OtpThree').value
+  const otpFour=document.getElementById('OtpFour').value
+  const otpFive=document.getElementById('OtpFive').value
+  const otpSix=document.getElementById('OtpSix').value
+ 
+  function areAllNumeric(...values) {
+  return values.every(value => !isNaN(value) && value !== '');
+}
+
+
+if (!areAllNumeric(otpOne, otpTwo, otpThree, otpFour, otpFive, otpSix)) {
+  console.log("All OTPs must be numeric.");
+  let timerInterval;
+Swal.fire({
+  title: "All OTPs must be numeric",
+  html: "",
+  timer: 500,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading();
+    const timer = Swal.getPopup().querySelector("b");
+    timerInterval = setInterval(() => {
+      timer.textContent = `${Swal.getTimerLeft()}`;
+    }, 100);
+  },
+  willClose: () => {
+    clearInterval(timerInterval);
+  }
+}).then((result) => {
+  /* Read more about handling dismissals below */
+  if (result.dismiss === Swal.DismissReason.timer) {
+    console.log("I was closed by the timer");
+  }
+});
+} else {
+  const currentOtp = `${otpOne}${otpTwo}${otpThree}${otpFour}${otpFive}${otpSix}`;
+  console.log('otp sending');
+  fetch(`/home/otpVerification?id=${currentOtp}`,{
+    method:'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({otpUserId:otpUserId}),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      console.log("responded")
+      if(data)
+      {
+        console.log("success");
+        Swal.fire({
+          title: "Account Created Successfully",
+          
+          icon: "success"
+        })
+        .then(()=>{
+          window.location.href='/home';
+        })
+      }
+      else
+      {
+        console.log("failed");
+        document.getElementById('OtpOne').value = '';
+        document.getElementById('OtpTwo').value = '';
+        document.getElementById('OtpThree').value = '';
+        document.getElementById('OtpFour').value = '';
+        document.getElementById('OtpFive').value = '';
+        document.getElementById('OtpSix').value = '';
+        Swal.fire({
+          title: "Sorry! Incorrect OTP",
+        
+          
+          icon: "error"
+        });
+
+      }
+
+     })
+     .catch((error)=>{
+      console.log(error)
+     })
+
+}
+
+ 
+
+  
+})
+</script>
+
+
+<script>
+  const otpModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+
+  otpModal.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('OtpOne').value = '';
+    document.getElementById('OtpTwo').value = '';
+    document.getElementById('OtpThree').value = '';
+    document.getElementById('OtpFour').value = '';
+    document.getElementById('OtpFive').value = '';
+    document.getElementById('OtpSix').value = '';
+  });
+</script>
+
+<!-- otp input automatically moves -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const otpBoxes = document.querySelectorAll('.otpBox');
+
+    otpBoxes.forEach(function(box, index) {
+      box.addEventListener('input', function() {
+        if (this.value.length === 1) {
+          if (index < otpBoxes.length - 1) {
+            otpBoxes[index + 1].focus();
+          } else {
+            // All OTP digits are filled, you can trigger the submit button click here if needed
+            document.getElementById('OtpSubmitBtn').click();
+          }
+        }
+      });
+    });
+  });
+</script>
+
+
+<!-- send otp -->
+<script>
+  let timerInterval; // Define timer interval globally
+
+  // Function to start the timer
+  function startTimer() {
+    let seconds = 60; // Total seconds for the timer
+    const otpTimerElement = document.getElementById('otpTimer');
+    otpTimerElement.style.display = 'block'; // Display the timer
+
+    // Function to update the timer
+    function updateTimer() {
+      otpTimerElement.textContent = `Enter OTP in ${seconds} seconds`;
+      if (seconds <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById('rendOtp').style.display = 'inline-block'; // Show resend link
+        otpTimerElement.style.display = 'none'; // Hide the timer
+        return;
+      }
+      seconds--;
+    }
+
+    updateTimer(); // Initial call to update the timer
+
+    // Start the timer interval
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const sendOtpButton = document.getElementById('sendOtpButton');
+
+    // Event listener for Send OTP button click
+    sendOtpButton.addEventListener('click', function() {
+      // Start the timer when Send OTP button is clicked
+      startTimer();
+      // Other logic for sending OTP can be added here
+    });
+
+    const otpModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+
+    // Event listener for modal dismissal
+    otpModal.addEventListener('hidden.bs.modal', function() {
+      // Clear the timer interval when the modal is dismissed
+      clearInterval(timerInterval);
+      // Reset OTP input fields
+      document.querySelectorAll('.otpBox').forEach(box => (box.value = ''));
+    });
+  });
+</script>
+
+<!-- OTP Resend -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function resendOTP() {
+      fetch('/resendOTP', { method: 'POST' })
+        .then(response => {
+          // Handle response
+        })
+        .catch(error => {
+          // Handle error
+        });
+    }
+
+    // Event listener for OTP Resend link click
+    document.getElementById('rendOtp').addEventListener('click', function(event) {
+      event.preventDefault();
+      resendOTP();
+      // Other logic for OTP Resend can be added here
+    });
+  });
+</script>
+
+
+<!-- otp resend -->
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let seconds = 60; 
+    const otpTimerElement = document.getElementById('otpTimer');
+    
+   
+    function updateTimer() {
+      otpTimerElement.textContent = `Enter OTP in ${seconds} seconds`;
+      document.getElementById('rendOtp').style.display="none"
+      if (seconds <= 0) {
+        clearInterval(timerInterval);
+        // otpTimerElement.innerHTML = '<a href="#" id="resendLink">Resend OTP</a>'; 
+        document.getElementById('rendOtp').style.display="inline-block"
+        otpTimerElement.style.display="none"
+        return;
+      }
+      seconds--;
+    }
+    
+   
+    function resendOTP() {
+    
+
+      fetch('/resendOTP', { method: 'POST' })
+        .then(response => {
+        
+        })
+        .catch(error => {
+          
+        });
+    }
+
+
+    const timerInterval = setInterval(updateTimer, 1000);
+
+   
+    otpTimerElement.addEventListener('click', function(event) {
+      event.preventDefault(); 
+      resendOTP();
+    });
+  });
+</script> -->
+
+
+<%- include('../layout/user/footer') %>

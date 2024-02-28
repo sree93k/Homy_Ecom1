@@ -1,0 +1,759 @@
+<%- include('../layout/admin/header') %>
+
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex align-items-center"> <!-- Added align-items-center class -->
+                <div class="headOne">
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/Homy-logos_transparent.png" alt="Logo" width="120"  height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+                <div class="headTwo mx-auto d-flex justify-content-center align-items-center w-100"> <!-- Added w-100 class for 100% width -->
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/homy.png" style="margin-left: 400px" alt="Logo" width="180" height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+    <nav class="navbar bg-body-warning fixed-top-10px">
+        <div class="container mt-2 mb-2">
+          <!-- <a class="navbar-brand" href="#">Offcanvas navbar</a> -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h3 class="offcanvas-title mt-3 " id="offcanvasNavbarLabel">Homy Admin Panel</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body m-3 ">
+                <form class="d-flex mt-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-5 ">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOrders">All Orders</a>
+                  </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allUsers">Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allProducts">Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCategory">Categories</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Offers</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCoupons">Coupons</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/alBanners">Banners</a>
+                  </li>
+                  
+              </ul>
+              
+            </div>
+          </div>
+          <div class="custom-background d-flex justify-content-between align-items-center">
+            <div class="navOne">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item    mt-3 ms-3 "><a href="/admin/dashboard" class="text-light">Dashboard</a></li>
+                  <li class="breadcrumb-item active  mt-3 text-light       " aria-current="page">Offers</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="navTwo d-flex align-items-center">
+                <span class="me-3 text-light">Hi, Sreekuttan</span> 
+                <form action="/admin/logout"  method="post">
+                  <input type="submit" class="btn mt-2 text-light mb-2 " value="Logout">
+              </form>
+            </div>
+        </div>
+        </div>
+      </nav>
+    
+</header>
+<section>
+  <section>
+      <div class="container">
+        <div class="row">
+          <div class="cols col-6">
+              <h3>All Offers</h3>
+          </div>
+          <div class="cols col-6 d-flex">
+           
+            <button type="button" class="btn align text-bg-primary  text-light rounded-0 ms-auto" data-bs-toggle="modal" data-bs-target="#staticBackdropAdd">Add Offers</button>
+        </div>
+      </div>
+        <table class="table mt-5 ">
+            <thead class="table-light">
+              <th>SI No</th>
+              <th>Offer Name</th>
+              <th>Description</th>
+              <th>Offer Banner</th>
+              <th>Offer Type</th>
+              <th>Discount Type</th>
+              <th>Starting Date</th>
+              <th>Expiry Date</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              
+            </thead>
+            <tbody>
+
+              <%if(allOffers.length>0)
+              {
+                for(let i=0;i<allOffers.length;i++)
+                {%>
+            <tr>
+                <td><%=i+1%></td>
+                <td><%=allOffers[i].offerName%></td>
+                <td><%=allOffers[i].offerDescription%></td>
+                <td><img src="./images/adminpage/<%=allOffers[i].offerImage[0]%>" alt="<%=allOffers[i].offerImage[0]%>" width="50px" height="50px"></td>
+                <td><%=allOffers[i].offerType%></td>
+                <td><%=allOffers[i].discountType%></td>
+                <td><%= allOffers[i].startDate%></td>
+                <td><%= allOffers[i].endDate %></td>
+                  <td>
+                      <button type="button" class="btn bg-primary  text-light  rounded-0  offerEditBtn" data-offer-id="<%=allOffers[i]._id%>"
+                        data-offer-name="<%=allOffers[i].offerName%>" data-offer-description="<%=allOffers[i].offerDescription%>" 
+                        data-offer-image="<%=allOffers[i].offerImage%>" data-offer-type="<%=allOffers[i].offerType%>" 
+                        data-discount-type="<%=allOffers[i].discountType%>" data-offer-start="<%=allOffers[i].startDate%>" 
+                        data-offer-end="<%=allOffers[i].endDate%>" data-offer-value="<%=allOffers[i].discountValue%>"
+                        data-offer-id="<%=allOffers[i]._id%>" data-bs-toggle="modal" data-bs-target="#editOfferModal" >Edit</button>
+                  </td>
+                  <td>
+                      <button type="button" class="btn bg-danger  text-light  rounded-0  offerDeleteBtn" data-offer-id="<%=allOffers[i]._id%>" >Delete</button>
+                  </td>
+             </tr>
+                  <%
+                }
+              }%>
+            </tbody>
+          </table>
+       </div>
+    </section>
+</section>
+
+
+<!-- modal starting -->
+
+
+
+<section>
+  <!-- Modal one start - Add Product-->
+<div class="modal fade" id="staticBackdropAdd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content" style="background-color: #f8f9fa; /* Set your desired background color here */">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Offer</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+          <div class="modal-body">
+            <div class="conatiner">
+              <div class="row">
+                
+                <div class="col-6">
+
+
+                  <div class="mb-3">
+                    <label for="">Offer Title</label>
+                  <input type="text" class="form-control" id="addName" placeholder="Enter Offer Name">
+              </div>
+              <div class="mb-3">
+                <label for="">Offer Type</label>
+                <select class="form-select" aria-label="Default select example" id="addOfferType">
+                  <option selected>Select Offer Type</option>
+                  <option value="Product Offer">Product Offer</option>
+                  <option value="Category Offer">Category Offer</option>
+                  <option value="Referal Offer">Referal Offer</option>
+                </select>
+                  
+              </div>
+              
+              <label for="">Offer Dates</label>
+              <div class="mb-3 d-flex ">
+                <div class="input-group mb-3 w-50">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Start Date</span>
+                  <input type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="startDate">
+                </div>
+                <div class="input-group mb-3 w-50">
+                  <span class="input-group-text" id="inputGroup-sizing-default">End Date</span>
+                  <input type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="endDate">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="">Discount Type</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="discountPercentage" value="Discount Percentage">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Discount Percentage
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="discountAmount" value="Discount Amount">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    Discount Amount
+                  </label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="">Discount Value</label>
+                  <input type="text" class="form-control" name="discountValue" id="discountValue" placeholder="Enter Value">
+              </div>
+                </div>
+                <div class="col-6 offerRightSide">
+                  <div class="offerImageShow addimage-preview" id="preview1"></div>
+
+                  <div class="mb-3 mt-2  ">
+                    <input type="file" name="productImage" id="offerImage" class=""  onchange="previewImage(this, 'preview1')">
+                </div>
+
+                <div class="mb-3 offer-Decription">
+                  <label for="">Offer Description</label>
+                  <textarea id="OfferMultilineInput" rows="4" cols="50" placeholder="Enter Description"></textarea>
+               </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="addSubmitBtn"  data-bs-dismiss="modal">Submit</button>
+        </div>
+     
+      </div>
+  </div>
+</div>
+</section>
+<!-- Modal add end-->
+
+<section>
+  <!-- Modal edit start - Edit Product-->
+<div class="modal fade" id="editOfferModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content" style="background-color: #f8f9fa; /* Set your desired background color here */">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Offer</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+          <div class="modal-body">
+            <div class="conatiner">
+              <div class="row">
+                
+                <div class="col-6">
+
+
+                  <div class="mb-3">
+                    <label for="">Offer Title</label>
+                    <input type="hidden" name="" id="editId">
+                    <input type="text" class="form-control" id="editName" placeholder="Enter Offer Name">
+                  </div>
+
+                <div class="mb-3">
+                  <label for="">Offer Type</label>
+                  <select class="form-select" aria-label="Default select example" id="editType">
+                    <option selected>Select Offer Type</option>
+                    <option value="Product Offer">Product Offer</option>
+                    <option value="Category Offer">Category Offer</option>
+                    <option value="Referal Offer">Referal Offer</option>
+                  </select> 
+                </div>
+              
+              <label for="">Offer Dates</label>
+              <div class="mb-3 d-flex ">
+                <div class="input-group mb-3 w-50">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Start Date</span>
+                  <input type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="editStartDate">
+                </div>
+                <div class="input-group mb-3 w-50">
+                  <span class="input-group-text" id="inputGroup-sizing-default">End Date</span>
+                  <input type="date" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="editEndDate">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="">Discount Type</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="editDiscountPercentage" value="Discount Percentage">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Discount Percentage
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="editDiscountAmount" value="Discount Amount">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    Discount Amount
+                  </label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="">Discount Value</label>
+                  <input type="text" class="form-control" name="discountValue" id="editDiscountValue" placeholder="Enter Value">
+              </div>
+                </div>
+
+                <div class="col-6 offerRightSide">
+                  <div class="offerImageShow editimage-preview" id="editPreview"><img src="./images/adminpage/%>" alt="" class="img " ></div>
+                  <div class="mb-3 mt-2  ">
+                    <input type="file" name="productImage" id="editImage" class="image-input"  onchange="editPreviewImage(this, 'editPreview')">
+         
+                </div>
+
+                <div class="mb-3 offer-Decription">
+                  <label for="">Offer Description</label>
+                  <textarea id="editOfferDescription" rows="4" cols="50" placeholder="Enter Description"></textarea>
+               </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="editUpdateBtn"  data-bs-dismiss="modal" >Update</button>
+        </div>
+     
+      </div>
+  </div>
+</div>
+</section>
+<!-- Modal edit end-->
+
+
+
+
+
+ <!-- image add show at ` 1````  -->
+<script>
+  function previewImage(input, previewId) {
+      const previewContainer = document.getElementById(previewId);
+      const file = input.files[0];
+
+      if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function () {
+              const imageElement = document.createElement("img");
+              imageElement.src = reader.result;
+              previewContainer.innerHTML = "";
+              previewContainer.appendChild(imageElement);
+          };
+          reader.readAsDataURL(file);
+      }
+  }
+</script>
+
+
+<!-- edit preview -->
+<script>
+  function editPreviewImage(input, previewId) {
+      const previewContainer = document.getElementById(previewId);
+      const file = input.files[0];
+
+      if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function () {
+
+              const existingImage = previewContainer.querySelector('img');
+
+              if (existingImage) {
+                
+                  existingImage.src = reader.result;
+              } else {
+                 
+                  const imageElement = document.createElement("img");
+                  imageElement.src = reader.result;
+                  imageElement.alt = file.name;
+                  imageElement.classList.add('img-fluid', 'mb-2');
+                  imageElement.style.height = '200px';
+                  imageElement.style.width = '200px';
+              
+                  previewContainer.innerHTML = "";
+                  previewContainer.appendChild(imageElement);
+              }
+          };
+
+          reader.readAsDataURL(file);
+      }
+  }
+</script>
+
+  
+
+<script>
+  const addSubmitBtn=document.getElementById('addSubmitBtn')
+
+  addSubmitBtn.addEventListener('click',()=>{
+    const offerName=document.getElementById('addName').value
+    const addOfferType=document.getElementById('addOfferType').value
+    const startDate=document.getElementById('startDate').value
+    const endDate=document.getElementById('endDate').value
+    let discountType;
+    if(document.getElementById('discountPercentage').checked)
+    {
+      discountType=document.getElementById('discountPercentage').value
+    }
+    else if(document.getElementById('discountAmount').checked)
+    {
+      discountType=document.getElementById('discountAmount').value
+    }
+    const discountValue=document.getElementById('discountValue').value
+
+    const fileInput = document.getElementById('offerImage');
+
+    const offerDescription=document.getElementById('OfferMultilineInput').value
+    console.log(offerDescription);
+const file = fileInput.files[0];
+
+let formData = new FormData();
+formData.append('offerImage', file);
+formData.append('offerName', offerName);
+formData.append('OfferType', addOfferType);
+formData.append('startDate', startDate);
+formData.append('endDate', endDate);
+formData.append('discountType', discountType);
+formData.append('discountValue', discountValue);
+formData.append('offerDescription', offerDescription);
+
+fetch('/admin/addOffer', {
+    method: 'POST',
+    body: formData 
+})
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+    if(data===true)
+    {
+
+      let timerInterval;
+      Swal.fire({
+        title: "Offer Added Successfully!",
+        html: "",
+        timer: 600,
+        icon:"success",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const timer = Swal.getPopup().querySelector("b");
+          timerInterval = setInterval(() => {
+            timer.textContent = `${Swal.getTimerLeft()}`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("I was closed by the timer");
+        }
+      })
+      .then(()=>{
+        window.location.reload()
+      })
+    }
+    else
+    {
+      let timerInterval;
+      Swal.fire({
+        title: "Some Error Occured",
+        html: "",
+        timer: 600,
+        icon:"error",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const timer = Swal.getPopup().querySelector("b");
+          timerInterval = setInterval(() => {
+            timer.textContent = `${Swal.getTimerLeft()}`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("I was closed by the timer");
+        }
+      });
+    }
+})
+.catch(error => {
+    console.error('Error uploading image:', error);
+});
+  
+
+  })
+
+</script>
+
+
+<!-- delete offer -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const offerDeleteBtn=document.querySelectorAll('.offerDeleteBtn')
+
+    offerDeleteBtn.forEach(deleteBtn=>{
+      deleteBtn.addEventListener('click',()=>{
+        const offerId=deleteBtn.getAttribute('data-offer-id')
+      console.log("offer id  is ",offerId);
+
+
+      const swalWithBootstrapButtons = Swal.mixin({
+          customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+          },
+          buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+          title: "Are you sure to Delete?",
+          text: "",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel",
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetch(`/admin/deleteOffer?offerId=${offerId}`,{
+        method:'GET',
+      })
+      .then((response)=>response.json())
+      .then((data)=>{
+        console.log(data);
+        if(data==true)
+        {
+          let timerInterval;
+          Swal.fire({
+            title: "Deleted Successfully!",
+            html: "",
+            timer: 600,
+            icon:"success",
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+              const timer = Swal.getPopup().querySelector("b");
+              timerInterval = setInterval(() => {
+                timer.textContent = `${Swal.getTimerLeft()}`;
+              }, 100);
+            },
+            willClose: () => {
+              clearInterval(timerInterval);
+            }
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log("I was closed by the timer");
+            }
+          })
+          .then(()=>{
+            window.location.reload()
+          })
+        }
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "Offer has been deleted.",
+              icon: "success"
+            });
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+           
+            let timerInterval;
+            Swal.fire({
+              title: "Delete Cancelled",
+              html: "",
+              timer: 500,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+              }
+            });
+          }
+        });
+
+
+
+      
+
+      })
+      
+    })
+  })
+</script>
+
+
+
+
+<!-- offer preview -->
+
+
+<script>
+  const editOfferModal = document.getElementById('editOfferModal');
+
+  editOfferModal.addEventListener('show.bs.modal', event => {
+    const button = event.relatedTarget;
+
+    const offerId = button.getAttribute("data-offer-id");
+    const offerName = button.getAttribute("data-offer-name");
+    const offerDescription = button.getAttribute("data-offer-description");
+    const offerImage = button.getAttribute("data-offer-image");
+    const offerType = button.getAttribute("data-offer-type");
+    const discountType = button.getAttribute("data-discount-type");
+    const startDate = button.getAttribute("data-offer-start");
+    const endDate = button.getAttribute('data-offer-end');
+    const offerValue = button.getAttribute('data-offer-value');
+
+    const modalTitle = editOfferModal.querySelector('.modal-title');
+    const editName = editOfferModal.querySelector('#editName');
+    const editType = editOfferModal.querySelector('#editType');
+    const editStartDate = editOfferModal.querySelector('#editStartDate');
+    const editEndDate = editOfferModal.querySelector('#editEndDate');
+    const editDiscountPercentage = editOfferModal.querySelector('#editDiscountPercentage');
+    const editDiscountAmount = editOfferModal.querySelector('#editDiscountAmount');
+    const editDiscountValue = editOfferModal.querySelector('#editDiscountValue');
+    const editPreview= editOfferModal.querySelector('#editPreview img');
+    const editOfferDescription = editOfferModal.querySelector('#editOfferDescription');
+    console.log("start date",startDate);
+    console.log("end date",endDate);
+    console.log("name",offerName);
+    modalTitle.textContent = `Edit ${offerName}`;
+    editId.value = offerId;
+    editName.value = offerName;
+    editType.value = offerType;
+    editStartDate.value = startDate;
+    editEndDate.value = endDate;
+    if (discountType === "Discount Amount") {
+      editDiscountAmount.checked = true;
+    } else {
+      editDiscountPercentage.checked = true;
+    }
+    editDiscountValue.value = offerValue;
+    editPreview.src = "./images/adminpage/" + offerImage; 
+    editOfferDescription.value = offerDescription;
+  });
+</script>
+
+
+<!-- edit update btn -->
+
+ <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const editUpdateBtn=document.getElementById('editUpdateBtn')
+
+        editUpdateBtn.addEventListener('click',(e)=>{
+          e.preventDefault()
+          const offerId = document.getElementById('editId').value;
+          const offerName = document.getElementById('editName').value;
+          const offerType = document.getElementById('editType').value;
+          const startDate = document.getElementById('editStartDate').value;
+          const endDate = document.getElementById('editEndDate').value;
+          const discountType = document.querySelector('input[name="flexRadioDefault"]:checked').value;
+          const discountValue = document.getElementById('editDiscountValue').value;
+          const offerDescription = document.getElementById('editOfferDescription').value;
+          const fileInput = document.getElementById('editImage');
+          console.log("file input",fileInput);
+          const file = fileInput.files[0];
+          console.log("offerName is ",offerName);
+          console.log("file is ",file);
+
+          const formData = new FormData();
+          formData.append('editImage',file)
+          formData.append('offerId', offerId);
+          formData.append('offerName', offerName);
+          formData.append('offerType', offerType);
+          formData.append('startDate', startDate);
+          formData.append('endDate', endDate);
+          formData.append('discountType', discountType);
+          formData.append('discountValue', discountValue);
+          formData.append('offerDescription', offerDescription);
+          
+          console.log(formData);
+        fetch(`/admin/editUpadteOffer?offerId=${offerId}`,{
+          method:'POST',
+          body:formData
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+          console.log("data received is ",data);
+          if(data===true)
+          {
+            let timerInterval;
+          Swal.fire({
+            title: "Updated Successfully!",
+            html: "",
+            timer: 600,
+            icon:"success",
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+              const timer = Swal.getPopup().querySelector("b");
+              timerInterval = setInterval(() => {
+                timer.textContent = `${Swal.getTimerLeft()}`;
+              }, 100);
+            },
+            willClose: () => {
+              clearInterval(timerInterval);
+            }
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log("I was closed by the timer");
+            }
+          })
+          .then(()=>{
+            window.location.reload()
+          })
+          
+          }
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+      })
+   
+  })
+</script> 
+
+
+
+
+
+
+<%- include('../layout/admin/footer') %>

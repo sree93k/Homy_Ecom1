@@ -1,0 +1,939 @@
+<%- include('../layout/user/header')%>
+
+<link rel="stylesheet" href="/home/styles/home/homeStyle.css">
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex">
+                <a class="navbar-brand" href="#">
+                    <img src="./images/userpage/Homy-logos_transparent.png" alt="Logo" width="90" height="60" class="d-inline-block align-text-top">
+                </a>
+                <a class="navbar-brand" href="#">
+                    <img src="./images/userpage/homy.png" alt="Logo" width="120" height="60" class="d-inline-block align-text-top">
+                </a>
+            </div>
+
+            <!-- Center - Navigation Links -->
+            <div class="d-flex justify-content-center">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Projects</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Contact</a>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="d-flex ml-auto">
+               
+                <input type="text" class="form-control m-3" placeholder="Search">
+                <%if(locals.loginStatus===false)
+                {%>
+                  <a href="/home/login" class="nav-link m-3 ">Login</a>
+                  
+                  <%} else {%>
+                
+                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                      <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Hi, <%= userId.name %>
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-light dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
+                            <a href="/home/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
+                            <a href="/home/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
+                            <a href="/home/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><button class="dropdown-item" id="userLogout" data-user-userId="<%= userId._id %>">Logout</button></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <%}%>
+                
+                    <a href="/home/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
+                    <a href="/home/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+
+<section class="account-settings">
+    <div class="container">
+      <div class="row">
+        <div class="mainBody">
+          <div class="container">
+            <div class="row">
+                <!-- left -->
+              <div class="col-md-3  ">
+                <div class="innerLeft ">
+                    <div class="container">
+                        <div class="row">
+                            <div class="leftOne mb-5">
+                                <h4>Hi, <%= userId.name %></h4>
+                              </div>
+                              <hr style="height: 2px; background-color: #ffffff; border: none; width: 250px; margin-left: 25px;">
+                              <div class="leftTwo ">
+                                <ul class="account-nav">
+                                  <li><a href="/home/userProfile">My Account</a></li>
+                                  <li><a href="#">My Orders</a></li>
+                                  <li><a href="/home/userWishlist">My Wishlist</a></li>
+                                  <li><a href="/home/userAddress">My Address</a></li>
+                                  <li><a href="/home/resetPassword">Change Password</a></li>
+                                  <li><a href="/home/userWallet">Wallet</a></li>
+                                  <li><a href="/home/referals">My Referrals</a></li>
+                                </ul>
+                              </div>
+    
+                        </div>
+                    </div>
+                </div>
+                
+              </div>
+              <!-- left end -->
+
+              <!-- right -->
+              <div class="col-md-9">
+                <div class="innerRight bg-light-tertiary p-4 mt-0">
+                  <h2>My Orders</h2>
+                  
+                  <!-- section starting -->
+                  <section>
+                    <div class="container">
+                        <div class="row">
+                          <%if(orderDetails.length>0)
+                          {
+                            for(let i=0;i<orderDetails.length;i++)
+                            {
+                              %>
+                              <div class="container-fluid bg-body-secondary  pt-3 ">
+                            <table class="table table-hover ">
+                                <thead>
+                                  
+                                  <tr style="border-bottom: #f8f7f7;">
+                                    <th  style="background-color:#3b5d70 ;color: #ffffff; ">Delivery Date</th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff">Total</th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff"> Ship To</th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff"></th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff">#<%=orderDetails[i].orderId%></th>
+                                  </tr> 
+                                  <tr>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff"><%= orderDetails[i].deliveryDate ? orderDetails[i].deliveryDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '' %></th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff">₹ <%=orderDetails[i].amount%></th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff"><%=orderDetails[i].deliveryAddress.name%></th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff"></th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff"><a href="" class="text-decoration-none text-light ">Order Details</a></th>
+                                  </tr> 
+                                
+                                </thead>
+
+                              </table>
+                              <table class="table1 mt-5">
+                               
+                                  <div class="container" style="background-color: rgb(250, 248, 248);">
+                                    <div class="row">
+                                      <div class="col-12" >
+                                        <div class="userOrderTop">
+                                          <p class="orderP order-status" style="font-size: medium; font-weight: bold;" id="orderSt"><%=orderDetails[i].orderStatus[0]%></p>
+                                          <p class="orderP">Deliver : Xpress Courier </p>                                         
+                                        </div>
+                                        <div class="userOrderBottom  " >
+                                         <div class="container">
+                                          <div class="row">
+                                            <% orderDetails[i].productItem.forEach((product, index) => { %>
+                                              <div class="col-3 bg-body-secondary mb-2" style="align-content:center">
+                                                  <img src="../images/adminpage/<%= product.productImage[0] %>" width="90px" height="90px" alt="">
+                                              </div>
+                                              <div class="col-9 bg-body-secondary mb-2" style="text-align: left;">
+                                                  <div class="container">
+                                                      <div class="row">
+                                                          <div class="col-9">
+                                                              <p class="productListOrder" style="color: #3b5d70;font-weight: bold;"><%= product.productName %></p>
+                                                              <p class="productListOrder" style="font-size: small;">₹ <%= orderDetails[i].productPrice[index] %> </p>
+                                                              <p class="productListOrder" style="font-size: small;">Quantity : <%= orderDetails[i].productQuantity[index] %> </p>
+                                                              <p class="productListOrder" style="font-size: small;">Status : <%= orderDetails[i].productStatus[index] %> </p>
+                                                          </div>
+                                                          <div class="col-3" style="display: flex; flex-direction: column; justify-content: center;">
+                                                            <button type="button" class="btn btn-primary  track-productItem" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                            data-productTrack-id="<%=product._id %>" data-orderTrack-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>"
+                                                            data-bs-toggle="modal" data-bs-target="#orderStatus">
+                                                              Track Order
+                                                          </button>
+                                                              <button type="button" class="btn btn-primary product-buyAgain" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                              data-productBuyAgain-id="<%=product._id %>" data-orderBuyAgain-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>">
+                                                                  Buy It Again
+                                                              </button>
+                                                              <button type="button" class="btn btn-danger cancel-productItem " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                                      id="cancelOrderItem" data-productCancel-id="<%=product._id %>" data-orderCancel-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" >
+                                                               Cancel
+                                                            </button>
+                                                            <button type="button" class="btn btn-warning  return-productItem " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                                      id="cancelOrderItem" data-productReturn-id="<%=product._id %>" data-orderReturn-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" >
+                                                               Return
+                                                            </button>
+                                                            <button type="button" class="btn btn-success   order-invoice " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                                      id="cancelOrderItem" data-productReturn-id="<%=product._id %>" data-orderReturn-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" >
+                                                               Invoice
+                                                            </button>
+                                                            <button type="button" class="btn btn-success   track-return" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                                      id="returnOrderItem" data-productReturn-id="<%=product._id %>" data-orderReturn-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" 
+                                                                      data-bs-toggle="modal" data-bs-target="#returnStatus">
+                                                               Track Return
+                                                            </button>
+
+                                                          </div>
+                                                          
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          <% }) %>
+                                          
+
+                                          
+                                          </div>
+                                         </div>
+
+                                        </div>
+                                       
+                                      </div>
+                                     
+                                      <!-- <div class="col-3" style="display: flex;flex-direction: column; justify-content:center">
+                                        <div class="container" >
+                                          <div class="col"> -->
+                                              <!-- <button type="button" class="btn btn-primary"
+                                              style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;margin-bottom: 3px;width: 130px;">
+                                              Track Order
+                                            </button> -->
+                                            <!-- <button type="button" class="btn btn-warning"
+                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;margin-bottom: 3px;width: 130px;">
+                                              Return or Replace
+                                            </button> -->
+                                            <!-- <button type="button" class="btn btn-success "
+                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;margin-bottom: 3px;width: 130px;">
+                                              Invoice
+                                            </button> -->
+                                            <!-- <form action="/home/cancelOrder?orderId=<%=orderDetails[i]._id%>" method="post"> -->
+                                            <!-- <button type="submit" class="btn btn-danger cancel-order-btn" id="cancelOrder" data-order-id="<%= orderDetails[i]._id %>" 
+                                                    data-order-status="<%=orderDetails[i].orderStatus[0]%>" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;width: 130px;">
+                                              Cancel Order
+                                            </button> -->
+                                          <!-- </form> -->
+                                            
+                                          <!-- </div>
+                                        </div>
+                                       -->
+                                        
+
+                                      </div>
+                                    </div>
+                                  </div>
+                              
+                              </table>
+                            </div>
+                              <%
+                            }
+                          }
+                          %>
+
+
+                        </div>
+                    </div>
+                 
+
+
+
+
+                  </section>
+                    <!-- section end -->
+                </div>
+              </div>
+              <!-- right end -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- modal starting -->
+
+
+<!-- modal one start -->
+
+<div class="modal fade" id="orderStatus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Order Status</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modalOrderId" value="">
+
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="pending" value="Order Pending " disabled >
+          <label class="form-check-label" for="pendingDispatch">Order Pending </label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="dispatch" value="Order Dispatch" disabled>
+          <label class="form-check-label" for="readyDispatch">Order Dispatch</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="shipped" value="Order Shipped" disabled>
+          <label class="form-check-label" for="shipped">Order Shipped</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="delivered" value=" Order Delivered" disabled>
+          <label class="form-check-label" for="delivered">OrderDelivered</label>
+        </div>
+        
+      </div>
+      
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary" id="statusUpdateBtn" >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal one end -->
+
+
+<!-- modal two start -->
+
+<div class="modal fade" id="returnStatus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel"> Status</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modalOrderId" value="">
+
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="pending" value="Order Pending " disabled>
+          <label class="form-check-label" for="pendingDispatch"> Pending </label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="dispatch" value="Order Dispatch" disabled>
+          <label class="form-check-label" for="readyDispatch"> Collected</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="shipped" value="Order Shipped" disabled>
+          <label class="form-check-label" for="shipped"> Shipped</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="delivered" value=" Order Delivered" disabled>
+          <label class="form-check-label" for="delivered">Arrived Warehouse</label>
+        </div>
+        
+      </div>
+      
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary" id="statusUpdateBtn" >Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal two end -->
+
+
+
+
+
+
+
+
+
+
+
+  <!-- modal ending -->
+  
+<!-- cancel order -->
+<!-- <script>
+  document.addEventListener('DOMContentLoaded',()=>{
+
+    
+const cancelOrderButtons = document.querySelectorAll('#cancelOrder');
+  
+  cancelOrderButtons.forEach(cancelOrderButton => {
+  
+    cancelOrderButtons.addEventListener('click',()=>{
+  
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: "btn btn-primary ",
+    cancelButton: "btn  btn-outline-primary "
+  },
+  buttonsStyling: false
+});
+swalWithBootstrapButtons.fire({
+  title: "Sure to Cancel the Order?",
+  text: "",
+  icon: "",
+  showCancelButton: true,
+  confirmButtonText: "Confirm ",
+  cancelButtonText: "Cancel ",
+  reverseButtons: true
+}).then((result) => {
+  if (result.isConfirmed) {
+    swalWithBootstrapButtons.fire({
+      title: "Cancelled!",
+      text: "Your Order has been Cancelled.",
+      icon: "success"
+    });
+    window.location.href('/home/')
+  } else if (
+   
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire({
+  title: "Not Cancelled!",
+  html: "",
+  timer: 500,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading();
+    const timer = Swal.getPopup().querySelector("b");
+    timerInterval = setInterval(() => {
+      timer.textContent = `${Swal.getTimerLeft()}`;
+    }, 100);
+  },
+  willClose: () => {
+    clearInterval(timerInterval);
+  }
+});
+  }
+});
+  })
+})
+  })
+</script> -->
+
+<!-- cencel order -->
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const cancelOrderButtons = document.querySelectorAll('.cancel-order-btn');
+  
+  cancelOrderButtons.forEach(cancelOrderButton => {
+    cancelOrderButton.addEventListener('click', (event) => {
+      event.preventDefault(); 
+      
+      const orderId = cancelOrderButton.dataset.orderId; 
+      
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-primary",
+          cancelButton: "btn btn-outline-primary"
+        },
+        buttonsStyling: false
+      });
+      
+      swalWithBootstrapButtons.fire({
+        title: "Sure to Cancel the Order?",
+        icon: "",
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log("one");
+          cancelOrderButton.style.display="none";
+          console.log("two");
+          fetch(`/home/cancelOrder?orderId=${orderId}`, {
+            method: 'POST',
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          })
+          .then(data => {
+          
+            swalWithBootstrapButtons.fire({
+              title: "Cancelled!",
+              text: "Your Order has been Cancelled.",
+              icon: "success"
+            }).then(() => {
+              window.location.href = '/home/userOrders'; 
+            });
+          })
+          .catch(error => {
+            console.error('There was a problem with the cancel order request:', error);
+            swalWithBootstrapButtons.fire({
+              title: "Error",
+              text: "Failed to cancel the order.",
+              icon: "error"
+            });
+          });
+        }
+        else if (
+   
+   result.dismiss === Swal.DismissReason.cancel
+ ) {
+   swalWithBootstrapButtons.fire({
+ title: "Not Cancelled!",
+ html: "",
+ timer: 400,
+ timerProgressBar: true,
+ didOpen: () => {
+   Swal.showLoading();
+   const timer = Swal.getPopup().querySelector("b");
+   timerInterval = setInterval(() => {
+     timer.textContent = `${Swal.getTimerLeft()}`;
+   }, 100);
+ },
+ willClose: () => {
+   clearInterval(timerInterval);
+ }
+});
+ }
+      });
+    });
+  });
+});
+
+</script> -->
+
+
+<!-- canclled should have hidden button ------------------------------------------------------------------>
+<!-- <script>
+
+document.addEventListener('DOMContentLoaded',()=>{
+console.log("auto hidden cancel button start");
+      const hiddenCancelBtn=document.querySelectorAll('.cancel-order-btn')
+
+    hiddenCancelBtn.forEach(cancelOrder=>{
+    if(cancelOrder.getAttribute('data-order-id')==="Cancelled")
+    {
+      cancelOrder.style.display='none'
+    }
+    })
+
+})
+</script> -->
+
+
+<!-- user logout -->
+
+<script>
+  document.getElementById('userLogout')
+  .addEventListener('click',()=>{
+   
+    fetch('/home/logout',{
+      method:'POST',
+      headers: {
+          "Content-Type": "application/json",
+        },
+    })
+    .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        Swal.fire({
+          title: "Logout Successfully !",
+          icon: "success"
+        })
+        .then(() => {
+          window.location.href = '/home';
+          });
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+
+  })
+</script>
+
+<!-- button hidden/visibility setup -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    console.log(" button hidden/visibility setup status started....>>>");
+    const trackItem = document.querySelectorAll('.track-productItem');
+    const cancelItem = document.querySelectorAll('.cancel-productItem');
+    const buyAgainItem = document.querySelectorAll('.product-buyAgain');
+    const returnProduct = document.querySelectorAll('.return-productItem');
+    const orderInvoice = document.querySelectorAll('.order-invoice');
+    const trackReturn=document.querySelectorAll('.track-return')
+    
+    //track item
+    trackItem.forEach(orderTrack=>{
+      const trackStatus=orderTrack.getAttribute('data-product-status')
+      console.log("track status is ",trackStatus);
+      if(trackStatus==="Delivered" || trackStatus==="Return Initiated")
+      {
+        orderTrack.style.display="none"
+      }
+    })
+
+
+    //cancel item
+    cancelItem.forEach(cancelItem=>{
+      const cancelStatus=cancelItem.getAttribute('data-product-status')
+      console.log("cancel status is ",cancelStatus);
+      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated")
+      {
+        cancelItem.style.display="none"
+      }
+     
+    })
+
+    //buy again
+    buyAgainItem.forEach(buyAgainItem=>{
+      const buyAgainStatus=buyAgainItem.getAttribute('data-product-status')
+      console.log("cancel status is ",buyAgainStatus);
+      if(buyAgainStatus!=="Delivered" )
+      {
+        buyAgainItem.style.display="none"
+      }
+      if(buyAgainStatus==="Return Initiated" )
+      {
+        buyAgainItem.style.display="block"
+      }
+    })
+
+    //return item
+    returnProduct.forEach(returnItem=>{
+      const returnStatus=returnItem.getAttribute('data-product-status')
+      console.log("cancel status is ",returnStatus);
+      if(returnStatus!=="Delivered")
+      {
+        returnItem.style.display="none"
+      }
+      if(returnStatus==="Return Initiated")
+      {
+        returnItem.style.display="none"
+      }
+    })
+
+    //order invoice
+    orderInvoice.forEach(invoiceItem=>{
+      const invoiceStatus=invoiceItem.getAttribute('data-product-status')
+      console.log("cancel status is ",invoiceStatus);
+      if(invoiceStatus!=="Delivered")
+      {
+        invoiceItem.style.display="none"
+      }
+    })
+
+
+    //track return
+    trackReturn.forEach(returnItem=>{
+      const returnStatus=returnItem.getAttribute('data-product-status')
+      console.log("cancel status is ",returnStatus);
+      if(returnStatus!=="Return Initiated")
+      {
+        returnItem.style.display="none"
+      }
+      else
+      {
+        returnItem.style.display="block"
+      }
+     
+    })
+
+  
+    
+  })
+</script>
+
+
+<!-- return product -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const returnProduct = document.querySelectorAll('.return-productItem')
+
+    returnProduct.forEach(returnItem => {
+        const productId = returnItem.getAttribute('data-productReturn-id')
+        const orderId = returnItem.getAttribute('data-orderReturn-id')
+
+        returnItem.addEventListener('click', (event) => {
+            Swal.fire({
+                title: "Enter the Return Reason",
+                input: "text",
+                inputAttributes: {
+                    autocapitalize: "off"
+                },
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                showLoaderOnConfirm: true,
+                preConfirm: (reason) => {
+                  console.log("aNY HHHJHJHJH");
+                  console.log("reason is",reason);
+                  if(/^\s*$/.test(reason))
+                  {
+                    console.log("step 1");
+                    Swal.fire({
+                      icon: "error",
+                      title: "Fill the reason",
+                      text: "",
+                 
+                    });
+                  }
+                  else
+                  {
+                    console.log("step 2");
+                    fetch('/home/returnProduct', { 
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            reason: reason,
+                            orderId: orderId,
+                            productId: productId
+                        })
+                      
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then((data)=>{
+                      console.log("data received",data);
+                      if(data===true)
+                        {
+                          Swal.fire({
+                              title: "Return Initiated",
+                              text: "",
+                              icon: "success"
+                          });
+
+                          }
+                          else
+                          {
+                            Swal.fire({
+                              title: "Return Not Initiated",
+                              text: "",
+                              icon: "error"
+                          });
+                          }
+                          
+                      
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(
+                            `Request failed: ${error}`
+                        );
+                    });
+
+                  }
+                     
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            })
+            .catch((error)=>{
+              console.log(error);
+            })
+        })
+    })
+})
+
+</script>
+
+
+
+<!-- hidden button return / cancel / indivitual products -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    console.log("item cancel status started....>>>");
+    const orderStatusList=document.querySelectorAll('.cancel-order-btn')
+    const itemStatusList = document.querySelectorAll('.cancel-productItem');
+    orderStatusList.forEach(orderItem=>{
+      const orderStatus=orderItem.getAttribute('data-order-status')
+      if(orderStatus!=="Delivered")
+      {
+        itemStatusList.forEach(cancelItem => {
+        const status = cancelItem.getAttribute('data-product-status');
+        console.log("The status is", status);
+        
+        if (status === 'Cancelled') {
+            cancelItem.style.display = "none";
+        }
+       
+    });
+
+    console.log("delievred status",orderStatus);
+      }
+     if(orderStatus==="Delivered")
+        {
+          itemStatusList.forEach(cancelItem => {
+        const status = cancelItem.getAttribute('data-product-status');
+          console.log("hii........",orderStatus==="Delivered");
+       
+          cancelItem.style.display = "none";
+        
+        })
+      
+          }
+    })
+    
+});
+
+</script>
+
+
+<!-- canel the indivital items -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const cancelProductBtn = document.querySelectorAll('.cancel-productItem');
+  
+  cancelProductBtn.forEach(cancelProductBtn => {
+    console.log("cancelling indivtual items...");
+
+    cancelProductBtn.addEventListener('click', (event) => {
+      event.preventDefault(); 
+      
+      
+      const productId=cancelProductBtn.getAttribute('data-productCancel-id')
+      const orderId=cancelProductBtn.getAttribute('data-orderCancel-id')
+      const status=cancelProductBtn.getAttribute('data-product-status')
+      
+      console.log(productId);
+      console.log(orderId);
+      console.log(status);
+
+          const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-primary",
+              cancelButton: "btn btn-outline-primary"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: "Sure to Cancel the Item ?",
+            text: "",
+            icon: "",
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log("one");
+        
+          console.log("two");
+          fetch(`/home/cancelOrderItem?orderId=${orderId}&productId=${productId}`, {
+            method: 'POST',
+          })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          })
+          .then(data => {
+          
+            swalWithBootstrapButtons.fire({
+              title: "Cancelled!",
+              text: "Your Order has been Cancelled.",
+              icon: "success"
+            }).then(() => {
+              window.location.href = ''; 
+            });
+          })
+          .catch(error => {
+            console.error('There was a problem with the cancel order request:', error);
+            swalWithBootstrapButtons.fire({
+              title: "Error",
+              text: "Failed to cancel the order.",
+              icon: "error"
+            });
+          });
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Not Cancelled!",
+                html: "",
+                timer: 400,
+                timerProgressBar: true,
+                didOpen: () => {
+                  Swal.showLoading();
+                  const timer = Swal.getPopup().querySelector("b");
+                  timerInterval = setInterval(() => {
+                    timer.textContent = `${Swal.getTimerLeft()}`;
+                  }, 100);
+                },
+                willClose: () => {
+                  clearInterval(timerInterval);
+                }
+                });
+            }
+          });
+
+
+      fetch('/home/productCancel',{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({})
+
+      })
+      .then((response)=>response.json())
+      .then((data)=>{
+        console.log("success...",data);
+      })
+      .catch((error)=>{
+        console.log("error",error);
+      })
+
+      
+    })
+
+  })
+})
+
+</script>
+
+
+
+
+<%- include('../layout/user/footer')%>

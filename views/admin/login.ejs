@@ -1,0 +1,189 @@
+<%- include('../layout/admin/header') %>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex align-items-center"> <!-- Added align-items-center class -->
+                <div class="headOne">
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/Homy-logos_transparent.png" alt="Logo" width="120"  height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+                <div class="headTwo mx-auto d-flex justify-content-center align-items-center w-100"> <!-- Added w-100 class for 100% width -->
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/homy.png" style="margin-left: 420px" alt="Logo" width="180" height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+
+<section>
+    <div class="container">
+        <h1 class="text-center text-primary mt-5">Welcome Admin </h1>
+        <div class="row justify-content-center m-5">
+            <div class="col-md-6 mt-5 p-4 bg-light     text-dark rounded">
+                <h1 class="text-center mb-4"> Login</h1>
+                <h6 class="loginError text-danger "><%=loginError%></h6>
+
+                <form action="/admin/login" method="post">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="email" placeholder="Email">
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <input type="submit" class="btn btn-primary btn-block" value="Login">
+                    </div>
+                </form>
+
+
+               
+                
+                <!-- Button trigger modal -->
+
+  
+  <!-- Modal one-->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+           
+            <div class="modal-body">
+                <h5 class="text-dark "> Forgot Password ?</h5>
+                <div class="mb-3">
+                    <label for="emailInput" class="form-label text-dark"></label>
+                    <input type="email" class="form-control" id="emailInput" placeholder="Enter the email ID">
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2"><button type="button" class="btn btn-primary " data-bs-target="#staticBackdrop2">Continue</button></a>
+            </div>
+           
+        </div>
+    </div>
+</div>
+  <!-- Modal one end-->
+  <!-- Modal Two-->
+  <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+           
+            <div class="modal-body">
+                <h5 class="text-dark "> Enter OTP</h5>
+                <div class="mb-3 row">
+                   
+                    <div class="col-sm-10">
+                        
+                        <div class="d-flex flex-wrap">
+                            <input type="number" class="form-control mb-2 mx-2" id="otpInput1" maxlength="1" style="width: 4em; height: 4em;">
+                            <input type="number" class="form-control mb-2 mx-2" id="otpInput2" maxlength="1" style="width: 4em; height: 4em;">
+                            <input type="number" class="form-control mb-2 mx-2" id="otpInput3" maxlength="1" style="width: 4em; height: 4em;">
+                            <input type="number" class="form-control mb-2 mx-2" id="otpInput4" maxlength="1" style="width: 4em; height: 4em;">
+                          
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3"><button type="button" class="btn btn-primary " data-bs-target="#staticBackdrop2">Continue</button></a>
+            </div>
+           
+        </div>
+    </div>
+</div>
+  <!-- Modal two end-->
+<!-- Modal three start-->
+  <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+           
+            <div class="modal-body">
+                <h5 class="text-dark ">Create New Password</h5>
+                <div class="mb-3 row">
+                   
+                    <div class="col-sm-10">
+                        
+                        <div class="d-flex flex-wrap">
+                            <input type="email" class="form-control m-2" id="emailInput" placeholder="New Password">
+                            <input type="email" class="form-control m-2" id="emailInput" placeholder="Confirm Password">
+                          
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop4"><button type="button" class="btn btn-primary " data-bs-target="#staticBackdrop2">Continue</button></a>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+ <!-- Modal three end-->
+ <!-- Modal four start-->
+ <div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+           
+            <div class="modal-body">
+                
+                <div class="mb-3 row">
+                   
+                    <div class="col-sm-10">
+                        
+                        <div class="d-flex flex-wrap">
+                            <h4 class="text-success  ">Password Changed Successfully</h4>
+                            
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+               
+                <a href="" data-bs-toggle="modal" ><button type="button" class="btn btn-primary " data-bs-dismiss="modal">OK</button></a>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+ <!-- Modal four end-->
+
+  
+                
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.getElementById('continueButton').addEventListener('click', function () {
+       
+        var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop2'));
+        myModal.show();
+    });
+    document.getElementById('continueButton').addEventListener('click', function () {
+     
+        var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop3'));
+        myModal.show();
+    });
+    document.getElementById('continueButton').addEventListener('click', function () {
+        
+        var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop4'));
+        myModal.show();
+    });
+</script>
+
+<%- include('../layout/admin/footer') %>

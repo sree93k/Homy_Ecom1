@@ -1,0 +1,388 @@
+<%- include('../layout/user/header')%>
+
+<link rel="stylesheet" href="/home/styles/home/homeStyle.css">
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex">
+                <a class="navbar-brand" href="#">
+                    <img src="./images/userpage/Homy-logos_transparent.png" alt="Logo" width="90" height="60" class="d-inline-block align-text-top">
+                </a>
+                <a class="navbar-brand" href="#">
+                    <img src="./images/userpage/homy.png" alt="Logo" width="120" height="60" class="d-inline-block align-text-top">
+                </a>
+            </div>
+
+            <!-- Center - Navigation Links -->
+            <div class="d-flex justify-content-center">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Projects</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Contact</a>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="d-flex ml-auto">
+               
+                <input type="text" class="form-control m-3" placeholder="Search">
+                <%if(locals.loginStatus===false)
+                {%>
+                  <a href="/home/login" class="nav-link m-3 ">Login</a>
+                  
+                  <%} else {%>
+                
+                    
+                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                        <ul class="navbar-nav">
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Hi, <%= userId.name %>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
+                              <a href="/home/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
+                              <a href="/home/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
+                              <a href="/home/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><button class="dropdown-item" id="userLogout" data-user-userId="<%= userId._id %>">Logout</button></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    <%}%>
+                
+                    <a href="/home/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
+                    <a href="/home/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- section -->
+<section>
+    <div class="cartPage">
+        <div class="container">
+            <div class="row">
+            <div class="col-8 bg-body-secondary  " >
+              <div class="cartFirst bg-light  m-2">
+               <h3> My Cart</h3>
+              </div>
+              <!-- <div class="cartSecond  bg-light  m-2">
+                Address
+              </div> -->
+              <section>
+                <div class="container  ">
+                    <div class="row">
+
+                     <div class="cartBox">
+                      
+                      <table class="table table-bordered   ">
+                     
+                        <%if(cartItem.length>0)
+
+                        {
+                          for(let i=0;i<cartItem.length;i++)
+                          {
+
+                          %>
+                          
+             
+                            <tr class="cartTableRow">
+                            
+                             
+                                
+                             
+                                <td>
+                                  <div class="cartItem ">
+                                    <div class="cartLevelOne">
+                                      <div class="container">
+                                        <div class="row">
+                                          <div class="col-3">
+                                              <img src="../images/adminpage/<%=cartItem[i].productId.productImage[0]%>" width="100px" alt="">
+                                              
+                                          </div>
+                                          <div class="col-9">
+                                            <div class="cartInnerOne ms-2" style="text-align: left;">
+                                                <h4><%=cartItem[i].productId.productName%></h4>
+                                            </div>
+                                            <div class="cartInnerTwo">
+                                              <div class="container">
+                                                <div class="row">
+                                                  <div class="col-8 " style="text-align: left;">
+                                                    <h6><%=cartItem[i].productId.productDescription%></h6>
+                                                  </div>
+                                                  <div class="col-4" style="text-align: right;" >
+                                                   Price : <%=cartItem[i].productId.productPrice%>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                          
+                                            </div>
+                                            <div class="cartInnerThree">
+                                              <div class="container">
+                                                <div class="row">
+                                                  <div class="col-3" style="text-align: left;">
+                                                    <div class="btn-group">
+                                                    
+                                                      <a href="#" class="btn btn-primary text-decoration-none " data-quantity="<%=cartItem[i]._id%>" id="quantityMinus">-</a>
+                                                      <a href="#" class="btn  text-decoration-none " id="productQuantity" aria-current="page" disabled ><%=cartItem[i].quantity%></a>
+                                                      <a href="#" class="btn btn-primary text-decoration-none " data-quantity="<%=cartItem[i]._id%>"  id="quantityPlus">+</a>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-3" style="text-align: right;">
+                                                    <a href="#" class="btn  text-decoration-none " data-remove="<%=cartItem[i]._id%>" id="cartRemoveBtn">| Remove |</a>
+                                                  </div>
+                                                  <div class="col-6" style="text-align: right;">
+                                                    
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+        
+                                    </div>
+                                    <hr>
+                                    <div class="cartLevelTwo">
+                                        <div class="container">
+                                          <div class="row">
+                                            <div class="col-9">
+        
+                                            </div>
+                    
+                                            <div class="col-3">
+                                              Sub Total : <%=cartItem[i].totalPrice%>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                               
+                                 
+                                </td>
+
+                            
+                      </tr>
+                    
+                      <%}
+                    }%>
+             
+                      </table>
+                      
+
+                    </div>
+                    </div>
+                </div>
+             
+
+
+
+
+              </section>
+            </div>
+            <div class="col-4" style="background-color: #d7e2f0">
+              <div class="card cartPriceDetails" style="margin: 4rem; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)">
+                <h4 class="card-header">Price Details</h4>
+                <div class="card-body">
+                  <table class="table ">
+                    <tr>
+                      <th scope="row">Price</th>
+                      <td><%= userId.totalCart %></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Discount</th>
+                      <td><i class="fas fa-minus-circle"></i> 0</td> </tr>
+                    <tr>
+                      <th scope="row">Delivery Charges</th>
+                      <td><i class="fas fa-truck"></i> Free</td> </tr>
+                    <tr>
+                      <th scope="row">Total Amount</th>
+                      <td><%= userId.totalCart %></td>
+                    </tr>
+                  </table>
+                </div>
+                <form action="/home/checkout" method="get">
+                <div class="card-footer text-center">
+                  <input type="hidden" value="<%= userId.totalCart %>" id="totalValue">
+                  <button type="submit" class="btn btn-primary btn-lg" id="checkoutBtn">Proceed To Checkout</button>
+                </div>
+              </form>
+              </div>
+            </div>
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- user logout -->
+
+<script>
+  document.getElementById('userLogout')
+  .addEventListener('click',()=>{
+   
+    fetch('/home/logout',{
+      method:'POST',
+      headers: {
+          "Content-Type": "application/json",
+        },
+    })
+    .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        Swal.fire({
+          title: "Logout Successfully !",
+          icon: "success"
+        })
+        .then(() => {
+          window.location.href = '/home';
+          });
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+
+  })
+</script>
+
+  <!--quantity changinfg   -->
+  
+  <script>
+    const cartRemoveBtn=document.querySelectorAll('#cartRemoveBtn')
+    
+    cartRemoveBtn.forEach(cartRemoveBtn=>{
+    cartRemoveBtn.addEventListener('click',()=>{
+      const cartId=cartRemoveBtn.getAttribute('data-remove')
+      fetch('/home/removeCart',{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({cartId:cartId})
+      })
+      .then((response)=>response.json())
+      .then((data)=>{
+        console.log(data);
+        console.log("remove data successfully");
+        if(data[0])
+        {
+          console.log(data[1]);
+          window.location.href='/home/userCart'
+        }
+        else
+        {
+          console.log(data[1]);
+          window.location.href='/home/userCart'
+        }
+      })
+      .then((error)=>{
+        console.log(error);
+        console.log("remoave data failed");
+      })
+    })
+  })
+  </script>
+  
+  <!-- qunntity changing -->
+  <script>
+    
+    const quantityMinus=document.querySelectorAll('#quantityMinus')
+    const quantityPlus=document.querySelectorAll('#quantityPlus')
+    // minus
+    quantityMinus.forEach(quantityMinus=>{
+    quantityMinus.addEventListener('click',()=>{
+      const cartId=quantityMinus.getAttribute('data-quantity')
+      const quantity=false
+      fetch('/home/cartQuantity',{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({cartId:cartId,quantity:quantity})
+      })
+      .then((response)=>response.json())
+      .then((data)=>{
+        console.log("minus success");
+        console.log(data);
+        window.location.href='/home/userCart'
+      })
+      .catch((error)=>{
+        console.log("minus failed");
+        console.log(error);
+      })
+    })
+  })
+
+    //plus
+    quantityPlus.forEach(quantityPlus=>{
+    quantityPlus.addEventListener('click',()=>{
+      const cartId=quantityPlus.getAttribute('data-quantity')
+      const quantity=true
+      fetch('/home/cartQuantity',{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({cartId:cartId,quantity:quantity})
+      })
+      .then((response)=>response.json())
+      .then((data)=>{
+        console.log("minus success");
+        console.log(data);
+        window.location.href='/home/userCart'
+      })
+      .catch((error)=>{
+        console.log("minus failed");
+        console.log(error);
+      })
+    })
+  })
+    
+  </script>
+
+
+<!-- procced to checkout -->
+<script>
+ document.addEventListener('DOMContentLoaded',()=>{
+  if(document.getElementById('totalValue').value==='0')
+  {
+    document.getElementById('checkoutBtn').style.display='none'
+  }
+ })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../layout/user/footer')%>

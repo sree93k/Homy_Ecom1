@@ -1,0 +1,261 @@
+<%- include('../layout/admin/header')%>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex align-items-center"> <!-- Added align-items-center class -->
+                <div class="headOne">
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/Homy-logos_transparent.png" alt="Logo" width="120"  height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+                <div class="headTwo mx-auto d-flex justify-content-center align-items-center w-100"> <!-- Added w-100 class for 100% width -->
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/homy.png" style="margin-left: 420px" alt="Logo" width="180" height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar bg-body-warning fixed-top-10px">
+        <div class="container mt-2 mb-2">
+          <!-- <a class="navbar-brand" href="#">Offcanvas navbar</a> -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h3 class="offcanvas-title mt-3 " id="offcanvasNavbarLabel">Homy Admin Panel</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body m-3 ">
+                <form class="d-flex mt-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-5 ">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOrders">All Orders</a>
+                  </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allUsers">Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allProducts">Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCategory">Categories</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOffers">Offers</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCoupons">Coupons</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allBanners">Banners</a>
+                  </li>
+                  
+              </ul>
+              
+            </div>
+          </div>
+          <div class="custom-background d-flex justify-content-between align-items-center">
+            <div class="navOne">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item    mt-3 ms-3 "><a href="/admin/dashboard" class="text-light">Dashboard</a></li>
+                  <li class="breadcrumb-item    mt-3 ms-3 "><a href="/admin/allProducts" class="text-light">All Products</a></li>
+                  <li class="breadcrumb-item active  mt-3 text-light       " aria-current="page">Edit Products</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="navTwo d-flex align-items-center">
+                <span class="me-3 text-light">Hi, Sreekuttan</span> 
+                <form action="/admin/logout"  method="post">
+                    <input type="submit" class="btn mt-2 text-light mb-2 " value="Logout">
+                </form>
+            </div>
+        </div>
+        </div>
+      </nav>
+</header>
+
+
+
+
+<section>
+  <div class="container mb-5">
+      <a href="/admin/allProducts" class="btn btn-secondary mb-3 ms-5">Back</a>
+      <div class="row">
+          <div class="col-md-8 mx-auto">
+
+              <h1 class="modal-title" id="staticBackdropLabel">Edit <%=products.productName%></h1>
+              <h5 class="productError text-danger "><%=productEditError%></h5>
+              <form action="/admin/editProducts" method="post" enctype="multipart/form-data">
+                  <div class="mb-3 mt-5">
+                      <label for="productName" class="form-label">Product Name</label>
+                      <input type="text" class="form-control" name="productName" placeholder="Product Name" id="ProductName" value="<%=products.productName%>">
+                  </div>
+                  <input type="hidden" name="productId" id="ProductId" value="<%=products._id%>">
+                  <div class="mb-3">
+                      <table class="table table-borderless">
+                          <tr>
+                              <td>
+                                  <div class="mb-3">
+                                    <input type="hidden" name="productId" id="ProductId">
+                                      <label for="productCategory" class="form-label">Select Category</label>
+                                      <select class="form-select" id="ProductCategory" name="productCategory" aria-label="<%=products.productCategory%>">
+                                        <% if(category.length>0) 
+                                        {
+                                            for(let i=0;i<category.length;i++)
+                                        {
+                                        %>
+                
+                                        <option value="<%=category[i].categoryName%>"><%=category[i].categoryName%></option> 
+                
+                
+                                        <%
+                                        }
+                                         }
+                                        %>
+                                        
+                                      
+                                      </select>
+                                  </div>
+                              </td>
+              
+                              <td>
+                                  <div class="mb-3">
+                                      <label for="productPrice" class="form-label">Price</label>
+                                      <input type="number" class="form-control" name="productPrice" placeholder="Price" id="ProductPrice" value="<%=products.productPrice%>">
+                                  </div>
+                              </td>
+              
+                              <td>
+                                  <div class="mb-3">
+                                      <label for="productQuantity" class="form-label">Quantity</label>
+                                      <input type="number" class="form-control" name="productQuantity" placeholder="Quantity" id="ProductQuantity" value="<%=products.productQuantity%>">
+                                  </div>
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+              
+                  <div class="mb-3">
+                      <label for="productDescription" class="form-label">Description</label>
+                      <textarea class="form-control" name="productDescription" placeholder="Description" id="ProductDescription" rows="4"><%=products.productDescription%></textarea>
+                  </div>
+                  
+                  <div class="container">
+                      <table class="image-table">
+                          <tr>
+                              <td>
+                                  <div class="card">
+                                      <div class="card-header">Image 1</div>
+                                      <div class="card-body">
+                                          <div id="preview1" class="image-preview"><img src="./images/adminpage/<%=products.productImage[0]%>" alt="<%=products.productImage[0]%>" class="img-fluid mb-2" style="max-height: 200px;"></div>
+                                          <input type="file" name="productImage" id="ProductImage1" class="image-input"  onchange="previewImage(this, 'preview1')">
+                                      </td>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>
+                                  <div class="card">
+                                      <div class="card-header">Image 2</div>
+                                      <div class="card-body">
+                                          <div id="preview2" class="image-preview" ><img src="./images/adminpage/<%=products.productImage[1]%>" alt="<%=products.productImage[1]%>" class="img-fluid mb-2" style="max-height: 200px;"></div>
+                                          <input type="file" name="productImage" id="ProductImage2" class="image-input"  onchange="previewImage(this, 'preview2')" value="<%=products.productImage[1]%>">
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>
+                                  <div class="card">
+                                      <div class="card-header">Image 3</div>
+                                      <div class="card-body">
+                                          <div id="preview3" class="image-preview"><img src="./images/adminpage/<%=products.productImage[2]%>" alt="<%=products.productImage[2]%>" class="img-fluid mb-2" style="max-height: 200px;"></div>
+                                          <input type="file" name="productImage" id="ProductImage3" class="image-input" onchange="previewImage(this, 'preview3')">
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+              
+              
+                  <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropEditSuccess">Update</button>
+                </div>
+                 
+              
+                 
+              </form>
+              
+
+              <!-- Modal one-success start-->
+              <div class="modal fade" id="staticBackdropAddSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                          <div class="modal-body">
+                              <div class="mb-3 row">
+                                  <div class="col-sm-10">
+                                      <div class="d-flex flex-wrap">
+                                          <h4 class="text-success">New Product Added Successfully</h4>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="modal-footer d-flex justify-content-center">
+                              <a href="" data-bs-toggle="modal"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- Modal one-success end-->
+
+          </div>
+      </div>
+  </div>
+</section>
+
+
+
+
+<script>
+  function previewImage(input, previewId) {
+      const previewContainer = document.getElementById(previewId);
+      const file = input.files[0];
+
+      if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function () {
+
+              const existingImage = previewContainer.querySelector('img');
+
+              if (existingImage) {
+                
+                  existingImage.src = reader.result;
+              } else {
+                 
+                  const imageElement = document.createElement("img");
+                  imageElement.src = reader.result;
+                  imageElement.alt = file.name;
+                  imageElement.classList.add('img-fluid', 'mb-2');
+                  imageElement.style.maxHeight = '200px';
+
+              
+                  previewContainer.innerHTML = "";
+                  previewContainer.appendChild(imageElement);
+              }
+          };
+
+          reader.readAsDataURL(file);
+      }
+  }
+</script>
+
+<%- include('../layout/admin/footer')%>

@@ -1,0 +1,590 @@
+<%- include('../layout/admin/header')%>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex align-items-center"> <!-- Added align-items-center class -->
+                <div class="headOne">
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/Homy-logos_transparent.png" alt="Logo" width="120"  height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+                <div class="headTwo mx-auto d-flex justify-content-center align-items-center w-100"> <!-- Added w-100 class for 100% width -->
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/homy.png" style="margin-left: 420px" alt="Logo" width="180" height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar bg-body-warning fixed-top-10px">
+        <div class="container mt-2 mb-2">
+          <!-- <a class="navbar-brand" href="#">Offcanvas navbar</a> -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h3 class="offcanvas-title mt-3 " id="offcanvasNavbarLabel">Homy Admin Panel</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body m-3 ">
+                <form class="d-flex mt-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-5 ">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">All Orders</a>
+                  </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allUsers">Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allProducts">Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCategory">Categories</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOffers">Offers</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCoupons">Coupons</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allBanners">Banners</a>
+                  </li>
+                  
+              </ul>
+              
+            </div>
+          </div>
+          <div class="custom-background d-flex justify-content-between align-items-center">
+            <div class="navOne">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item    mt-3 ms-3 "><a href="/admin/dashboard" class="text-light">Dashboard</a></li>
+                  <li class="breadcrumb-item    mt-3 ms-3 "><a href="/admin/allOrders" class="text-light">All Orders</a></li>
+                  <li class="breadcrumb-item active  mt-3 text-light       " aria-current="page">Order Items</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="navTwo d-flex align-items-center">
+                <span class="me-3 text-light">Hi, Sreekuttan</span> 
+                <form action="/admin/logout"  method="post">
+                  <input type="submit" class="btn mt-2 text-light mb-2 " value="Logout">
+              </form>
+            </div>
+        </div>
+        </div>
+      </nav>
+</header>
+<section>
+
+<section class="account-settings">
+  <div class="container">
+    <div class="row">
+      <div class="mainBody">
+        <div class="container">
+          <div class="row">
+              <!-- left -->
+            
+            <!-- left end -->
+
+            <!-- right -->
+            <div class="col-md-12">
+              <div class="innerRight bg-light-tertiary p-4 mt-0">
+                <h2>My Orders</h2>
+                
+                <!-- section starting -->
+                <section>
+                  <div class="container">
+                      <div class="row">
+                        <%if(orderData.productItem.length>0)
+                        {
+                         
+                            %>
+                            <div class="container-fluid bg-body-secondary  pt-3 ">
+                          <table class="table table-hover ">
+                              <thead>
+                                
+                                <tr style="border-bottom: #f8f7f7;">
+                                  <th  style="background-color:#3b5d70 ;color: #ffffff; ">Delivery Date</th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff">Total</th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff"> Status</th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff"></th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff">Order ID</th>
+                                </tr> 
+                                <tr>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff"><%= orderData.deliveryDate ? orderData.deliveryDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '' %></th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff">₹ <%=orderData.amount%></th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff"><%=orderData.orderStatus[0]%></th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff"></th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff">#<%=orderData.orderId%></th>
+                                </tr> 
+                              
+                              </thead>
+
+                            </table>
+                            <table class="table1 mt-5">
+                             
+                                <div class="container" style="background-color: rgb(250, 248, 248);">
+                                  <div class="row">
+                                    <div class="col-12" >
+                                      <div class="userOrderTop">
+                                        <p class="orderP order-status" style="font-size: medium; font-weight: bold;" id="orderSt"></p>
+                                        <p class="orderP">Deliver : Xpress Courier </p>                                         
+                                      </div>
+                                      <div class="userOrderBottom  " >
+                                       <div class="container">
+                                        <div class="row">
+                                          <% orderData.productItem.forEach((product, index) => { %>
+                                            <div class="col-3 bg-body-secondary mb-2" style="align-content:center">
+                                                <img src="../images/adminpage/<%= product.productImage[0] %>" width="100px" height="100px" alt="">
+                                            </div>
+                                            <div class="col-9 bg-body-secondary mb-2" style="text-align: left;">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <p class="productListOrderAdmin" style="color: #3b5d70;font-size: large; font-weight: bold; "><%= product.productName %></p>
+                                                            <p class="productListOrderAdmin" style="font-size: small;">₹ <%= orderData.productPrice[index] %> </p>
+                                                            <p class="productListOrderAdmin" style="font-size: small;">Quantity : <%= orderData.productQuantity[index] %> </p>
+                                                            <p class="productListOrderAdmin" style="font-size: small;">Status : <%= orderData.productStatus[index] %> </p>
+                                                        </div>
+                                                        <div class="col-6 orderItem-TotalPrice">
+                                                          <p class="productListOrderAdmin" style="font-size: large;">Total Amount :₹ <%= orderData.productPrice[index]*orderData.productQuantity[index] %> </p>
+                                                        </div>
+                                                        <div class="col-3" style="display: flex; flex-direction: column; justify-content: center;">
+                                                          <button type="button" class="btn btn-success  edit-productStatus" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                          data-productTrack-id="<%=product._id %>" data-orderTrack-id="<%= orderData._id %>" data-product-status="<%= orderData.productStatus[index] %>" id="statusBtn">
+                                                            Edit Status 
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning   edit-returnStatus" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                          data-productTrack-id="<%=product._id %>" data-orderTrack-id="<%= orderData._id %>" data-product-status="<%= orderData.productStatus[index] %>" id="returnBtn">
+                                                            Return Status 
+                                                        </button>
+
+                                                        
+                                                            <button type="button" class="btn btn-danger cancel-productItem " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                                    id="cancelOrderItem" data-productCancel-id="<%=product._id %>" data-orderCancel-id="<%= orderData._id %>" data-product-status="<%= orderData.productStatus[index] %>" >
+                                                             Cancel Order
+                                                          </button>
+                                                          <button type="button" class="btn btn-danger cancellled-statusBtn " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                          id="cancelledOrderItem"  data-product-status="<%= orderData.productStatus[index] %>">
+                                                              Cancelled
+                                                            </button>
+                                                       
+                                                        
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% }) %>
+                                        
+
+                                        
+                                        </div>
+                                       </div>
+
+                                      </div>
+                                     
+                                    </div>
+                                   
+                                  
+                                      
+
+                                    </div>
+                                  </div>
+                                </div>
+                            
+                            </table>
+                          </div>
+                            <%
+                        
+                        }
+                        %>
+
+
+                      </div>
+                  </div>
+               
+
+
+
+
+                </section>
+                  <!-- section end -->
+              </div>
+            </div>
+            <!-- right end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+    
+</section>
+
+
+
+
+<!-- modal order status start -->
+
+<div class="modal fade" id="orderStatus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Order Status</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modalProductId" value="">
+        <input type="hidden" id="modalOrderId" value="">
+
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="Pending" value="Pending">
+          <label class="form-check-label" for="Pending">Pending</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="Dispatch" value="Dispatch">
+          <label class="form-check-label" for="Dispatch">Dispatch</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="Shipped" value="Shipped">
+          <label class="form-check-label" for="Shipped">Shipped</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="orderStatus" id="Delivered" value="Delivered">
+          <label class="form-check-label" for="Delivered">Delivered</label>
+        </div>
+        
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="statusUpdateBtn" >Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal order status end -->
+
+<!-- modal return status start -->
+
+<div class="modal fade" id="returnStatus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Order Status</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modalProductId" value="">
+        <input type="hidden" id="modalOrderId" value="">
+
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="returnStatus" id="Pending" value="Pending">
+          <label class="form-check-label" for="Pending">Pending</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="returnStatus" id="Dispatch" value="Dispatch">
+          <label class="form-check-label" for="Dispatch">Collected</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="returnStatus" id="Shipped" value="Shipped">
+          <label class="form-check-label" for="Shipped">Shipped</label>
+        </div>
+        . <br>
+        . <br>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="radio" name="returnStatus" id="Arrived" value="Arrived Warehouse">
+          <label class="form-check-label" for="Delivered">Arrived Warehouse</label>
+        </div>
+        
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="statusReturnEditBtn" >Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal return status  end -->
+
+
+
+
+<!-- script status button-->
+<script>
+  const statusBtn=document.querySelectorAll('#statusBtn')
+
+  statusBtn.forEach(statusBtn=>{
+  statusBtn.addEventListener('click',()=>{
+
+    const orderStatus=statusBtn.getAttribute('data-product-status')
+    const orderId=statusBtn.getAttribute('data-orderTrack-id')
+    const productId=statusBtn.getAttribute('data-productTrack-id')
+    console.log("orderId is ",orderId);
+    console.log("orderStatus is", orderStatus);
+    console.log("productId is ", productId);
+    if(document.getElementById('Pending').value===orderStatus)
+    {
+      console.log("one");
+      document.getElementById('Pending').checked=true
+    }
+    else  if(document.getElementById('Dispatch').value===orderStatus)
+    {
+      console.log("two");
+      document.getElementById('Dispatch').checked=true
+    }
+    else  if(document.getElementById('Shipped').value===orderStatus)
+    {
+      console.log("three");
+      document.getElementById('Shipped').checked=true
+    }
+    else  if(document.getElementById('Delivered').value===orderStatus)
+    {
+      console.log("four");
+      document.getElementById('Delivered').checked=true
+    }
+    console.log("whyno");
+    modalProductId.value=productId
+    modalOrderId.value=orderId
+    $("#orderStatus").modal("show");
+  })
+})
+</script>
+
+
+
+
+
+
+<script>
+
+  
+    const statusUpdateBtn=document.querySelectorAll('#statusUpdateBtn')
+    console.log("page started");
+    statusUpdateBtn.forEach(statusUpdateBtn=>{
+    statusUpdateBtn.addEventListener('click',()=>{
+    let currentStatus;
+    console.log("started");
+    const modalOrderId=document.getElementById('modalOrderId').value
+    const modalProductId=document.getElementById('modalProductId').value
+    console.log("order id",modalOrderId);
+    if(document.getElementById('Pending').checked)
+    {
+      currentStatus=document.getElementById('Pending').value
+    }
+    else if(document.getElementById('Dispatch').checked)
+    {
+      currentStatus=document.getElementById('Dispatch').value
+    }
+    else if(document.getElementById('Shipped').checked)
+    {
+      currentStatus=document.getElementById('Shipped').value
+    }
+    else if(document.getElementById('Delivered').checked)
+    {
+      currentStatus=document.getElementById('Delivered').value
+    }
+    console.log("current status", currentStatus);
+    if(currentStatus)
+    {
+      console.log("is it ......>>>>>");
+      fetch('/admin/orderItemStatusUpdate',{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({orderStatus:currentStatus,orderId:modalOrderId,productId:modalProductId})
+      })
+      .then((response)=>response.json())
+      .then((data)=>{
+        console.log(data);
+        console.log("sucees update");
+        window.location.reload()
+      })
+      .catch((error)=>{
+        console.log(error);
+        console.log("error ");
+      })
+    }
+
+  })
+
+})
+
+</script>
+
+<!-- order item button  -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    console.log(" button hidden/visibility setup status started....>>>");
+  const editStatus=document.querySelectorAll('.edit-productStatus')
+  const cancelProductItem=document.querySelectorAll('.cancel-productItem')
+  const cancelledBtn=document.querySelectorAll('.cancellled-statusBtn')
+  const returnStatus=document.querySelectorAll('.edit-returnStatus')
+
+  //edit startus
+  editStatus.forEach(status=>{
+    console.log("status laodeed");
+      const trackStatus=status.getAttribute('data-product-status')
+   
+      if(trackStatus==="Cancelled" || trackStatus==="Return Initiated")
+      {
+        status.style.display="none"
+      }
+    })
+
+
+  //cancel button startus
+  cancelProductItem.forEach(cancelBtn=>{
+    console.log("status laodeed");
+      const cancelStatus=cancelBtn.getAttribute('data-product-status')
+     
+      if(cancelStatus==="Cancelled")
+      {
+        cancelBtn.style.display="none"
+      }
+    })
+
+    //cancellled brtn
+    cancelledBtn.forEach(cancelBtn=>{
+    console.log("status laodeed");
+      const cancelledStatus=cancelBtn.getAttribute('data-product-status')
+      console.log("track status is ",cancelledStatus);
+      if(cancelledStatus==="Cancelled")
+      {
+        cancelBtn.style.display="block"
+      }
+      else
+      {
+        cancelBtn.style.display="none"
+      }
+    })
+
+     //return status btn
+     returnStatus.forEach(returnBtn=>{
+    console.log("status laodeed");
+      const returnBtnStatus=returnBtn.getAttribute('data-product-status')
+      console.log("track status is ",returnBtnStatus);
+      if(returnBtnStatus==="Return Initiated")
+      {
+        returnBtn.style.display="block"
+      }
+      else
+      {
+        returnBtn.style.display="none"
+      }
+    })
+
+  })
+
+
+  
+</script>
+
+
+<!-- cancel item -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    console.log("cancelling started");
+    const cancelBtn=document.querySelectorAll('.cancel-productItem')
+
+    cancelBtn.forEach(cancelItem=>{
+      const productId=cancelItem.getAttribute('data-productCancel-id')
+      const orderId=cancelItem.getAttribute('data-orderCancel-id')
+      
+      cancelItem.addEventListener('click',(event)=>{
+       
+          const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              fetch('/admin/orderItemCancel',{
+                method:"POST",
+                headers:{
+                  "Content-Type":"application/json"
+                },
+                body:JSON.stringify({orderId:orderId,productId:productId})
+              })
+              .then((response)=>response.json())
+              .then((data)=>{
+                console.log("sucess data",data);
+              })
+              .catch((error)=>{
+                console.log("error",error);
+              })
+              swalWithBootstrapButtons.fire({
+                title: "Cancelled!",
+                text: "",
+                icon: "success"
+              })
+              .finally(()=>{
+                location.href=`/admin/orderItems?orderId=${orderId}`
+              })
+            } else if (
+            
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              Swal.fire({
+                  title: "Not Cancelled",
+                  html: "",
+                  timer: 400,
+                  timerProgressBar: true,
+                  didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                      timer.textContent = `${Swal.getTimerLeft()}`;
+                    }, 100);
+                  },
+                  willClose: () => {
+                    clearInterval(timerInterval);
+                  }
+                })
+            }
+          });
+      })
+    })
+  })
+</script>
+
+    
+
+<%- include('../layout/admin/footer')%>

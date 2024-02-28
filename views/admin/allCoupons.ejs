@@ -1,0 +1,530 @@
+<%- include('../layout/admin/header') %>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex align-items-center"> <!-- Added align-items-center class -->
+                <div class="headOne">
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/Homy-logos_transparent.png" alt="Logo" width="120"  height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+                <div class="headTwo mx-auto d-flex justify-content-center align-items-center w-100"> <!-- Added w-100 class for 100% width -->
+                    <a class="navbar-brand" href="#">
+                        <img src="./images/adminpage/homy.png" style="margin-left: 400px" alt="Logo" width="180" height="100" class="d-inline-block align-text-top">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+    <nav class="navbar bg-body-warning fixed-top-10px">
+        <div class="container mt-2 mb-2">
+          <!-- <a class="navbar-brand" href="#">Offcanvas navbar</a> -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h3 class="offcanvas-title mt-3 " id="offcanvasNavbarLabel">Homy Admin Panel</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body m-3 ">
+                <form class="d-flex mt-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mt-5 ">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOrders">All Orders</a>
+                  </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allUsers">Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allProducts">Products</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allCategory">Categories</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allOffers">Offers</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Coupons</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/admin/allBanners">Banners</a>
+                  </li>
+                  
+              </ul>
+              
+            </div>
+          </div>
+          <div class="custom-background d-flex justify-content-between align-items-center">
+            <div class="navOne">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item    mt-3 ms-3 "><a href="/admin/dashboard" class="text-light">Dashboard</a></li>
+                  <li class="breadcrumb-item active  mt-3 text-light       " aria-current="page">Coupons</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="navTwo d-flex align-items-center">
+                <span class="me-3 text-light">Hi, Sreekuttan</span> 
+                <form action="/admin/logout"  method="post">
+                  <input type="submit" class="btn mt-2 text-light mb-2 " value="Logout">
+              </form>
+            </div>
+        </div>
+        </div>
+      </nav>
+    
+</header>
+<section>
+
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center mb-4">
+        <div class="col-md-3">
+          <h3>All Coupons</h3>
+        </div>
+        <div class="col-md-3">
+          <!-- Empty column for spacing -->
+        </div>
+        <div class="col-md-3">
+          <form class="d-flex mt-3" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+        <div class="col-md-3 text-end">
+          <button type="button" class="btn btn-primary mt-3" id="addNewCouponBtn" data-bs-toggle="modal" data-bs-target="#addCouponModal">Add New Coupon</button>
+        </div>
+      </div>
+  
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>SL No.</th>
+              <th>Created Date</th>
+              <th>Coupon ID</th>
+              <th colspan="2">Description</th>
+              <th>User Limit</th>
+              <th>Discount Type</th>
+              <th>Expiry Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (couponData.length > 0) {
+              for (let i = 0; i < couponData.length; i++) { %>
+                <tr>
+                  <td><%= i + 1 %></td>
+                  <td class="starting-date"><%= couponData[i].startingDate ? couponData[i].startingDate : '' %></td>
+                  <td><%= couponData[i].couponId %></td>
+                  <td colspan="2"><%= couponData[i].couponDescription %></td>
+                  <td><%= couponData[i].userLimit %></td>
+                  <td><%= couponData[i].discountType %></td>
+                  <td class="starting-date"><%= couponData[i].expiryDate ? couponData[i].expiryDate : '' %></td>
+                  <td>
+                    <div>
+                       <button class="btn btn-danger btn-sm coupon-remove" style="width: 80px;" data-coupon-id="<%= couponData[i]._id%>">Remove</button>
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-success  btn-sm" style="width: 80px;">Edit</button>
+                    </div>
+                </td>
+                
+                </tr>
+              <% }
+            } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  
+
+
+</section>
+
+<!-- modal 1 starting -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="addCouponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Adjust modal size as needed -->
+    <div class="modal-content">
+      <div class="modal-header  text-white" style="background-color: #3b5d70;">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Coupon</h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="couponID" class="form-label">Coupon ID</label>
+            <input type="text" class="form-control" id="couponID" placeholder="Enter Coupon ID">
+          </div>
+          <div class="mb-3">
+            <label for="couponDescription" class="form-label">Coupon Description</label>
+            <input type="text" class="form-control" id="couponDescription" placeholder="Enter Description">
+          </div>
+          <div class="mb-3">
+            <label for="userLimit" class="form-label">User Limit</label>
+            <input type="text" class="form-control" id="userLimit" placeholder="Enter Max User Allowed">
+          </div>
+          <div class="mb-3">
+            <label for="expiryDate" class="form-label">Expiry Date</label>
+            <input type="date" class="form-control" id="expiryDate" placeholder="Enter Expiry Date">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Discount Type</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="discountType" id="discountPercentage" value="discountPercentage">
+              <label class="form-check-label" for="discountPercentage">Discount Percentage</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="discountType" id="discountValue" value="discountValue">
+              <label class="form-check-label" for="discountValue">Discount Amount</label>
+            </div>
+            
+          </div>
+          <div class="mb-3">
+            <label for="couponDescription" class="form-label">Discount Value in Number</label>
+            <input type="text" class="form-control" id="discountValueNumber" placeholder="Enter Description">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="newCouponSubmitBtn">Submit</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- modal 1 ending -->
+
+
+
+
+
+<!-- time/date  set up -->
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', () => {
+    function formatDate(date) {
+      const d = new Date(date);
+      const day = d.getDate().toString().padStart(2, '0');
+      const month = (d.getMonth() + 1).toString().padStart(2, '0'); 
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    const startingDateCells = document.querySelectorAll('.starting-date');
+    startingDateCells.forEach(cell => {
+      const date = cell.textContent.trim();
+      if (date) {
+        cell.textContent = formatDate(date);
+      }
+    });
+  });
+  
+</script>
+
+
+<!-- add new coupon -->
+<script>
+  const addNewCouponBtn=document.getElementById('newCouponSubmitBtn')
+  addNewCouponBtn.addEventListener('click',(event)=>{
+    console.log("new coupon startedd");
+    const couponID=document.getElementById('couponID').value
+    const couponDescription=document.getElementById('couponDescription').value
+    const couponUserLimit=document.getElementById('userLimit').value
+    const couponExpiryDate=document.getElementById('expiryDate').value
+    let discountType;
+    if(document.getElementById('discountPercentage').checked)
+    {
+      console.log("discountPercenrtage type satarted");
+      discountType=document.getElementById('discountPercentage').value
+    }
+    else if(document.getElementById('discountValue').checked)
+    {
+      console.log("discountvalkue type satarted");
+      discountType=document.getElementById('discountValue').value
+    }
+    const couponDiscountValue=document.getElementById('discountValueNumber').value
+    console.log("couponDiscountValue is", couponDiscountValue);
+    console.log("discount Type is...",discountType);
+    //validation
+    const alphaRegex=/^[a-zA-Z]+$/;
+    const numberRegex = /^[0-9]+$/;
+    const dateRegex = /^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
+    const notEmpty = /^\s*$/;
+
+    if(notEmpty.test(couponID) || notEmpty.test(couponDescription) || notEmpty.test(couponUserLimit) || notEmpty.test(couponExpiryDate) || notEmpty.test(discountType) || notEmpty.test(couponDiscountValue) )
+    {
+      console.log("yes", couponID);
+      let timerInterval;
+          Swal.fire({
+            title: "Fill All Inputs !",
+            html: "",
+            timer: 800,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+              const timer = Swal.getPopup().querySelector("b");
+              timerInterval = setInterval(() => {
+                timer.textContent = `${Swal.getTimerLeft()}`;
+              }, 100);
+            },
+            willClose: () => {
+              clearInterval(timerInterval);
+            }
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log("I was closed by the timer");
+            }
+          });
+    }
+    else
+    {console.log(numberRegex.test(couponUserLimit));
+      console.log("value",couponDiscountValue);
+      console.log(numberRegex.test(couponDiscountValue));
+      if(numberRegex.test(couponUserLimit) &&  numberRegex.test(couponDiscountValue))
+      {
+        console.log("yess");
+        const couponData={
+      couponID:couponID,
+      couponDescription:couponDescription,
+      couponUserLimit:couponUserLimit,
+      couponExpiryDate:couponExpiryDate,
+      couponDiscountType:discountType,
+      couponDiscountValue:couponDiscountValue
+    }
+    console.log(couponData);
+    fetch('/admin/addCoupons',{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(couponData)
+    })
+    .then((response)=>response.json())
+    .then((data)=>{
+      console.log("received data");
+      console.log(data);
+      if(data===true)
+      {
+    
+        let timerInterval;
+        Swal.fire({
+          title: "Successfully Added",
+          icon:"success",
+          html: "",
+          timer: 600,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+              timer.textContent = `${Swal.getTimerLeft()}`;
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("I was closed by the timer");
+          }
+        }).then(()=>window.location.reload())
+        
+      }
+      else
+      {
+        let timerInterval;
+        Swal.fire({
+          title: "Sorry Not Added Successfully !",
+          icon:"error",
+          html: "",
+          timer: 600,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+              timer.textContent = `${Swal.getTimerLeft()}`;
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("I was closed by the timer");
+          }
+        });
+
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+      }
+      else
+      {
+        console.log("noo");
+        let timerInterval;
+          Swal.fire({
+            title: "Invalid Input !",
+            html: "",
+            timer: 800,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+              const timer = Swal.getPopup().querySelector("b");
+              timerInterval = setInterval(() => {
+                timer.textContent = `${Swal.getTimerLeft()}`;
+              }, 100);
+            },
+            willClose: () => {
+              clearInterval(timerInterval);
+            }
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log("I was closed by the timer");
+            }
+          });
+      }
+      console.log("nooo");
+     
+    }
+    
+  
+  })
+</script>
+
+
+<!-- remove coupon -->
+<script>
+  const removeCouponBtn=document.querySelectorAll('.coupon-remove')
+
+
+  removeCouponBtn.forEach(couponItem=>{
+      
+    couponItem.addEventListener('click',(event)=>{
+      
+      const couponId=couponItem.getAttribute('data-coupon-id')
+    console.log("couponId is ",couponId);
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: "Are you sure to Remove?",
+        text: "",
+        icon: "",
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log("any error...>");
+          fetch('/admin/removeCoupon',{
+            method:"POST",
+            headers:{
+              "Content-Type":"application/json"
+            },
+            body:JSON.stringify({couponId:couponId})
+          })
+          .then((response)=>response.json())
+          .then((data)=>{
+            console.log(data);
+            if(data===true)
+            {
+              swalWithBootstrapButtons.fire({
+            title: "Removed!",
+            text: "",
+            icon: "success"
+          })
+          .then(()=>{
+            window.location.reload()
+          })
+
+            }
+            else
+            {
+              Swal.fire({
+              title: "Some error occurred !",
+              html: "",
+              timer: 600,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            })
+
+            }
+
+          })
+          .catch((error)=>{
+            console.log(error);
+          })
+          
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          Swal.fire({
+              title: "Cancelled !",
+              html: "",
+              timer: 600,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            })
+        }
+      });
+    })
+ 
+
+  })
+</script>
+
+<%- include('../layout/admin/footer') %>

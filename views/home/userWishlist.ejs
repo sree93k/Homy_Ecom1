@@ -1,0 +1,349 @@
+<%- include('../layout/user/header')%>
+
+<link rel="stylesheet" href="/home/styles/home/homeStyle.css">
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <!-- Left Side - Images -->
+            <div class="d-flex">
+                <a class="navbar-brand" href="#">
+                    <img src="./images/userpage/Homy-logos_transparent.png" alt="Logo" width="90" height="60" class="d-inline-block align-text-top">
+                </a>
+                <a class="navbar-brand" href="#">
+                    <img src="./images/userpage/homy.png" alt="Logo" width="120" height="60" class="d-inline-block align-text-top">
+                </a>
+            </div>
+
+            <!-- Center - Navigation Links -->
+            <div class="d-flex justify-content-center">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Projects</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Contact</a>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="d-flex ml-auto">
+               
+                <input type="text" class="form-control m-3" placeholder="Search">
+                <%if(locals.loginStatus===false)
+                {%>
+                  <a href="/home/login" class="nav-link m-3 ">Login</a>
+                  
+                  <%} else {%>
+                
+                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                        <ul class="navbar-nav">
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Hi, <%= userId.name %>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
+                              <a href="/home/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
+                              <a href="/home/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
+                              <a href="/home/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><button class="dropdown-item" id="userLogout" data-user-userId="<%= userId._id %>">Logout</button></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    
+                    <%}%>
+                
+                    <a href="/home/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
+                    <a href="/home/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+
+<section class="account-settings">
+    <div class="container">
+      <div class="row">
+        <div class="mainBody">
+          <div class="container">
+            <div class="row">
+                <!-- left -->
+              <div class="col-md-3  ">
+                <div class="innerLeft ">
+                    <div class="container">
+                        <div class="row">
+                            <div class="leftOne mb-5">
+                                <h4>Hi, Sreekuttan</h4>
+                              </div>
+                              <hr style="height: 2px; background-color: #ffffff; border: none; width: 250px; margin-left: 25px;">
+                              <div class="leftTwo ">
+                                <ul class="account-nav">
+                                    <li><a href="/home/userProfile">My Account</a></li>
+                                    <li><a href="/home/userOrders">My Orders</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                    <li><a href="/home/userAddress">My Address</a></li>
+                                    <li><a href="/home/resetPassword">Change Password</a></li>
+                                    <li><a href="/home/userWallet">Wallet</a></li>
+                                    <li><a href="/home/referals">My Referrals</a></li>
+                                </ul>
+                              </div>
+    
+                        </div>
+                    </div>
+                </div>
+                
+              </div>
+              <!-- left end -->
+
+              <!-- right -->
+              <div class="col-md-9">
+                <div class="innerRight bg-light-tertiary p-4 mt-0">
+                  <h2>My Wishlist</h2>
+                  
+                  <!-- section starting -->
+                  <section>
+                    <div class="container">
+                        <div class="row">
+                          
+                        
+
+                    
+
+
+                          <div class="container">
+                    
+                    
+                     
+                            <div class="row row-cols-1 row-cols-md-3 g-4">
+    
+                                <%
+                                if(userWishList.length>0)
+                                {
+                                    for(let i=0;i<userWishList.length;i++)
+                                    {
+                                        %>
+        
+                                        <div class="col-md-4 col-sm-6">
+                                          <div class="card border-0 shadow-sm rounded-3 position-relative">
+                                              <!-- Add the heart icon button -->
+                                             
+                                              <button class="btn btn-outline-light myheart-Btn  position-absolute top-0 end-0 mt-2 me-3 p-0 " id="wishlistBtn" data-productId="<%=userWishList[i]._id%>">
+                                             
+                                                <i class="fa-solid fa-heart myheart" style="font-size: 24px;"></i>
+                                              </button>
+                                              <a href="/home/product/?product=<%= userWishList[i]._id %>">
+                                                  <img src="./images/adminpage/<%= userWishList[i].productImage[0] %>" class="card-img-top1 rounded-top" alt="<%= userWishList.productImage %>">
+                                              </a>
+                                              <div class="card-body p-4">
+                                                  <input type="hidden" name="" id="productId" value="<%=userWishList[i]._id%>">
+                                                  <input type="hidden" id="userId" value="<%=userId._id%>">
+                                                  <h5 class="card-title"><%= userWishList[i].productName %></h5>
+                                                  <p class="card-text text-muted">₹<%= userWishList[i].productPrice %></p>
+                                                  <div class="d-flex justify-content-between align-items-center mt-4">
+                                                      <button class="btn btn-outline-primary btn-sm" id="addToCart" data-productId="<%=userWishList[i]._id%>">Add to Cart</button>
+                                                      <button class="btn btn-primary btn-sm" value="<%=userWishList[i]._id%>" id="buyNowBtn">Buy Now</button>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      
+        
+        
+                                   <%     
+                                    }
+                                }
+                                %>
+    
+                        </div>
+                    </div>
+                          
+
+
+                     
+                 
+
+
+
+                        </div>
+                    </div>
+                  </section>
+                    <!-- section end -->
+                </div>
+              </div>
+              <!-- right end -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+
+
+  <!-- wishlist btn remove-->
+<script>
+  const noheartBtnn = document.querySelectorAll('.noheart-Btn');
+  const myheartBtnn = document.querySelectorAll('.myheart-Btn');
+
+  myheartBtnn.forEach(wishList => {
+    wishList.addEventListener('click', () => {
+      const productId = wishList.getAttribute('data-productId');
+      console.log("productID is >>", productId);
+
+      fetch(`/home/removeFromWishlist?productId=${productId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("success", data);
+          // if (data === true) {
+          //   wishList.style.display = 'none';
+          
+          //   noheartBtnn.forEach(heartList=>{
+          //     if(heartList.getAttribute('data-productId')===productId)
+          //     {
+          //       heartList.style.display="inline"
+          //     }
+          //   })
+            
+          // }
+          console.log("hello");
+          window.location.reload()
+
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    })
+  })
+</script>
+
+<!-- single product -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  const singleProductButton = document.getElementById('singleProduct');
+
+  if (singleProductButton) {
+      singleProductButton.addEventListener('click', function () {
+          const productId = singleProductButton.getAttribute('product-id');
+          // window.location.href = `/home/product/?id=${productId}`;
+          fetch(`/home/product`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productID: productId }),
+          })
+          .then(response => response.json())
+          
+          .catch(error => {
+  
+          console.error('Error updating user:', error);
+      });
+      });
+
+
+
+  }
+});
+</script>
+
+<!-- user logout -->
+
+<script>
+  document.getElementById('userLogout')
+  .addEventListener('click',()=>{
+   
+    fetch('/home/logout',{
+      method:'POST',
+      headers: {
+          "Content-Type": "application/json",
+        },
+    })
+    .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        Swal.fire({
+          title: "Logout Successfully !",
+          icon: "success"
+        })
+        .then(() => {
+          window.location.href = '/home';
+          });
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+
+  })
+</script>
+
+<!-- add to cart -->
+<script>
+
+  const addToCartButtons = document.querySelectorAll('#addToCart');
+
+ 
+  addToCartButtons.forEach(addToCart => {
+    addToCart.addEventListener('click', () => {
+      console.log("Clicked on add to cart");
+      const productId = addToCart.getAttribute('data-productId');
+      console.log(productId);
+      const userId = document.getElementById('userId').value;
+      console.log(userId);
+      
+      fetch(`/home/addToCart?id=${userId}`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ productId: productId })
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        console.log("Data added");
+        if (data[0]) {
+          Swal.fire({
+            title: "Added To cart",
+            icon: "Successfully Added"
+          });
+        } else {
+          Swal.fire({
+            title: "Product Already Added",
+            icon: "error"
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Error data");
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+<%- include('../layout/user/footer')%>
