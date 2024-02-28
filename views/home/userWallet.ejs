@@ -129,14 +129,17 @@
                               <i class="fa-solid fa-wallet"></i> &nbsp;<h5>Balance</h5>
                             </div>
                             <div class="innerAmount">
+                              <%if(userWallet!=null)
+                              {%>
                               ₹ <%=userWallet.balance%>
+                              <%}%>
                             </div>
                           </button>
                         </div>
                         <div class="col-8">
                           <div class="wallet-Adding">
                             <div class="innerAdding d-flex justify-content-center">
-                              <input type="text" id="walletAmount" >
+                              <input type="text" id="walletAmount" placeholder="₹">
                               <button type="button" class="btn btn-success ms-4" id="addWalletBtn">+Add Amount</button>
                             </div>
                           </div>
@@ -169,7 +172,10 @@
                                 </thead>
                                 <tbody>
                                   
-                                  <%if(userWallet.transaction.length>0)
+                                  <%
+                                  if(userWallet!=null)
+                                  {
+                                  if(userWallet.transaction.length>0)
                                   {
                                     for(let i=0;i<userWallet.transaction.length;i++)
                                     {%>
@@ -190,6 +196,7 @@
                                  <%
                                 }
                                 }
+                              }
                                  %>
                                 
                                 </tbody>

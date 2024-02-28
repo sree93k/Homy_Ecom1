@@ -108,7 +108,9 @@
                                   <div class="mb-3">
                                     <input type="hidden" name="productId" id="ProductId">
                                       <label for="productCategory" class="form-label">Select Category</label>
-                                      <select class="form-select" id="ProductCategory" name="productCategory" aria-label="<%=products.productCategory%>">
+                                      <input type="hidden" id="categoryList" data-category-id="<%=category%>">
+                                      <select class="form-select" id="ProductCategory" name="productCategory" aria-label="<%=products.productCategory.categoryName%>"  >
+                                    
                                         <% if(category.length>0) 
                                         {
                                             for(let i=0;i<category.length;i++)
@@ -257,5 +259,20 @@
       }
   }
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+    const categoryName=document.getElementById('ProductCategory')
+    const name=categoryName.getAttribute('aria-label')
+    categoryName.value=name
+    
+ 
+
+})
+</script>
+
+
+
+
 
 <%- include('../layout/admin/footer')%>

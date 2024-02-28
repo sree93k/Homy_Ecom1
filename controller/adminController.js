@@ -930,50 +930,62 @@ const addProducts=async(req,res)=>{
         }
         else
         {
-            console.log(imageFiles)
-            const randomNumber = generateRandomNumber();
-            const productIDNumber=`HPI${randomNumber}`
-            if(imageFiles.length>0)
+            if(productQuantity>=0 && productPrice>=0)
             {
-     
-            const product=new Products({
-                productIDNumber:productIDNumber,
-            productName:req.body.productName,
-             productCategory:categoryData,
-             productPrice:req.body.productPrice,
-             productQuantity:req.body.productQuantity,
-             productDescription:req.body.productDescription,
-             productImage:imageFiles,
-             productIsBlocked:false,
-             isDelete:false,
-             isCategoryBlocked:false,
-             createdDate:Date.now(),
-             lastUpdated:Date.now(),
-             productRating:1
-            })
-            console.log('step 2')
-            const productData=await product.save()
-            console.log('step 3')
-            if(productData)
-            {
-                console.log('step 4')
-                res.redirect('/admin/allProducts')
-                
+                console.log(imageFiles)
+                const randomNumber = generateRandomNumber();
+                const productIDNumber=`HPI${randomNumber}`
+                if(imageFiles.length>0)
+                {
+         
+                const product=new Products({
+                    productIDNumber:productIDNumber,
+                productName:req.body.productName,
+                 productCategory:categoryData,
+                 productPrice:req.body.productPrice,
+                 productQuantity:req.body.productQuantity,
+                 productDescription:req.body.productDescription,
+                 productImage:imageFiles,
+                 productIsBlocked:false,
+                 isDelete:false,
+                 isCategoryBlocked:false,
+                 createdDate:Date.now(),
+                 lastUpdated:Date.now(),
+                 productRating:1
+                })
+                console.log('step 2')
+                const productData=await product.save()
+                console.log('step 3')
+                if(productData)
+                {
+                    console.log('step 4')
+                    res.redirect('/admin/allProducts')
+                    
+                }
+            
+                else
+                {
+                    console.log('step 5')
+                    res.redirect('/admin/allProducts')
+                    
+                }
             }
-        
             else
             {
-                console.log('step 5')
-                res.redirect('/admin/allProducts')
-                
+                console.log("Image Need To Add")
+                req.session.productError="Image Need To Add"
+                res.redirect('/admin/addProducts')
             }
-        }
-        else
-        {
-            console.log("Image Need To Add")
-            req.session.productError="Image Need To Add"
-            res.redirect('/admin/addProducts')
-        }
+
+            }
+            else
+            {
+                console.log(" Quantity/product < 0invalid input")
+                req.session.productError="Invalid Quantity/ Price Input"
+                res.redirect('/admin/addProducts')
+
+            }
+           
         }
 
 
@@ -992,8 +1004,9 @@ const loadEditProducts=async(req,res)=>{
         const productID=req.query.id
         console.log("two")
         console.log(productID)
-        const productData=await Products.findById({_id:productID})
+        const productData=await Products.findById({_id:productID}).populate('productCategory')
         console.log("three")
+        console.log(productData);
         const allCategory=await Category.find({})
         console.log("four")
         const productEditError=req.session.productEditError
@@ -1103,19 +1116,31 @@ const editProducts=async(req,res)=>{
                     }
                     else
                     {
-                        if ( req.files.length !== 0) {
-                            console.log("succes1")
-                            console.log(productCategory);
-                            const productData = await Products.findByIdAndUpdate({_id:productId},{$set:{productName:productName,productCategory:productCategory,productPrice:productPrice,productQuantity:productQuantity,productDescription:productDescription,productImage:imageFiles,lastUpdated:lastUpdated}})
-                            
-                            res.redirect('/admin/allProducts')
-                        }
-                        else
-                        {
-                            console.log("succes2")
-                            const productData =  await Products.findByIdAndUpdate({_id:productId},{$set:{productName:productName,productCategory:productCategory,productPrice:productPrice,productQuantity:productQuantity,productDescription:productDescription,lastUpdated:lastUpdated}})
-                            res.redirect('/admin/allProducts')
-                        }
+                        if(productQuantity>=0 && productPrice>=0)
+                         {
+                         
+                            if ( req.files.length !== 0) {
+                                console.log("succes1")
+                                console.log(productCategory);
+                                const productData = await Products.findByIdAndUpdate({_id:productId},{$set:{productName:productName,productCategory:productCategory,productPrice:productPrice,productQuantity:productQuantity,productDescription:productDescription,productImage:imageFiles,lastUpdated:lastUpdated}})
+                                
+                                res.redirect('/admin/allProducts')
+                            }
+                            else
+                            {
+                                console.log("succes2")
+                                const productData =  await Products.findByIdAndUpdate({_id:productId},{$set:{productName:productName,productCategory:productCategory,productPrice:productPrice,productQuantity:productQuantity,productDescription:productDescription,lastUpdated:lastUpdated}})
+                                res.redirect('/admin/allProducts')
+                            }
+
+                         }
+                         else
+                         {
+                            req.session.productEditError="Should not be negative values"
+                            res.redirect(`/admin/editProducts?id=${productId}`)
+
+                         }
+                     
 
                     }
 

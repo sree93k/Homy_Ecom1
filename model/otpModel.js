@@ -5,8 +5,8 @@ const otpSchema=mongoose.Schema({
         type:Number,
         required:true
 },
-    userId:{
-        type:ObjectId,
+    userEmail:{
+        type:String,
         required:true
 },
     isVerified:{   

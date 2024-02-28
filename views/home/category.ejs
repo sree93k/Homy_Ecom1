@@ -292,10 +292,11 @@
                      
                         <div class="row row-cols-1 row-cols-md-3 g-4">
 
-                        
+                        <%if(userWishlist)
+                        {%>
                           <input type="hidden" id="hiddenWishList" value="<%=userWishlist%>">
                           
-
+                            <%}%>
 
 
                             <%
@@ -484,8 +485,30 @@
                 clearInterval(timerInterval);
               }
             })
-        } else {
-          Swal.fire({
+        } else{
+          if(data[1]==="No Stock")
+          {
+            Swal.fire({
+              title: "Sorry ! No Stock",
+              html: "",
+              timer: 800,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            })
+
+          }
+          else
+          {
+            Swal.fire({
               title: "Already Added To Cart",
               html: "",
               timer: 600,
@@ -501,6 +524,9 @@
                 clearInterval(timerInterval);
               }
             })
+
+          }
+        
         }
       })
       .catch((error) => {

@@ -168,13 +168,14 @@
                   </div>
                 </div>
                 <div class=" d-flex justify-content-center">
-                  <button type="button" class="btn btn-outline-primary me-2" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-primary me-2" data-bs-dismiss="modal" id="cancelOtp">Cancel</button>
                   <button type="button" class="btn btn-primary ms-2" id="OtpSubmitBtn">Verify Email</button>
                 </div>
                 <div class="rendOtp" id="rendOtp" >
-                  If you haven't received the code, please <a href="#"><span>Click Here To Resend OTP</span></a> again.
+                  If you haven't received the code, please <a href="#" id="reSendOtpLink"><span>Click Here To Resend OTP</span></a> again.
   
                 </div>
+              
               </div>
            
             </div>
@@ -379,121 +380,175 @@ Swal.fire({
 
 
 <!-- send otp -->
-<script>
-  let timerInterval; // Define timer interval globally
+<!-- <script>
+  let timerInterval;
 
-  // Function to start the timer
   function startTimer() {
-    let seconds = 60; // Total seconds for the timer
+    let seconds = 63;
     const otpTimerElement = document.getElementById('otpTimer');
-    otpTimerElement.style.display = 'block'; // Display the timer
+    otpTimerElement.style.display = 'block';
 
-    // Function to update the timer
     function updateTimer() {
       otpTimerElement.textContent = `Enter OTP in ${seconds} seconds`;
       if (seconds <= 0) {
         clearInterval(timerInterval);
-        document.getElementById('rendOtp').style.display = 'inline-block'; // Show resend link
-        otpTimerElement.style.display = 'none'; // Hide the timer
+        document.getElementById('rendOtp').style.display = 'inline-block';
+        otpTimerElement.style.display = 'none';
         return;
       }
       seconds--;
     }
 
-    updateTimer(); // Initial call to update the timer
-
-    // Start the timer interval
+    updateTimer();
     timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+    const otpTimerElement = document.getElementById('otpTimer');
+    otpTimerElement.textContent = '';
+    otpTimerElement.style.display = 'none';
+  }
+
+  // Function to resend OTP
+  function resendOTP() {
+    console.log("resend otp>>>>");
+    fetch('/home/resendOTP', { method: 'GET' })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Resend OTP response:", data);
+        stopTimer(); // Stop the current timer
+        startTimer(); // Start a new timer after resending OTP
+      })
+      .catch(error => {
+        console.error("Error while resending OTP:", error);
+      });
   }
 
   document.addEventListener('DOMContentLoaded', function() {
     const sendOtpButton = document.getElementById('sendOtpButton');
-
-    // Event listener for Send OTP button click
-    sendOtpButton.addEventListener('click', function() {
-      // Start the timer when Send OTP button is clicked
-      startTimer();
-      // Other logic for sending OTP can be added here
-    });
-
     const otpModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
-    // Event listener for modal dismissal
+    sendOtpButton.addEventListener('click', function() {
+      stopTimer(); // Stop the timer before starting a new one
+      startTimer(); // Start a new timer when sending OTP
+    });
+
+    const cancelBtn = document.querySelector('.modal-footer .btn-secondary');
+    cancelBtn.addEventListener('click', function() {
+      stopTimer(); // Stop the timer when cancel button is clicked
+    });
+
     otpModal.addEventListener('hidden.bs.modal', function() {
-      // Clear the timer interval when the modal is dismissed
-      clearInterval(timerInterval);
-      // Reset OTP input fields
+      stopTimer(); // Stop the timer when modal is closed
       document.querySelectorAll('.otpBox').forEach(box => (box.value = ''));
     });
-  });
-</script>
 
-<!-- OTP Resend -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    function resendOTP() {
-      fetch('/resendOTP', { method: 'POST' })
-        .then(response => {
-          // Handle response
-        })
-        .catch(error => {
-          // Handle error
-        });
-    }
-
-    // Event listener for OTP Resend link click
-    document.getElementById('rendOtp').addEventListener('click', function(event) {
+    document.getElementById('reSendOtpLink').addEventListener('click', function(event) {
+      console.log("inner otp resend");
       event.preventDefault();
-      resendOTP();
-      // Other logic for OTP Resend can be added here
+      console.log("step 1");
+      stopTimer(); // Stop the timer before resending OTP
+      console.log("step 2");
+      resendOTP(); // Call the resendOTP function
     });
+
   });
-</script>
+</script> -->
 
+<script>
+  let timerInterval;
 
-<!-- otp resend -->
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    let seconds = 60; 
+  function startTimer() {
+    console.log("start tiner >>>");
+    let seconds = 63;
     const otpTimerElement = document.getElementById('otpTimer');
-    
-   
+    otpTimerElement.style.display = 'block';
+
     function updateTimer() {
+      console.log("otp update timer >>>>");
       otpTimerElement.textContent = `Enter OTP in ${seconds} seconds`;
-      document.getElementById('rendOtp').style.display="none"
       if (seconds <= 0) {
         clearInterval(timerInterval);
-        // otpTimerElement.innerHTML = '<a href="#" id="resendLink">Resend OTP</a>'; 
-        document.getElementById('rendOtp').style.display="inline-block"
-        otpTimerElement.style.display="none"
+        document.getElementById('rendOtp').style.display = 'inline-block';
+        otpTimerElement.style.display = 'none';
         return;
       }
       seconds--;
     }
-    
-   
-    function resendOTP() {
-    
 
-      fetch('/resendOTP', { method: 'POST' })
-        .then(response => {
-        
-        })
-        .catch(error => {
-          
-        });
-    }
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+  }
 
+  function stopTimer() {
+    console.log("otp timeer stopp");
+    clearInterval(timerInterval);
+    const otpTimerElement = document.getElementById('otpTimer');
+    otpTimerElement.textContent = '';
+    otpTimerElement.style.display = 'none';
+  }
 
-    const timerInterval = setInterval(updateTimer, 1000);
+  // Function to resend OTP
+  function resendOTP() {
+    console.log("resend otp started");
+    fetch('/home/resendOTP', { method: 'GET' })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Resend OTP response:", data);
+        stopTimer(); // Stop the current timer
+        startTimer(); // Start a new timer after resending OTP
+      })
+      .catch(error => {
+        console.error("Error while resending OTP:", error);
+      });
+  }
 
-   
-    otpTimerElement.addEventListener('click', function(event) {
-      event.preventDefault(); 
-      resendOTP();
+  document.addEventListener('DOMContentLoaded', function() {
+    const sendOtpButton = document.getElementById('sendOtpButton');
+    const otpModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+    const resendBtn=  document.getElementById('reSendOtpLink')
+
+    sendOtpButton.addEventListener('click', function() {
+      console.log("time sendotp");
+      stopTimer(); // Stop the timer before starting a new one
+      startTimer(); // Start a new timer when sending OTP
     });
+
+    const cancelBtn = document.getElementById('cancelOtp');
+    cancelBtn.addEventListener('click', function() {
+      console.log("time stopper");
+      stopTimer(); // Stop the timer when cancel button is clicked
+    });
+
+    // Corrected ID used here
+    resendBtn.addEventListener('click', function(event) {
+      console.log("step 1");
+      event.preventDefault();
+      console.log("step 2");
+      stopTimer(); // Stop the timer before resending OTP
+      console.log("step 3");
+      resendOTP(); // Call the resendOTP function
+    });
+
+    otpModal.addEventListener('hidden.bs.modal', function() {
+      stopTimer(); // Stop the timer when modal is closed
+      console.log("box value >t>T>" );
+      document.querySelectorAll('.otpBox').forEach(box => (box.value = ''));
+    });
+
+    
+
   });
-</script> -->
+</script>
+
+
+
+
+
+
+
+
 
 
 <%- include('../layout/user/footer') %>

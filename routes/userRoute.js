@@ -78,6 +78,8 @@ user_route.post('/register',auth.isLogout,userController.createUser)
 //OTP verification
 user_route.post('/otpVerification',auth.isLogout,userController.verifyOtp)
 
+//resendOTP
+user_route.get('/resendOTP',auth.isLogout,userController.resendOTP)
 
 //forgotpassword mail sent
 user_route.post('/forgotPassword',auth.isLogout,userController.forgotPassword)

@@ -330,6 +330,7 @@ const secret=speakeasy.generateSecret({length:20})
 const createUser=async(req,res,next)=>{
   try {
     console.log("step 0");
+    
     const name = req.body.name;
     const email = req.body.email;
     const mobile = req.body.mobile;
@@ -431,11 +432,24 @@ const createUser=async(req,res,next)=>{
               secret:secret.base32,
               encoding:"base32"
             })
+            console.log("user email sesion", );
+            const otpExists=await OTP.findOne({userEmail:email})
+            console.log("otpExists ..",otpExists);
+            if(otpExists)
+            {
+              console.log("inner old otp");
+             const oldOTP=await OTP.findOne({userEmail:email})
+             const oldOTPId=oldOTP._id
+             console.log("oldOTPId",oldOTPId);
+             await OTP.findByIdAndDelete({_id:oldOTPId})
+            }
 
             const otpDB=new OTP({
-              userId:req.session.userData._id,
+              userEmail:email,
               otp:otp
             })
+
+            req.session.userEmail=email
             console.log(otpDB)
             await otpDB.save()
        
@@ -492,28 +506,35 @@ const createUser=async(req,res,next)=>{
 const verifyOtp=async(req,res)=>{
   try {
    
-    console.log("verification started")
+    console.log("verification started>>>>>>>>YES")
     const otpUserId=req.body.otpUserId
     const currentOtp=req.query.id
     console.log(currentOtp);
     console.log(typeof(currentOtp));
     const actualOtp=await OTP.findOne({otp:currentOtp})
-    const actualUser=await OTP.findOne({userId:otpUserId})
+    console.log("ACTUAL OTP is",actualOtp);
+    const email=req.session.userEmail
+    console.log("email is",email);
+    delete req.session.userEmail
+    console.log("req.session.userEmail",req.session.userEmail);
+    const actualUser=await OTP.findOne({userEmail:email})
     console.log(actualUser)
-    console.log(actualUser.userId)
-    const actualUserId=actualUser.userId
+    console.log(actualUser.userEmail)
+    // const actualUserId=actualUser.email
+    console.log("ACTUALUSER ID",);
     if(actualOtp)
     {
-      const OtpUserId=actualOtp.userId
+      const OtpUserId=actualOtp.email
       const newUser=new User(req.session.userData)
       console.log("new user is ",newUser);
 
       const userData = await newUser.save();
-      const UserID=await User.findOne({_id:OtpUserId})
+      console.log("user datat is ",userData);
+      const UserID=await User.findOne({email:email})
       console.log("otp verification start");
       console.log(currentOtp)
       console.log(actualOtp);
-      console.log(actualOtp.userId)
+      console.log(actualOtp.email)
       console.log(typeof(actualOtp.otp))
       console.log(OtpUserId);
       console.log(UserID)
@@ -529,9 +550,8 @@ const verifyOtp=async(req,res)=>{
         console.log("now Otp verified Successfully")
         
         const newUserWishList=new Wishlist({
-          userId:actualOtp.userId,
-          
-    
+          userId:userData._id,
+   
         })
         await newUserWishList.save()
 
@@ -592,6 +612,74 @@ const verifyOtp=async(req,res)=>{
     console.log(error)
     // res.status(500).json({ success: false, message: 'Internal Server Error' });
     
+  }
+}
+
+
+//resendOTP
+const resendOTP=async(req,res)=>{
+  try {
+    console.log("resendOTP >>>>>>");
+
+
+    console.log(req.session.userData)
+    console.log("step 5")
+    console.log("step 6")
+    
+      const otp=speakeasy.totp({
+        secret:secret.base32,
+        encoding:"base32"
+      })
+      const email=req.session.userEmail
+      console.log("user email sesion",email );
+      const otpExists=await OTP.findOne({userEmail:email})
+      console.log("otpExists ..",otpExists);
+      if(otpExists)
+      {
+        console.log("inner old otp");
+       const oldOTP=await OTP.findOne({userEmail:email})
+       const oldOTPId=oldOTP._id
+       console.log("oldOTPId",oldOTPId);
+       await OTP.findByIdAndDelete({_id:oldOTPId})
+      }
+
+      const otpDB=new OTP({
+        userEmail:email,
+        otp:otp
+      })
+
+      req.session.userEmail=email
+      console.log(otpDB)
+      await otpDB.save()
+      
+
+      const mailOptions={
+        from:"sreekuttan1248@gmail.com",
+        to:email,
+        subject:"OTP Verification - Homy ",
+        text:`Your OTP for verification is :${otp}`
+      } 
+      console.log("mailOptions,",mailOptions)
+     
+      transporter.sendMail(mailOptions,(error,info)=>{
+        if(error){
+          console.log("failed to send",error)
+          return res.status(500).json({error:"Failed to send OTP"})
+        }
+        else{
+         
+        
+          console.log('email sent '+ info.response)
+          const data=["Mail Sent Successfully"]
+        
+          res.json(data)
+        }
+      })
+      console.log("resend otp page is loaded succesfully");
+    
+
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -666,11 +754,19 @@ const homeCategoryLogin=async(req,res)=>{
     console.log(UserData)
 
     const userWish=await Wishlist.findOne({userId:userId})
-    console.log("userWishlist is >>>>>>",userWish);
-    const userWishlist=userWish.productId
-    console.log("?>>>",userWishlist);
-    
-    res.render('category',{products:allProducts,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",userWishlist: JSON.stringify(userWishlist)})
+    if(userWish)
+    {
+      console.log("userWishlist is >>>>>>",userWish);
+      const userWishlist=userWish.productId
+      console.log("?>>>",userWishlist);
+      
+      res.render('category',{products:allProducts,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",userWishlist: JSON.stringify(userWishlist)})
+    }
+    else
+    {
+      res.render('category',{products:allProducts,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",userWishlist:null})
+    }
+
   } catch (error) {
     console.log(error)
   }
@@ -1216,6 +1312,7 @@ const userCart=async(req,res)=>{
 
 const addToCart=async(req,res)=>{
   try {
+    console.log("add to cart startedddd>>>>");
     const productId=new ObjectId(req.body.productId)
     const userId=new ObjectId(req.query.id)
     console.log(productId);
@@ -1231,38 +1328,50 @@ const addToCart=async(req,res)=>{
     else
     {
       console.log("cart not existing");
+      
       console.log(productId);
       console.log(userId);
       const productDetails=await Product.findById({_id:productId})
-    
-      console.log("details",productDetails);
-      console.log("product price",productDetails.productPrice);
-      const newItem=new UserCart({
-        userId:userId,
-        productId:productId,
-        quantity:1,
-        name:productDetails.productName,
-        description:productDetails.productDescription,
-        price:productDetails.productPrice,
-        totalPrice:productDetails.productPrice,
-        totalAmount:productDetails.productPrice,
-        status:"Pending",
-        couponValue:0
-      })
-      await newItem.save()
-      const addedItem=await UserCart.findOne({userId:userId,productId:productId})
-      console.log("added item",addedItem);
-      const userData=await User.findById({_id:userId})
-      console.log("user last data",userData);
-       // const newCart=cartData.cartItems.push(addItem._id);
-       console.log("new itwm price",newItem.price);
-       
-      userData.totalCart=userData.totalCart+newItem.totalPrice
-      userData.save()
-      console.log("userdata price",userData.totalCart);
-      console.log("user new data",userData);
-      const data=[true,"successfully added item"]
-      res.json(data)
+      if(productDetails.productQuantity>0)
+      {
+        console.log("details",productDetails);
+        console.log("product price",productDetails.productPrice);
+        const newItem=new UserCart({
+          userId:userId,
+          productId:productId,
+          quantity:1,
+          name:productDetails.productName,
+          description:productDetails.productDescription,
+          price:productDetails.productPrice,
+          totalPrice:productDetails.productPrice,
+          totalAmount:productDetails.productPrice,
+          status:"Pending",
+          couponValue:0
+        })
+        await newItem.save()
+        const addedItem=await UserCart.findOne({userId:userId,productId:productId})
+        console.log("added item",addedItem);
+        const userData=await User.findById({_id:userId})
+        console.log("user last data",userData);
+         // const newCart=cartData.cartItems.push(addItem._id);
+         console.log("new itwm price",newItem.price);
+         
+        userData.totalCart=userData.totalCart+newItem.totalPrice
+        userData.save()
+        console.log("userdata price",userData.totalCart);
+        console.log("user new data",userData);
+        const data=[true,"successfully added item"]
+        res.json(data)
+
+      }
+      else
+      {
+        console.log("no stock");
+        const data=[false,"No Stock"]
+        res.json(data)
+
+      }
+ 
     }
    
   } catch (error) {
@@ -2701,6 +2810,7 @@ module.exports = {
   userRegistration,
   verifyOtp,
   createUser,
+  resendOTP,
   homePageLogin,
   homePageLogout,
   homeCategoryLogin,
@@ -2739,7 +2849,7 @@ module.exports = {
   cancelOrder,
   cancelOrderItem,
   returnProduct,
-
+  
   userWishlist,
 
   userAddress,
