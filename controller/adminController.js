@@ -296,20 +296,49 @@ const monthlySalesReport = async (req, res) => {
 
 
 //All orders
-const allOrders=async(req,res)=>{
-    try {
-        console.log("all orders startting >>>>>>>>>******");
-        res.set("Cache-control","no-store")
-        const allOrders=await Order.find({}).populate('deliveryAddress')
-        console.log(allOrders);
-        console.log("address");
+// const allOrders=async(req,res)=>{
+//     try {
+//         console.log("all orders startting >>>>>>>>>******");
+//         res.set("Cache-control","no-store")
+//         const allOrders=await Order.find({}).sort({orderDate:-1}).populate('deliveryAddress')
+//         console.log(allOrders);
+//         console.log("address");
       
-        res.render('allOrders',{allOrders:allOrders})
+//         res.render('allOrders',{allOrders:allOrders})
         
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+const PAGE_SIZE = 7; // Number of orders per page
+
+const allOrders = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1; // Get the requested page number from the query parameters
+        const skip = (page - 1) * PAGE_SIZE; // Calculate the number of orders to skip
+
+        // Query to fetch orders for the requested page
+        const orders = await Order.find({})
+            .sort({ orderDate: -1 })
+            .skip(skip)
+            .limit(PAGE_SIZE)
+            .populate('deliveryAddress');
+
+        // Count total orders for pagination
+        const totalOrders = await Order.countDocuments();
+
+        // Calculate total pages
+        const totalPages = Math.ceil(totalOrders / PAGE_SIZE);
+
+        res.render('allOrders', { allOrders: orders, currentPage: page, totalPages: totalPages });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).send('Internal Server Error');
     }
-}
+};
+
+
+
 //orderStatusUpdate
 const orderStatusUpdate=async(req,res)=>{
     try {

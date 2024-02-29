@@ -1448,7 +1448,7 @@ const cartQuantity = async (req, res) => {
 
     await UserData.save();
 
-    const data = cartDetails;
+    const data = [cartDetails,UserData];
     res.json(data);
 
   } catch (error) {
@@ -1680,7 +1680,17 @@ const cashOnDelivery=async(req,res)=>{
     const productPrices=userCart.map(cartPrice=>cartPrice.price)
     const productStatus=userCart.map(cartStatus=>cartStatus.status)
     // const cartProducts=[productIds,productQty,productPrices]
-
+    console.log("prodcutIDs ssss",productIds);
+    console.log("producyt id length",productIds.length);
+    for(let i=0;i<productIds.length;i++)
+    { 
+      let products=await Product.findById({_id:productIds[i]})
+      let quantity= products.productQuantity
+      quantity=quantity-productQty[i]
+      products.productQuantity=quantity
+      await products.save()
+      console.log("success save ",i);
+    }
     console.log("Stats",productStatus);
     const paymentData=new Payment({
       paymentMethod:paymentMethod,
@@ -1693,6 +1703,8 @@ const cashOnDelivery=async(req,res)=>{
     })
   
     await paymentData.save()
+
+
   
     const newOrderItem=new OrderItems({
       productName:userCart.map(cartItem => cartItem.productId.productName),

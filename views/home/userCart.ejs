@@ -104,13 +104,9 @@
                           {
 
                           %>
-                          
-             
+                                     
                             <tr class="cartTableRow">
-                            
-                             
-                                
-                             
+  
                                 <td>
                                   <div class="cartItem ">
                                     <div class="cartLevelOne">
@@ -130,8 +126,13 @@
                                                   <div class="col-8 " style="text-align: left;">
                                                     <h6><%=cartItem[i].productId.productDescription%></h6>
                                                   </div>
-                                                  <div class="col-4" style="text-align: right;" >
-                                                   Price : <%=cartItem[i].productId.productPrice%>
+                                                  <div class="col-4 d-flex justify-content-end " style="text-align: center;  "  >
+                                                   <div class="demoPrice">
+                                                    Price : ₹
+                                                   </div>
+                                                   <div class="realPrice  ms-2 mt-0">
+                                                    <h5 id="productPrice" data-quantity="<%=cartItem[i]._id%>" data-product-price="<%=cartItem[i].productId.productPrice%>"><%=cartItem[i].productId.productPrice%></h5>
+                                                   </div> 
                                                   </div>
                                                 </div>
                                               </div>
@@ -142,10 +143,10 @@
                                                 <div class="row">
                                                   <div class="col-3" style="text-align: left;">
                                                     <div class="btn-group">
-                                                    
-                                                      <a href="#" class="btn btn-primary text-decoration-none " data-quantity="<%=cartItem[i]._id%>" id="quantityMinus">-</a>
-                                                      <a href="#" class="btn  text-decoration-none " id="productQuantity" aria-current="page" disabled ><%=cartItem[i].quantity%></a>
-                                                      <a href="#" class="btn btn-primary text-decoration-none " data-quantity="<%=cartItem[i]._id%>"  id="quantityPlus">+</a>
+                                                   
+                                                      <a href="#" class="btn btn-primary text-decoration-none " data-quantity="<%=cartItem[i]._id%>" id="quantityMinus" data-stock="<%=cartItem[i].productId.productQuantity%>" data-cartQuantity="<%=cartItem[i].quantity%> ">-</a>
+                                                      <a href="#" class="btn  text-decoration-none " id="productQuantity" aria-current="page" data-quantity="<%=cartItem[i]._id%>" data-cartQuantity="<%=cartItem[i].quantity%>"  disabled ><%=cartItem[i].quantity%></a>
+                                                      <a href="#" class="btn btn-primary text-decoration-none pos-demo " data-quantity="<%=cartItem[i]._id%>"  id="quantityPlus" data-stock="<%=cartItem[i].productId.productQuantity%>" data-cartQuantity="<%=cartItem[i].quantity%>">+</a>
                                                     </div>
                                                   </div>
                                                   <div class="col-3" style="text-align: right;">
@@ -170,8 +171,14 @@
         
                                             </div>
                     
-                                            <div class="col-3">
-                                              Sub Total : <%=cartItem[i].totalPrice%>
+                                            <div class="col-3 d-flex  ">
+                                              <div class="subDemo">
+                                                Sub Total : ₹
+                                              </div>
+                                              <div class="subReal ms-2 mt-0">
+                                                <h5 id="subPrice" data-quantity="<%=cartItem[i]._id%>" data-sub-total="<%=cartItem[i].totalPrice%>"> <%=cartItem[i].totalPrice%></h5>
+                                              </div>
+                                               
                                             </div>
                                           </div>
                                         </div>
@@ -181,7 +188,7 @@
                                  
                                 </td>
 
-                            
+
                       </tr>
                     
                       <%}
@@ -206,8 +213,17 @@
                 <div class="card-body">
                   <table class="table ">
                     <tr>
-                      <th scope="row">Price</th>
-                      <td><%= userId.totalCart %></td>
+                      <th scope="row" >Price</th>
+                      <td >
+                        <div class="priceMain d-flex ">
+                          <div class="sign me-1">
+                            ₹
+                          </div>
+                          <div class="cartPrice ">
+                            <h5 id="checkPrice" data-price="userId.totalCart"><%= userId.totalCart %></h5></td>
+                          </div>
+                        </div>
+                         
                     </tr>
                     <tr>
                       <th scope="row">Discount</th>
@@ -217,7 +233,15 @@
                       <td><i class="fas fa-truck"></i> Free</td> </tr>
                     <tr>
                       <th scope="row">Total Amount</th>
-                      <td><%= userId.totalCart %></td>
+                      <td>
+                        <div class="totalMain d-flex ">
+                          <div class="sign">
+                            ₹
+                          </div>
+                          <div class="totalPrice ms-1">
+                            <h5 id="totalPrice" data-total-price="<%= userId.totalCart %>"><%= userId.totalCart %></h5></td>
+                          </div>
+                        </div>
                     </tr>
                   </table>
                 </div>
@@ -235,14 +259,45 @@
     </div>
 </section>
 
+<!-- toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <!-- <img src="..." class="rounded me-2" alt="..."> -->
+      <strong class="me-auto">Alert</strong>
+      <small>11 mins ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      The Stock Is Limited
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="liveToasts" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <!-- <img src="..." class="rounded me-2" alt="..."> -->
+      <strong class="me-auto">Alert</strong>
+      <small>11 mins ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+     Mininum One Is For You!
+    </div>
+  </div>
+</div>
+
 
 
 <!-- user logout -->
 
 <script>
+  
   document.getElementById('userLogout')
   .addEventListener('click',()=>{
-   
+  
     fetch('/home/logout',{
       method:'POST',
       headers: {
@@ -267,7 +322,7 @@
   })
 </script>
 
-  <!--quantity changinfg   -->
+  <!--cart remove  -->
   
   <script>
     const cartRemoveBtn=document.querySelectorAll('#cartRemoveBtn')
@@ -305,62 +360,237 @@
   })
   </script>
   
-  <!-- qunntity changing -->
-  <script>
-    
-    const quantityMinus=document.querySelectorAll('#quantityMinus')
-    const quantityPlus=document.querySelectorAll('#quantityPlus')
-    // minus
-    quantityMinus.forEach(quantityMinus=>{
-    quantityMinus.addEventListener('click',()=>{
-      const cartId=quantityMinus.getAttribute('data-quantity')
-      const quantity=false
-      fetch('/home/cartQuantity',{
-        method:'POST',
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({cartId:cartId,quantity:quantity})
-      })
-      .then((response)=>response.json())
-      .then((data)=>{
-        console.log("minus success");
-        console.log(data);
-        window.location.href='/home/userCart'
-      })
-      .catch((error)=>{
-        console.log("minus failed");
-        console.log(error);
-      })
-    })
-  })
 
-    //plus
-    quantityPlus.forEach(quantityPlus=>{
-    quantityPlus.addEventListener('click',()=>{
-      const cartId=quantityPlus.getAttribute('data-quantity')
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery Notify library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+  <!-- qunntity Adding/.Removing -->
+ 
+
+<!-- quantity adding -->
+     <script>
+  
+    document.addEventListener('DOMContentLoaded', () => {
+    const quantityPlus = document.querySelectorAll('#quantityPlus');
+
+    quantityPlus.forEach(plus => {
+      plus.addEventListener('click',()=>{
+     
       const quantity=true
+      const stock=plus.getAttribute('data-stock')
+        const dataQuantity = plus.getAttribute('data-quantity');
+        console.log("dataQuantity",dataQuantity);
+       console.log("stock",stock);
+      //  quantity element
+        const correspondingProductQuantity = document.querySelector(`#productQuantity[data-quantity="${dataQuantity}"]`);
+        if (correspondingProductQuantity) {
+            const quantityValue = correspondingProductQuantity.getAttribute('data-cartQuantity');
+            console.log("quantityValue ", quantityValue);
+
+            //product price
+            const correspondingProductPrice = document.querySelector(`#productPrice[data-quantity="${dataQuantity}"]`);
+        if (correspondingProductPrice) {
+            const productPrice = correspondingProductPrice.getAttribute('data-product-price');
+            console.log("productPrice ", productPrice);
+
+            //subprice
+            const correspondingSubPrice = document.querySelector(`#subPrice[data-quantity="${dataQuantity}"]`);
+           
+        if (correspondingSubPrice) {
+            const subPrice = correspondingSubPrice.getAttribute('data-sub-total');
+            console.log("subPrice ", subPrice);
+
+             //checkout price
+          const checkPrice=document.getElementById('checkPrice').textContent
+            console.log("checkPrice ", checkPrice);
+
+            //checkTotal Price
+            const totalPrice=document.getElementById('totalPrice').textContent
+            console.log("totalPrice ", totalPrice);
+
+
+            if(quantityValue<stock)
+      {
+        console.log("yes ");
       fetch('/home/cartQuantity',{
         method:'POST',
         headers:{
           "Content-Type":"application/json"
         },
-        body:JSON.stringify({cartId:cartId,quantity:quantity})
+        body:JSON.stringify({cartId:dataQuantity,quantity:quantity})
       })
       .then((response)=>response.json())
       .then((data)=>{
-        console.log("minus success");
+        console.log("plus success");
         console.log(data);
-        window.location.href='/home/userCart'
+     console.log("success");
+     //quantity
+       correspondingProductQuantity.setAttribute('data-cartQuantity',data[0].quantity)
+       correspondingProductQuantity.innerText = data[0].quantity;
+      console.log("data.quantity is",data[0].quantity);
+
+      //price
+      correspondingProductPrice.setAttribute('data-product-price',data[0].price)
+      correspondingProductPrice.innerText=data[0].price
+      console.log("prodcut price",data[0].price);
+
+      //sub price
+      correspondingSubPrice.setAttribute('data-product-price',data[0].totalPrice)
+      correspondingSubPrice.innerText=data[0].totalPrice
+      console.log("sub price",data[0].totalPrice);
+
+      //checkout price
+      document.getElementById('checkPrice').innerText=data[1].totalCart
+        
+        console.log("totoal price",data[1].totalCart);
+      //checkout total price
+      document.getElementById('totalPrice').innerText=data[1].totalCart
       })
       .catch((error)=>{
-        console.log("minus failed");
+        console.log("plus failed");
         console.log(error);
       })
-    })
-  })
-    
+    }
+      else
+      {
+        console.log("noo");
+    const toast = document.getElementById('liveToast');
+    toast.classList.add('show'); // Show the toast
+
+    // Set a timer to automatically close the toast after 3 seconds
+    setTimeout(() => {
+      toast.classList.remove('show'); // Hide the toast
+    }, 1000); // 3 seconds in milliseconds
+ 
+
+  }   
+        }
+      }
+    }
+  
+
+      })
+
+    });
+});
   </script>
+
+
+
+
+
+<!-- quantity minus -->
+
+<script>
+  
+  document.addEventListener('DOMContentLoaded', () => {
+  const quantityMinus = document.querySelectorAll('#quantityMinus');
+
+  quantityMinus.forEach(minus => {
+    minus.addEventListener('click',()=>{
+   
+    const quantity=false
+    const stock=minus.getAttribute('data-stock')
+      const dataQuantity = minus.getAttribute('data-quantity');
+      console.log("dataQuantity minus",dataQuantity);
+     console.log("stock minus",stock);
+
+      //  quantity element
+      const correspondingProductQuantity = document.querySelector(`#productQuantity[data-quantity="${dataQuantity}"]`);
+        if (correspondingProductQuantity) {
+            const quantityValue = correspondingProductQuantity.getAttribute('data-cartQuantity');
+            console.log("quantityValue ", quantityValue);
+
+            //product price
+            const correspondingProductPrice = document.querySelector(`#productPrice[data-quantity="${dataQuantity}"]`);
+        if (correspondingProductPrice) {
+            const productPrice = correspondingProductPrice.getAttribute('data-product-price');
+            console.log("productPrice ", productPrice);
+
+            //subprice
+            const correspondingSubPrice = document.querySelector(`#subPrice[data-quantity="${dataQuantity}"]`);
+           
+        if (correspondingSubPrice) {
+            const subPrice = correspondingSubPrice.getAttribute('data-sub-total');
+            console.log("subPrice ", subPrice);
+
+             //checkout price
+          const checkPrice=document.getElementById('checkPrice').textContent
+            console.log("checkPrice ", checkPrice);
+
+            //checkTotal Price
+            const totalPrice=document.getElementById('totalPrice').textContent
+            console.log("totalPrice ", totalPrice);
+
+      
+    if(quantityValue!=0)
+    {
+      console.log("yes ");
+    fetch('/home/cartQuantity',{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({cartId:dataQuantity,quantity:quantity})
+    })
+    .then((response)=>response.json())
+    .then((data)=>{
+      console.log("plus success");
+      console.log(data);
+   console.log("success");
+        //quantity
+        correspondingProductQuantity.setAttribute('data-cartQuantity',data[0].quantity)
+       correspondingProductQuantity.innerText = data[0].quantity;
+      console.log("data.quantity is",data[0].quantity);
+
+      //price
+      correspondingProductPrice.setAttribute('data-product-price',data[0].price)
+      correspondingProductPrice.innerText=data[0].price
+      console.log("prodcut price",data[0].price);
+
+      //sub price
+      correspondingSubPrice.setAttribute('data-product-price',data[0].totalPrice)
+      correspondingSubPrice.innerText=data[0].totalPrice
+      console.log("sub price",data[0].totalPrice);
+
+     //checkout price
+     document.getElementById('checkPrice').innerText=data[1].totalCart
+        
+        console.log("totoal price",data[1].totalCart);
+      //checkout total price
+      document.getElementById('totalPrice').innerText=data[1].totalCart
+    })
+    .catch((error)=>{
+      console.log("plus failed");
+      console.log(error);
+    })
+  }
+    else
+    {
+      console.log("noo");
+  const toast = document.getElementById('liveToasts');
+  toast.classList.add('show'); // Show the toast
+
+  // Set a timer to automatically close the toast after 3 seconds
+  setTimeout(() => {
+    toast.classList.remove('show'); // Hide the toast
+  }, 1000); // 3 seconds in milliseconds
+
+
+}   
+
+      }
+    
+    }
+  }
+  
+    })
+
+  });
+});
+
+</script>
 
 
 <!-- procced to checkout -->

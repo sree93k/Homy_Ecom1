@@ -88,7 +88,7 @@
           <h3>All Orders</h3>
           <table class="table">
               <thead class="table-light">
-                <th>SL No.</th>
+                
                 <th>Order Date</th>
                 <th>Order ID</th>
           
@@ -106,7 +106,7 @@
                 {%>
 
               <tr>
-                <td><%=i+1%></td>
+               
                 <td><%= allOrders[i].orderDate ? allOrders[i].orderDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '' %></td>
 
                   <td><%=allOrders[i].orderId%></td>
@@ -151,6 +151,49 @@
               </tbody>
             </table>
          </div>
+         <nav aria-label="Page navigation example" style="padding-bottom: 120px; padding-top: 30px;">
+          <ul class="pagination justify-content-center">
+            <% if (currentPage > 1) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Previous">&laquo;</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">&lsaquo;</a>
+              </li>
+            <% } else { %>
+              <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">&lsaquo;</span>
+              </li>
+            <% } %>
+        
+            <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+              </li>
+            <% } %>
+        
+            <% if (currentPage < totalPages) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">&rsaquo;</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= totalPages %>" aria-label="Next">&raquo;</a>
+              </li>
+            <% } else { %>
+              <li class="page-item disabled">
+                <span class="page-link">&rsaquo;</span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+        
+      
       </section>
 </section>
 
@@ -206,6 +249,19 @@
 <!-- modal end -->
 
 
+<!-- pagination -->
+<!-- <script src="../../public/Files/pagination/pagination-master/release/pagination.full.min.js"></script> 
+<script type="text/javascript">
+  (function() {
+      var paginator = new pagination.ItemPaginator({prelink:'/', current: 3, rowsPerPage: 200, totalResult: 10020});
+      var html = paginator.render();
+      var paginator = pagination.create('search', {prelink:'/', current: 1, rowsPerPage: 200, totalResult: 10020});
+      html += paginator.render();
+      document.getElementById("paging").innerHTML = html;
+  })();
+  </script>  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.5/pagination.min.js"></script>
+  
 
 
 <!-- script status button-->
