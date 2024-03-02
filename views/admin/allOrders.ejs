@@ -115,6 +115,7 @@
                   <input type="hidden" value="<%=allOrders[i]._id%>" id="allOrderId">
                   <td>
                     <div class="container">
+                      
                       <div class="row">
                         <div class="col-12">
                           <p class="address-line"><%=allOrders[i].deliveryAddress.name%></p>                 
@@ -250,16 +251,7 @@
 
 
 <!-- pagination -->
-<!-- <script src="../../public/Files/pagination/pagination-master/release/pagination.full.min.js"></script> 
-<script type="text/javascript">
-  (function() {
-      var paginator = new pagination.ItemPaginator({prelink:'/', current: 3, rowsPerPage: 200, totalResult: 10020});
-      var html = paginator.render();
-      var paginator = pagination.create('search', {prelink:'/', current: 1, rowsPerPage: 200, totalResult: 10020});
-      html += paginator.render();
-      document.getElementById("paging").innerHTML = html;
-  })();
-  </script>  -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.5/pagination.min.js"></script>
   
 
@@ -291,8 +283,10 @@
     {
       document.getElementById('delivered').checked=true
     }
-    console.log("whyno");
+    console.log("whyno ssss");
     modalOrderId.value=orderId
+    console.log("order Id",orderId);
+    console.log("modal order Id",modalOrderId);
     $("#orderStatus").modal("show");
   })
 })
@@ -302,10 +296,8 @@
 
 
 
-
+<!-- status item updat ebtn -->
 <script>
-
-  
     const statusUpdateBtn=document.querySelectorAll('#statusUpdateBtn')
     console.log("page started");
     statusUpdateBtn.forEach(statusUpdateBtn=>{

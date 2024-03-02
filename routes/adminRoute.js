@@ -100,6 +100,15 @@ admin_route.post('/orderItemCancel',auth.isLogin,adminController.orderItemCancel
 //orderItemStatusUpdate
 admin_route.post('/orderItemStatusUpdate',auth.isLogin,adminController.orderItemStatusUpdate)
 
+//returnStatusUpdate
+admin_route.post('/returnStatusUpdate',auth.isLogin,adminController.returnStatusUpdate)
+
+//refundWallet
+admin_route.post('/refundWallet',auth.isLogin,adminController.refundWallet)
+
+//verifyRefundPayment
+admin_route.post('/verifyRefundPayment',auth.isLogin,adminController.verifyRefundPayment)
+
 //users
 admin_route.get('/allUsers',auth.isLogin,adminController.allUsers)
 

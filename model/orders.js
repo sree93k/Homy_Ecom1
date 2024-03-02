@@ -39,7 +39,6 @@ const orderSchema=mongoose.Schema({
      cartProducts:{
             type:ObjectId,
             ref:'OrderItems'
-
      },
      amount:{
            type:Number,   
@@ -47,6 +46,10 @@ const orderSchema=mongoose.Schema({
      orderStatus:{
            type:Array,
            required:true
+     },
+     returnStatus:{
+            type:Array,
+            required:true
      },
      shippingDate:{
            type:Date,

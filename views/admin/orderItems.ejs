@@ -160,10 +160,10 @@
                                                         </div>
                                                         <div class="col-3" style="display: flex; flex-direction: column; justify-content: center;">
                                                           <button type="button" class="btn btn-success  edit-productStatus" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
-                                                          data-productTrack-id="<%=product._id %>" data-orderTrack-id="<%= orderData._id %>" data-product-status="<%= orderData.productStatus[index] %>" id="statusBtn">
+                                                          data-productTrack-id="<%=product._id %>" data-orderTrack-id="<%= orderData._id %>" data-product-status="<%= orderData.productStatus[index] %>" id="statusBtn" data-name="homy">
                                                             Edit Status 
                                                         </button>
-                                                        <button type="button" class="btn btn-warning   edit-returnStatus" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                        <button type="button" class="btn btn-warning   return-productStatus" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
                                                           data-productTrack-id="<%=product._id %>" data-orderTrack-id="<%= orderData._id %>" data-product-status="<%= orderData.productStatus[index] %>" id="returnBtn">
                                                             Return Status 
                                                         </button>
@@ -174,9 +174,13 @@
                                                              Cancel Order
                                                           </button>
                                                           <button type="button" class="btn btn-danger cancellled-statusBtn " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
-                                                          id="cancelledOrderItem"  data-product-status="<%= orderData.productStatus[index] %>">
+                                                          id="cancelledOrderItem"  data-product-status="<%= orderData.productStatus[index] %>"  data-productCancel-id="<%=product._id %>">
                                                               Cancelled
                                                             </button>
+                                                            <button type="button" class="btn btn-success  refund-Btn " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                            id="orderRefundBtn"  data-product-status="<%= orderData.productStatus[index] %>" data-refundOrder-id="<%= orderData._id %>"  data-productRefund-id="<%=product._id %>">
+                                                                Re-Fund
+                                                              </button>
                                                        
                                                         
                                                         </div>
@@ -275,7 +279,7 @@
       
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="statusUpdateBtn" >Update</button>
+        <button type="button" class="btn btn-primary" id="statusUpdateBtn" data-bs-dismiss="modal">Update</button>
       </div>
     </div>
   </div>
@@ -294,37 +298,37 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input type="hidden" id="modalProductId" value="">
-        <input type="hidden" id="modalOrderId" value="">
+        <input type="hidden" id="returnProductId" value="">
+        <input type="hidden" id="returnOrderId" value="">
 
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="returnStatus" id="Pending" value="Pending">
-          <label class="form-check-label" for="Pending">Pending</label>
+          <input class="form-check-input" type="radio" name="returnStatus" id="retrunPending" value="Return Pending">
+          <label class="form-check-label" for="Pending">Return Pending</label>
         </div>
         . <br>
         . <br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="returnStatus" id="Dispatch" value="Dispatch">
-          <label class="form-check-label" for="Dispatch">Collected</label>
+          <input class="form-check-input" type="radio" name="returnStatus" id="returnDispatch" value="Return Collected">
+          <label class="form-check-label" for="Dispatch">Return Collected</label>
         </div>
         . <br>
         . <br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="returnStatus" id="Shipped" value="Shipped">
-          <label class="form-check-label" for="Shipped">Shipped</label>
+          <input class="form-check-input" type="radio" name="returnStatus" id="returnShipped" value="Return Shipped">
+          <label class="form-check-label" for="Shipped">Return Shipped</label>
         </div>
         . <br>
         . <br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="returnStatus" id="Arrived" value="Arrived Warehouse">
-          <label class="form-check-label" for="Delivered">Arrived Warehouse</label>
+          <input class="form-check-input" type="radio" name="returnStatus" id="returnArrived" value="Return Arrived Warehouse">
+          <label class="form-check-label" for="Delivered">Return Arrived Warehouse</label>
         </div>
         
       </div>
       
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="statusReturnEditBtn" >Update</button>
+        <button type="button" class="btn btn-primary" id="statusReturnEditBtn" data-bs-dismiss="modal" >Update</button>
       </div>
     </div>
   </div>
@@ -345,9 +349,11 @@
     const orderStatus=statusBtn.getAttribute('data-product-status')
     const orderId=statusBtn.getAttribute('data-orderTrack-id')
     const productId=statusBtn.getAttribute('data-productTrack-id')
+    const name=statusBtn.getAttribute('data-name')
     console.log("orderId is ",orderId);
     console.log("orderStatus is", orderStatus);
     console.log("productId is ", productId);
+    console.log("name",name);
     if(document.getElementById('Pending').value===orderStatus)
     {
       console.log("one");
@@ -368,10 +374,15 @@
       console.log("four");
       document.getElementById('Delivered').checked=true
     }
-    console.log("whyno");
+    console.log("whyno sss");
+    console.log(productId);
+    console.log(orderId);
+    const modalProductId=document.getElementById('modalProductId')
+    const modalOrderId=document.getElementById('modalOrderId')
     modalProductId.value=productId
     modalOrderId.value=orderId
     $("#orderStatus").modal("show");
+    
   })
 })
 </script>
@@ -380,10 +391,8 @@
 
 
 
-
+<!-- statusUpdateBtn -->
 <script>
-
-  
     const statusUpdateBtn=document.querySelectorAll('#statusUpdateBtn')
     console.log("page started");
     statusUpdateBtn.forEach(statusUpdateBtn=>{
@@ -393,6 +402,7 @@
     const modalOrderId=document.getElementById('modalOrderId').value
     const modalProductId=document.getElementById('modalProductId').value
     console.log("order id",modalOrderId);
+    console.log("product id",modalProductId);
     if(document.getElementById('Pending').checked)
     {
       currentStatus=document.getElementById('Pending').value
@@ -424,7 +434,27 @@
       .then((data)=>{
         console.log(data);
         console.log("sucees update");
-        window.location.reload()
+        // const cancelledBtn = document.querySelector(`#cancelledOrderItem[data-productCancel-id="${modalProductId}"]`);
+        // const cancelBtn= document.querySelector(`#cancelOrderItem[data-productCancel-id="${modalProductId}"]`)  
+    
+        // console.log("status loaded");
+        // const cancelledStatus=cancelledBtn.getAttribute('data-product-status')
+        // console.log("track status is ",cancelledStatus);
+        // if(currentStatus==="Delivered")
+        // {
+        //   cancelledBtn.style.display="none"
+        //   cancelBtn.style.display='none'
+
+        // }
+        // else
+        // {
+        //   cancelledBtn.style.display="block"
+        //   cancelBtn.style.display='block'
+
+        // }
+          window.location.reload()
+
+       
       })
       .catch((error)=>{
         console.log(error);
@@ -445,42 +475,51 @@
   const editStatus=document.querySelectorAll('.edit-productStatus')
   const cancelProductItem=document.querySelectorAll('.cancel-productItem')
   const cancelledBtn=document.querySelectorAll('.cancellled-statusBtn')
-  const returnStatus=document.querySelectorAll('.edit-returnStatus')
+  const returnStatus=document.querySelectorAll('.return-productStatus')
+  const orderRefundBtn=document.querySelectorAll('.refund-Btn')
 
-  //edit startus
+  //edit status
   editStatus.forEach(status=>{
     console.log("status laodeed");
       const trackStatus=status.getAttribute('data-product-status')
    
-      if(trackStatus==="Cancelled" || trackStatus==="Return Initiated")
+      if(trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse")
       {
         status.style.display="none"
       }
     })
 
 
-  //cancel button startus
+  //cancel button status
   cancelProductItem.forEach(cancelBtn=>{
     console.log("status laodeed");
       const cancelStatus=cancelBtn.getAttribute('data-product-status')
      
-      if(cancelStatus==="Cancelled")
+      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse")
       {
         cancelBtn.style.display="none"
       }
     })
 
+   
     //cancellled brtn
     cancelledBtn.forEach(cancelBtn=>{
     console.log("status laodeed");
       const cancelledStatus=cancelBtn.getAttribute('data-product-status')
       console.log("track status is ",cancelledStatus);
-      if(cancelledStatus==="Cancelled")
+      if(cancelledStatus==="Cancelled"  )
       {
+        console.log("step 1");
         cancelBtn.style.display="block"
       }
       else
       {
+        console.log("step 2");
+        cancelBtn.style.display="none"
+      }
+      if(cancelledStatus==="Delivered")
+      {
+        console.log("step 3");
         cancelBtn.style.display="none"
       }
     })
@@ -490,7 +529,7 @@
     console.log("status laodeed");
       const returnBtnStatus=returnBtn.getAttribute('data-product-status')
       console.log("track status is ",returnBtnStatus);
-      if(returnBtnStatus==="Return Initiated")
+      if(returnBtnStatus==="Return Initiated" || returnBtnStatus==="Return Pending" || returnBtnStatus==="Return Collected" || returnBtnStatus==="Return Shipped"  )
       {
         returnBtn.style.display="block"
       }
@@ -499,6 +538,20 @@
         returnBtn.style.display="none"
       }
     })
+
+    //refund btn
+    orderRefundBtn.forEach(refundBtn=>{
+      const refundStatus=refundBtn.getAttribute('data-product-status')
+      if( refundStatus==="Return Initiated" || refundStatus==="Return Pending" || refundStatus==="Return Collected" || refundStatus==="Return Shipped" )
+      {
+        refundBtn.style.display="block"
+      }
+      else
+      {
+        refundBtn.style.display="none"
+      }
+    })
+
 
   })
 
@@ -585,6 +638,229 @@
   })
 </script>
 
-    
 
+<!-- return product -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    console.log("return started @@@@@@@");
+    const retrunBtn=document.querySelectorAll('.return-productStatus')
+
+    retrunBtn.forEach(returns=>{
+      console.log("returned>>>>>>>");
+      const productId=returns.getAttribute('data-productTrack-id')
+      const orderId=returns.getAttribute('data-orderTrack-id')
+      const orderStatus=returns.getAttribute('data-product-status')
+
+      returns.addEventListener('click',()=>{
+  
+      console.log(productId);
+      console.log(orderId);
+      console.log(orderStatus);
+
+      $("#returnStatus").modal("show")
+      document.getElementById('returnProductId').value=productId
+      document.getElementById('returnOrderId').value=orderId
+
+      })
+    
+    })
+
+  })
+</script>
+
+
+<!-- retrun status -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const retrunConfirmBtn=document.getElementById('statusReturnEditBtn')
+
+    retrunConfirmBtn.addEventListener('click',()=>{
+      let returnStatus;
+      if(document.getElementById('retrunPending').checked)
+      {
+        returnStatus=document.getElementById('retrunPending').value
+      }
+      else if(document.getElementById('returnDispatch').checked)
+      {
+        returnStatus=document.getElementById('returnDispatch').value
+      }
+      else if(document.getElementById('returnShipped').checked)
+      {
+        console.log("yes");
+        returnStatus=document.getElementById('returnShipped').value
+      }
+      else if(document.getElementById('returnArrived').checked)
+      {
+        returnStatus=document.getElementById('returnArrived').value
+      }
+      console.log("the return status is ",returnStatus);
+      const orderId=document.getElementById('returnOrderId').value
+    const productId=document.getElementById('returnProductId').value
+    console.log("order id",orderId);
+    console.log("product id",productId);
+    const returnData={
+      orderId:orderId,
+      productId:productId,
+      returnStatus:returnStatus
+    }
+    fetch('/admin/returnStatusUpdate',{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(returnData)
+    })
+    .then((response)=>response.json())
+    .then((data)=>{
+      console.log("success is now return status");
+      console.log(data);
+      window.location.reload()
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+    })
+   
+    
+  })
+
+</script>
+
+
+<!-- razorpay library-->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!-- refund razorpay step 1 -->
+    
+<script>
+  const refundBtn=document.querySelectorAll('.refund-Btn')
+  refundBtn.forEach(refunds=>{
+    refunds.addEventListener('click',()=>{
+      const orderId=refunds.getAttribute('data-refundOrder-id')
+      const productId=refunds.getAttribute('data-productRefund-id')
+      const productStatus=refunds.getAttribute('data-product-status')
+      console.log("orderId ",orderId);
+      console.log("prodcut Id",productId);
+      console.log("status ",productStatus);
+      const refundData={
+        orderId:orderId,
+        productId:productId,
+        productStatus:productStatus
+      }
+      fetch('/admin/refundWallet',{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(refundData)
+      })
+      .then((response)=>response.json())
+      .then((data)=>{
+        console.log(data);
+        if(data[1]==="onlinePayment")
+          {
+            if(data[0]===true)
+            {
+              console.log("online paymentt retrun orderId successfuly");
+              const order=data[2]
+              console.log(" order is....",order);
+              razorpayPayment(order);
+              console.log("1st funtion last line");
+            }
+            else
+            {
+              console.log("online error");
+            }
+          }
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    })
+  })
+
+
+function razorpayPayment(order)
+{
+  console.log("razor pay first funtion called..");
+  console.log(typeof(order.amount));
+  var options = {
+    "key": "rzp_test_HMZrUgnBYupd2b", 
+    "amount": order.amount, 
+    "currency": "INR",
+    "name": "Homy Furnitures",
+    "description": `Order ID :${order.receipt} `,
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, 
+    "handler": function (response){
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature)
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp = new Razorpay(options);
+
+  rzp.open();
+}
+
+function verifyPayment(payment,order)
+{
+  console.log("2nd funtion listeningg....");
+  console.log("payment",payment);
+  console.log("order",order);
+  $.ajax({
+    url:'/admin/verifyRefundPayment',
+    data:{
+      payment,
+      order
+    },
+    method:'POST',
+    success:function(data){
+      console.log("success data is ",data);
+      if(data[1]==="onlinePayment")
+      {
+        if(data[0])
+      {
+        Swal.fire({
+            title: "Order Done Successfully",
+            icon: "success"
+          })
+          .then(() => {
+            window.location.href = '/admin/orderItems';
+            });
+      }
+      else
+      {
+        Swal.fire({
+            title: "Order Failed",
+            icon: "error"
+          })
+          .then(() => {
+            window.location.href = '/admin/orderItems';
+            });
+
+      }
+
+      }
+    },
+    error:function(error){
+      console.error("error occured while making ajax",error)
+    }
+  })
+  console.log("2nd function end....");
+}
+
+</script>
 <%- include('../layout/admin/footer')%>

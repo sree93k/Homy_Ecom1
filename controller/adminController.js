@@ -17,7 +17,23 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const session = require('express-session')
 const Offer=require('../model/offer')
+const Return=require('../model/return')
+const { use } = require('../routes/userRoute')
+const Razorpay=require('razorpay')
 const ObjectId = mongoose.Types.ObjectId;
+const { createHash, createHmac } = require("crypto");
+const crypto = require('crypto');
+const { log } = require('console')
+const Wallet=require('../model/wallet')
+const Payment=require('../model/paymentDetails')
+
+async function computeHmac()
+{
+
+const hmac=crypto.createHmac('sha256',process.env.KEY_SECRET)
+return hmac
+}
+
 
 const securePassword = async (password) => {
     try {
@@ -27,6 +43,7 @@ const securePassword = async (password) => {
       console.log(error);
     }
   };
+
 
 //admin login
 const adminLogin=async(req,res)=>{
@@ -425,7 +442,11 @@ const orderItemCancel=async(req,res)=>{
 
 const orderItemStatusUpdate=async(req,res)=>{
     try {
-        console.log("start product status changing");
+        console.log("start product status changing starteddd >>>>>");
+        console.log(req.body.orderId);
+        console.log(req.body.productId);
+        console.log(req.body.orderStatus);
+        console.log("starting from here");
         const orderId=new ObjectId(req.body.orderId)
         const productId=new ObjectId(req.body.productId)
         const orderStatus=req.body.orderStatus
@@ -445,6 +466,204 @@ const orderItemStatusUpdate=async(req,res)=>{
        await orderData.save();
        console.log("orderDtaa",orderData);
        res.json(orderData)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+//returnStatusUpdate
+const returnStatusUpdate=async(req,res)=>{
+    try {
+        console.log("returnStatusUpdate started >>>>");
+        const returnStatus=req.body.returnStatus
+        const orderId=new ObjectId(req.body.orderId)
+        const productId=new ObjectId(req.body.productId)
+        console.log("return status",returnStatus);
+        console.log("order Id",orderId);
+        console.log("product Id",productId);
+        const orderData=await Order.findById({_id:orderId})
+        const userId=orderData.userId
+        console.log("user Id is ",userId);
+        const returnData=await Return.findOne({orderId:orderId,productId:productId})
+        const userData=await User.findById({_id:userId})
+     
+        returnData.returnStatus=returnStatus
+        await returnData.save()
+        const orderLength=orderData.productItem.length
+        console.log("orderLength : ",orderLength);
+        for(let i=0;i<orderLength;i++)
+         {
+            if(orderData.productItem[i].equals(productId))
+            {
+                orderData.productStatus[i]=returnStatus
+                console.log("order 1",orderData.productStatus[i]);
+                console.log("order 2",returnStatus);
+                await orderData.save()
+            }
+        }   
+     
+        const data=true
+        console.log("yess iam complte");
+        console.log("return data",returnData);
+        console.log("user data",userData);
+        console.log("order data",orderData);
+        res.json(data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function generateRandomNumber() {
+    // Generate a random number between 100000 and 999999
+    return Math.floor(Math.random() * 900000) + 100000;
+  }
+  
+  function generateRazorpay(amount, orderID,orderId,prodcuctId) {
+    return new Promise((resolve, reject) => {
+      console.log("razorpay function awakened! GOOD MORNING!>>>>>>>>>");
+      var instance = new Razorpay({
+        key_id: process.env.KEY_ID,
+        key_secret: process.env.KEY_SECRET,
+      });
+  
+      var options = {
+        amount: amount*100,
+        currency: "INR",
+        receipt: orderID,
+        notes:{
+            orderId:orderId,
+            prodcuctId:prodcuctId
+        }
+      };
+      console.log("options", options);
+      instance.orders.create(options, function (err, order) {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          console.log("order is...", order);
+          resolve(order);
+        }
+      });
+    });
+  }
+// refundWallet
+const refundWallet=async(req,res)=>{
+    try {
+        console.log("refundWallet started>>>>");
+        const orderId=new ObjectId(req.body.orderId)
+        const productId=new ObjectId(req.body.productId)
+        const orderStatus=req.body.orderStatus
+        console.log("order Id",orderId);
+        console.log("prodcut Id",productId);
+        console.log("order status",orderStatus);
+        const orderData=await Order.findOne({_id:orderId})
+        console.log("order data",orderData);
+        const orderLength=orderData.productItem.length
+        console.log("orderLength : ",orderLength);
+        let refundAmount;
+        for(let i=0;i<orderLength;i++)
+         {
+            console.log("yes ",i);
+            if(orderData.productItem[i].equals(productId))
+            {
+                console.log("amount entered");
+                refundAmount=orderData.productPrice[i]*orderData.productQuantity[i]
+                
+            }
+        }  
+        console.log("refund Amount is",refundAmount);
+        const randomNumber = generateRandomNumber();
+        const orderID=`REFUND${randomNumber}`
+        const razorpayOrderId= await generateRazorpay(refundAmount,orderID,orderId,productId)
+        if(razorpayOrderId)
+        {
+          console.log("success step 1");
+          const data=[true,"onlinePayment",razorpayOrderId]
+          res.json(data)
+        }
+        else
+        {
+          console.log("error step 2");
+          res.status(500).json({message:"something wrong"})
+        }
+      
+
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//verifyRefundPayment
+const verifyRefundPayment=async(req,res)=>{
+    try {
+        console.log("verifyRefundPayment >>>>>");
+        res.set("Cache-control","no-store")
+    console.log("payment verificaation started.....>>>>>");
+    const payment=req.body.payment
+    const order=req.body.order
+    console.log("payment is ,",payment);
+    console.log("order is ",order);
+
+    let hmac= await computeHmac()
+    await hmac.update(payment.razorpay_order_id+"|"+payment.razorpay_payment_id)
+    const generatedHmac=await hmac.digest('hex')
+    console.log("hmac",generatedHmac);
+    console.log("signature",payment.razorpay_signature);
+    console.log(generatedHmac==payment.razorpay_signature);
+    if (generatedHmac === payment.razorpay_signature) {
+      console.log("Payment is successful");
+      const paymentMethod="WalletPayment"
+      console.log(paymentMethod);
+        const orderId=order.notes.orderId
+        const productId=order.notes.prodcuctId
+        console.log("order Id",orderId);
+        console.log("product Id",productId);
+        const orderData=await Order.findById({_id:orderId})
+        console.log("order Data is",orderData);
+        const userId=orderData.userId
+        console.log("userId",userId);
+        const userWallet=await Wallet.findOne({userId:userId})
+        console.log("userWallet is",userWallet);
+        const refundAmount=order.amount/100;
+        console.log("refund Amount is",refundAmount);
+        const orderLength=orderData.productItem.length
+        console.log("orderLength : ",orderLength);
+        
+        for(let i=0;i<orderLength;i++)
+         {
+            console.log("yes ",i);
+            if(orderData.productItem[i].equals(productId))
+            {
+                console.log("refund entered")
+                orderData.amount=orderData.amount-refundAmount
+                await orderData.save()
+
+                const paymentData=new Payment({
+                    paymentMethod:"walletPayment",
+                    paymentAmount:refundAmount,
+                    paymentId:payment.razorpay_payment_id,
+                    orderId:payment.razorpay_order_id,
+                    signature:payment.razorpay_signature,
+                    userId:userId,
+                    paymentTime:new Date()
+                  })
+                  await paymentData.save()
+                userWallet.balance=refundAmount
+                const newTransaction={
+                    amount:refundAmount,
+                    type:"credit",
+                    date:new Date()
+                  }
+                  userWallet.transaction.unshift(newTransaction)
+                  await userWallet.save()
+            }
+        }  
+
+
+    }    
     } catch (error) {
         console.log(error);
     }
@@ -1231,6 +1450,9 @@ module.exports={
     orderItems,
     orderItemCancel,
     orderItemStatusUpdate,
+    returnStatusUpdate,
+    refundWallet,
+    verifyRefundPayment,
     allUsers,
     addUser,
     blockUser,

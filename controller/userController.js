@@ -550,7 +550,7 @@ const verifyOtp=async(req,res)=>{
         console.log("now Otp verified Successfully")
         
         const newUserWishList=new Wishlist({
-          userId:userData._id,
+          userId:UserID._id,
    
         })
         await newUserWishList.save()
@@ -573,7 +573,7 @@ const verifyOtp=async(req,res)=>{
          }
 
         const newUserWallet=new Wallet({
-          userId:actualOtp.userId,
+          userId:UserID._id,
           balance:0
         })
         await newUserWallet.save()
@@ -741,8 +741,15 @@ const homeCategoryLogin=async(req,res)=>{
     }
     else
     {
-       allProducts=await Product.find({})
+       allProducts=await Product.find({isDelete:false})
     }
+
+        const page = parseInt(req.query.page) || 1;
+        const limit = 9;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const products = allProducts.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(allProducts.length / limit);
 
     const loginStatus=req.session.login_status=true
     console.log(loginStatus)
@@ -760,11 +767,11 @@ const homeCategoryLogin=async(req,res)=>{
       const userWishlist=userWish.productId
       console.log("?>>>",userWishlist);
       
-      res.render('category',{products:allProducts,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",userWishlist: JSON.stringify(userWishlist)})
+      res.render('category',{products:products,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",userWishlist: JSON.stringify(userWishlist),page:page,totalPages:totalPages,data:null})
     }
     else
     {
-      res.render('category',{products:allProducts,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",userWishlist:null})
+      res.render('category',{products:products,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",userWishlist:null,page:page,totalPages:totalPages,data:null})
     }
 
   } catch (error) {
@@ -800,13 +807,19 @@ const categoryList=async(req,res)=>{
     const UserData=await User.findById({_id:userId})
     console.log(UserData)
     const userWishlist=await Wishlist.findOne({userId:userId})
+    const page = parseInt(req.query.page) || 1;
+        const limit = 9;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const products = categoryProductsList.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(categoryProductsList.length / limit);
     if(CategoryData.categoryName==="All Category")
     {
       res.redirect('/home/category')
     }
     else
     {
-      res.render('category',{loginStatus:loginStatus,category:allCategory,products:categoryProductsList,userId:UserData,categoryName:CategoryData.categoryName,userWishlist: JSON.stringify(userWishlist)})
+      res.render('category',{loginStatus:loginStatus,category:allCategory,products:products,userId:UserData,categoryName:CategoryData.categoryName,userWishlist: JSON.stringify(userWishlist),page:page,totalPages:totalPages,data:null})
       console.log("last");
 
     }
@@ -947,20 +960,34 @@ const priceFilter=async(req,res)=>{
     console.log(categoryProductsList);
     const UserData=await User.findById({_id:userId})
     console.log(UserData)
+    const userWishlist=await Wishlist.findOne({userId:userId})
     if(categoryName==="All Category")
     {
       console.log("alla caregory all prodciutsss");
+      
        categoryProductsList=await Product.aggregate([{$match:{productPrice:{$gte:minPrice,$lte:maxPrice}}}])
       console.log("second");
-      res.render('category',{products:categoryProductsList,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category"})
+      const page = parseInt(req.query.page) || 1;
+      const limit = 9;
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+      const products = categoryProductsList.slice(startIndex, endIndex);
+      const totalPages = Math.ceil(categoryProductsList.length / limit);
+      const data=[minPrice,maxPrice]
+      res.render('category',{products:products,loginStatus:loginStatus,category:allCategory,userId:UserData,categoryName:"All Category",page:page,totalPages:totalPages,userWishlist:JSON.stringify(userWishlist),data:data})
 
     }
     else
     {
       console.log("price filter end");
        categoryProductsList=await Product.aggregate([{$match:{productCategory:categoryData._id,productPrice:{$gte:minPrice,$lte:maxPrice}}}])
-      
-      res.render('category',{loginStatus:loginStatus,category:allCategory,products:categoryProductsList,userId:UserData,categoryName:categoryName})
+       const page = parseInt(req.query.page) || 1;
+        const limit = 9;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const products = categoryProductsList.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(categoryProductsList.length / limit);
+      res.render('category',{loginStatus:loginStatus,category:allCategory,products:products,userId:UserData,categoryName:categoryName,page:page,totalPages:totalPages,userWishlist:JSON.stringify(userWishlist),data:data})
       console.log("last");
     }
 
@@ -999,22 +1026,33 @@ const productRating=async(req,res)=>{
                           break;                                     
     }
     console.log("the ratingvalue is ",ratingValue);
-
+    const userWishlist=await Wishlist.findOne({userId:userId})
     let categoryProductsList;
     if(categoryName==="All Category")
     {
       console.log("alla caregory all prodciutsss");
        categoryProductsList=await Product.aggregate([{$match:{productRating:{$gte:ratingValue}}}])
       console.log("second");
-      res.render('category',{loginStatus:loginStatus,category:allCategory,products:categoryProductsList,userId:UserData,categoryName:"All Category"})
+      const page = parseInt(req.query.page) || 1;
+      const limit = 9;
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+      const products = categoryProductsList.slice(startIndex, endIndex);
+      const totalPages = Math.ceil(categoryProductsList.length / limit);
+      res.render('category',{loginStatus:loginStatus,category:allCategory,products:products,userId:UserData,categoryName:"All Category",page:page,totalPages:totalPages,userWishlist:JSON.stringify(userWishlist),data:null})
 
     }
     else
     {
       console.log("price filter end");
        categoryProductsList=await Product.aggregate([{$match:{productCategory:categoryData._id,productRating:{$gte:ratingValue}}}])
-      
-      res.render('category',{loginStatus:loginStatus,category:allCategory,products:categoryProductsList,userId:UserData,categoryName:categoryName})
+       const page = parseInt(req.query.page) || 1;
+       const limit = 9;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const products = categoryProductsList.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(categoryProductsList.length / limit);
+      res.render('category',{loginStatus:loginStatus,category:allCategory,products:products,userId:UserData,categoryName:categoryName,page:page,totalPages:totalPages,userWishlist:JSON.stringify(userWishlist),data:null})
       console.log("last");
     }
     
@@ -1028,10 +1066,24 @@ const productRating=async(req,res)=>{
 const sorting=async(req,res)=>{
   try {
     console.log("sorting starting");
-    const sortingValue=req.query.id
-    const categoryName=req.query.catId
+    let sortingValue;
+    let categoryName;
+    if(req.query.catId)
+    {
+       categoryName=req.query.catId
+       sortingValue=req.query.id
+      req.session.catId=req.query.catId
+      req.session.sortingValue=req.query.id
+    }
+    else
+    {
+      categoryName=req.session.catId
+      sortingValue=req.session.sortingValue
+    }
+    
     console.log(sortingValue);
     console.log("cat id",categoryName);
+   
     const loginStatus=req.session.login_status
     const allCategory=await Category.find({})
     const userId=new ObjectId(req.session.user_id)
@@ -1114,8 +1166,15 @@ const sorting=async(req,res)=>{
                     break;
       
     }
+    const userWishlist=await Wishlist.findOne({userId:userId})
+    const page = parseInt(req.query.page) || 1;
+       const limit = 9;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const products = categoryProductsList.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(categoryProductsList.length / limit);
 
-    res.render('category',{loginStatus:loginStatus,category:allCategory,products:categoryProductsList,userId:UserData,categoryName:"All Category"})
+    res.render('category',{loginStatus:loginStatus,category:allCategory,products:products,userId:UserData,categoryName:"All Category",page:page,totalPages:totalPages,userWishlist:JSON.stringify(userWishlist),data:null})
     console.log("last");
   } catch (error) {
     console.log(error);
@@ -1982,7 +2041,6 @@ const walletPayment=async(req,res)=>{
       }
       userWallet.transaction.unshift(newTransaction)
       await userWallet.save()
-      
       const randomNumber = generateRandomNumber();
       const currentDate = new Date();
       console.log(randomNumber); 
@@ -2225,8 +2283,9 @@ const returnProduct=async(req,res)=>{
       orderId:orderId,
       returnReason:returnReason,
       returnDate:new Date(),
-      returnStatus:"Return Initiated"
+      returnStatus:"Return Pending-Please Wait for Confirmation"
     })
+    
     await newReturn.save()
     const orderData=await Order.findById({_id:orderId}).populate('productItem')
 

@@ -169,6 +169,10 @@
                           <div class="container-fluid">
                             <div class="row">
                               <input type="hidden"  id="categoryName" name="categoryName" value="<%=categoryName%>">
+                              <%if(data){%>
+                              <input type="hidden" id="minPriceExists" data-price="<%=data[0]%>">
+                              <input type="hidden" id="maxPriceExists" data-price="<%=data[1]%>">
+                              <%}%>
                               <div class="col-4">
                                 <select class="form-select " id="minPrice" name="minPrice" aria-label="Select Category" >
                                   <option value=0>0</option>
@@ -246,6 +250,7 @@
                 </div>
             </div>
 
+       
             <div class="col-md-9">
               
               <div class="sortBys">
@@ -347,15 +352,87 @@
                 </div>
             </div>
         </div>
+        <nav aria-label="Page navigation example " style="background-color: white;margin-top: 40px;" >
+          <ul class="pagination justify-content-center">
+            <% if (page > 1) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Previous">&laquo;</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Previous">&lsaquo;</a>
+              </li>
+            <% } else { %>
+              <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">&lsaquo;</span>
+              </li>
+            <% } %>
+        
+            <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= i === page ? 'active' : '' %>">
+                <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+              </li>
+            <% } %>
+        
+            <% if (page < totalPages) { %>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Next">&rsaquo;</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page=<%= totalPages %>" aria-label="Next">&raquo;</a>
+              </li>
+            <% } else { %>
+              <li class="page-item disabled">
+                <span class="page-link">&rsaquo;</span>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+   
+        
+  </div>
+    
+
+
     </div>
 </div>
 </section>
 
 
-</section>
+
 
 
 <section>
+
+
+
+  <!-- price filter show  -->
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      let minPrice=document.getElementById('minPrice')
+      let maxPrice=document.getElementById('maxPrice')
+      const minPriceExists=document.getElementById('minPriceExists').getAttribute('data-price')
+      const maxPriceExists=document.getElementById('maxPriceExists').getAttribute('data-price')
+      console.log("max price",maxPriceExists);
+      console.log("min price",minPriceExists);
+
+      if(maxPriceExists>0)
+      {
+        maxPrice.value=maxPriceExists
+      }
+      if(minPriceExists)
+      {
+        minPrice.value=minPriceExists
+      }
+     
+    })
+
+  </script>
 
 
   <!-- search auto clear -->
@@ -538,7 +615,7 @@
 </script>
 
 
-
+<!-- search products -->
 
   <script>
 
@@ -602,34 +679,7 @@ function searchProducts() {
   </script>
 
   <!-- hide hearts -->
-  <!-- <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const myheart = document.querySelectorAll('.myheart-Btn');
-      const productIds = Array.from(myheart).map(btn => btn.getAttribute('data-productId'));
-  
-      try {
-        console.log("heloo");
-        const response = await fetch(`/home/checkWishlist?productIds=${JSON.stringify(productIds)}`);
-        const wishlistStatus = await response.json();
-  
-        myheart.forEach(btn => {
-          const productId = btn.getAttribute('data-productId');
-          const myheart = btn.nextElementSibling;
-          const isInWishlist = wishlistStatus[productId];
-  
-          if (isInWishlist) {
-            btn.style.display = 'inline-block';
-            
-          } else {
-            btn.style.display = 'none';
-           
-          }
-        });
-      } catch (error) {
-        console.error('Error checking wishlist:', error);
-      }
-    });
-  </script> -->
+
   <script src="https://cdn.jsdelivr.net/npm/bson-objectid"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
@@ -653,6 +703,8 @@ function searchProducts() {
     })
 
   </script>
+
+
 
   
   

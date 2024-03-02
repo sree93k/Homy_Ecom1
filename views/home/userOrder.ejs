@@ -219,31 +219,7 @@
                                        
                                       </div>
                                      
-                                      <!-- <div class="col-3" style="display: flex;flex-direction: column; justify-content:center">
-                                        <div class="container" >
-                                          <div class="col"> -->
-                                              <!-- <button type="button" class="btn btn-primary"
-                                              style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;margin-bottom: 3px;width: 130px;">
-                                              Track Order
-                                            </button> -->
-                                            <!-- <button type="button" class="btn btn-warning"
-                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;margin-bottom: 3px;width: 130px;">
-                                              Return or Replace
-                                            </button> -->
-                                            <!-- <button type="button" class="btn btn-success "
-                                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;margin-bottom: 3px;width: 130px;">
-                                              Invoice
-                                            </button> -->
-                                            <!-- <form action="/home/cancelOrder?orderId=<%=orderDetails[i]._id%>" method="post"> -->
-                                            <!-- <button type="submit" class="btn btn-danger cancel-order-btn" id="cancelOrder" data-order-id="<%= orderDetails[i]._id %>" 
-                                                    data-order-status="<%=orderDetails[i].orderStatus[0]%>" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;width: 130px;">
-                                              Cancel Order
-                                            </button> -->
-                                          <!-- </form> -->
-                                            
-                                          <!-- </div>
-                                        </div>
-                                       -->
+                                     
                                         
 
                                       </div>
@@ -344,26 +320,26 @@
         <input type="hidden" id="modalOrderId" value="">
 
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="pending" value="Order Pending " disabled>
-          <label class="form-check-label" for="pendingDispatch"> Pending </label>
+          <input class="form-check-input" type="radio" name="orderStatus" id="pending" value="Return Pending " disabled>
+          <label class="form-check-label" for="pendingDispatch"> Return Pending </label>
         </div>
         . <br>
         . <br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="dispatch" value="Order Dispatch" disabled>
-          <label class="form-check-label" for="readyDispatch"> Collected</label>
+          <input class="form-check-input" type="radio" name="orderStatus" id="dispatch" value=" ReturnCollected" disabled>
+          <label class="form-check-label" for="readyDispatch"> ReturnCollected</label>
         </div>
         . <br>
         . <br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="shipped" value="Order Shipped" disabled>
-          <label class="form-check-label" for="shipped"> Shipped</label>
+          <input class="form-check-input" type="radio" name="orderStatus" id="shipped" value="Return Shipped" disabled>
+          <label class="form-check-label" for="shipped">Return Shipped</label>
         </div>
         . <br>
         . <br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="delivered" value=" Order Delivered" disabled>
-          <label class="form-check-label" for="delivered">Arrived Warehouse</label>
+          <input class="form-check-input" type="radio" name="orderStatus" id="delivered" value="Return Arrived Warehouse" disabled>
+          <label class="form-check-label" for="delivered">Return Arrived Warehouse</label>
         </div>
         
       </div>
@@ -603,7 +579,7 @@ console.log("auto hidden cancel button start");
     trackItem.forEach(orderTrack=>{
       const trackStatus=orderTrack.getAttribute('data-product-status')
       console.log("track status is ",trackStatus);
-      if(trackStatus==="Delivered" || trackStatus==="Return Initiated")
+      if(trackStatus==="Delivered" || trackStatus==="Return Initiated" ||  trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse")
       {
         orderTrack.style.display="none"
       }
@@ -614,7 +590,7 @@ console.log("auto hidden cancel button start");
     cancelItem.forEach(cancelItem=>{
       const cancelStatus=cancelItem.getAttribute('data-product-status')
       console.log("cancel status is ",cancelStatus);
-      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated")
+      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse")
       {
         cancelItem.style.display="none"
       }
@@ -629,7 +605,7 @@ console.log("auto hidden cancel button start");
       {
         buyAgainItem.style.display="none"
       }
-      if(buyAgainStatus==="Return Initiated" )
+      if(buyAgainStatus==="Return Initiated" || buyAgainStatus==="Cancelled" || buyAgainStatus==="Return Arrived Warehouse")
       {
         buyAgainItem.style.display="block"
       }
@@ -643,7 +619,7 @@ console.log("auto hidden cancel button start");
       {
         returnItem.style.display="none"
       }
-      if(returnStatus==="Return Initiated")
+      if(returnStatus==="Return Initiated" )
       {
         returnItem.style.display="none"
       }
@@ -664,13 +640,13 @@ console.log("auto hidden cancel button start");
     trackReturn.forEach(returnItem=>{
       const returnStatus=returnItem.getAttribute('data-product-status')
       console.log("cancel status is ",returnStatus);
-      if(returnStatus!=="Return Initiated")
+      if(returnStatus==="Return Initiated" || returnStatus==="Return Pending" || returnStatus==="Return Collected" || returnStatus==="Return Shipped" )
       {
-        returnItem.style.display="none"
+        returnItem.style.display="block"
       }
       else
       {
-        returnItem.style.display="block"
+        returnItem.style.display="none"
       }
      
     })
@@ -742,7 +718,9 @@ document.addEventListener('DOMContentLoaded', () => {
                               title: "Return Initiated",
                               text: "",
                               icon: "success"
-                          });
+                          })
+                          .then(()=>window.location.reload())
+
 
                           }
                           else
