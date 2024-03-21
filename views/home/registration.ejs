@@ -360,9 +360,9 @@ Swal.fire({
 
 <!-- otp input automatically moves -->
 <script>
+
   document.addEventListener('DOMContentLoaded', function() {
     const otpBoxes = document.querySelectorAll('.otpBox');
-
     otpBoxes.forEach(function(box, index) {
       box.addEventListener('input', function() {
         if (this.value.length === 1) {
@@ -376,6 +376,7 @@ Swal.fire({
       });
     });
   });
+  
 </script>
 
 

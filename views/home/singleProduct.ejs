@@ -24,7 +24,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                                <a class="nav-link active" aria-current="page" href="/home/home">Home</a>
                             </li>
                             <li class="nav-item">
                               <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
@@ -86,30 +86,58 @@
             <div class="col-8    ">
                 <div class="leftouter">
                 <div class="container">
-                    <div class="row">
-                        <!-- <div class="col-8">
-                            <img src="../images/adminpage/<%= products.productImage[0] %>" class="mainImage" alt="" id="zoomable-Image">
-                            
-                          </div> -->
-                          <div class="col-8">
-                            <div id="img-container" >
-                              <img src="../images/adminpage/<%= products.productImage[0] %>" class="mainImage" alt="" id="featured">
+                  <div class="row">
+                    <div class="col-8">
+                        <div id="img-container">
+                          <div class="zoomable-Image">
+                            <img src="" class="mainImage drift-demo" alt="" id="featured" style="width: 600px;height: 600px;">
+                          </div>
+                        </div>
+                        
+
+                        
+                    </div>
+                    <div class="col-4">
+                        <div class="innerRight" >
+                            <div class="one" >
+                                <img src="../images/adminpage/<%= products.productImage[0] %>" width="100px" alt="" class="innerRightImage" id="firstImage" onclick="changeMainImage(this)">
+                            </div>
+                            <div class="two" >
+                                <img src="../images/adminpage/<%= products.productImage[1] %>" width="100px" alt="" class="innerRightImage" id="secondImage" onclick="changeMainImage(this)">
+                            </div>
+                            <div class="three" >
+                                <img src="../images/adminpage/<%= products.productImage[2] %>" width="100px" alt="" class="innerRightImage" id="thirdImage" onclick="changeMainImage(this)">
+                            </div>
+                        </div>
+                    </div>
+                   
+                      <!-- <div class="col-md-6 col-lg-7 p-b-30">
+                        <div class="p-l-25 p-r-30 p-lr-0-lg">
+                          <div class="wrap-slick3 flex-sb flex-w">
+                            <div class="wrap-slick3-dots"></div>
+                            <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+                            <div class="slick3 gallery-lb">
+              
+                              <% for(let i=0; i < products.productImage.length; i++) { %>
+                                <div class="item-slick3" data-thumb="../images/adminpage/<%= products.productImage[i] %>" width="100px">
+                                  <div class="wrap-pic-w pos-relative zoomable-Image">
+                                    <img src="../images/adminpage/<%= products.productImage[i] %>" alt="IMG-PRODUCT" width="100px">
+                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                      href="../images/adminpage/<%= products.productImage[i] %>">
+                                      <i class="fa fa-expand"></i>
+                                    </a>
+                                  </div>
+                                </div>
+                                <% } %>
+              
                             </div>
                           </div>
-                        <div class="col-4">
-                            <div class="innerRight">
-                            <div class="one">
-                                <img src="../images/adminpage/<%=products.productImage[0]%>" width='100px' alt="" class="innerRightImage" onclick="changeMainImage(this)">
-                            </div> 
-                            <div class="two">
-                                <img src="../images/adminpage/<%=products.productImage[1]%>" width='100px' alt="" class="innerRightImage" onclick="changeMainImage(this)">
                         </div>
-                        <div class="three">
-                            <img src="../images/adminpage/<%=products.productImage[2]%>" width='100px' alt="" class="innerRightImage" onclick="changeMainImage(this)">
-                        </div>
-                    </div>
-                    </div>
+                      </div> -->
+
                 </div>
+                
+              
                
                 </div>
             </div>
@@ -129,28 +157,57 @@
                     </p>
                     <div class="d-flex justify-content-center">
                       <button class="btn btn-primary px-4 rounded-pill mx-2">BUY NOW</button>
-                      <button class="btn btn-outline-primary px-4 rounded-pill" id="addToCart">ADD TO CART</button>
+                      <button class="btn btn-outline-primary px-4 rounded-pill" id="addToCart" data-productId="<%=products._id%>">ADD TO CART</button>
                     </div>
                   </div>
                 </div>
               </div>
         </div>
     </div>
+</section>
 
-
-
-
-
-
-
-
-
-
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="review">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th colspan="2" class="text-center">
+                  <h5>Reviews and Ratings</h5>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if(products.productRating.rating.length > 0) {
+                for(let i = 0; i < products.productRating.rating.length; i++) { %>
+                  <tr>
+                    <td>
+                      <div class="productReviews d-flex align-items-center">
+                        <button type="button" class="btn btn-success btn-sm me-2 p-0" style="width: 35px;"><%= products.productRating.rating[i] %><i class="fa-regular fa-star ms-1"></i></button>
+                        <p class="mb-0"><%= products.productRating.review[i] %></p>
+                      </div>
+                      <div class="userRatingName d-flex justify-content-start">
+                        <p class="mb-0" style="font-size: small;"><%= products.productRating.userName[i] %></p>
+                      </div>
+                    </td>
+                  </tr>
+                <% }
+              } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4"></div>
+    </div>
+  </div>
 </section>
 
 
-<!-- user logout -->
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 
+<!-- user logout -->
 <script>
   document.getElementById('userLogout')
   .addEventListener('click',()=>{
@@ -175,75 +232,88 @@
       .catch((error)=>{
         console.log(error)
       })
-
   })
 </script>
 
-<!-- image zoom -->
+<script src="https://unpkg.com/drift-zoom/dist/Drift.min.js"></script>
 
 <script src="https://unpkg.com/js-image-zoom@0.7.0/js-image-zoom.js" type="application/javascript"></script>
 
-<script>
-
-    var options1 = {
-        width: 400,
-        zoomWidth: 500,
-        offset: {vertical: 0, horizontal: 10}
-    };
-    
-    var options2 = {
-        fillContainer: true,
-        width:600,
-        offset: {vertical: 0, horizontal: 10}
-    };
-    
-    new ImageZoom(document.getElementById("img-container"), options2);
-    
-    </script>
-
-
 
 <script>
-    function changeMainImage(clickedImage) {
-  const featuredImage = document.getElementById("featured");
-  featuredImage.src = clickedImage.src;
-}
+    document.addEventListener('DOMContentLoaded', function () {
+      const driftDemoTriggers = document.querySelectorAll('.innerRightImage');
+      // const imgContainer = document.getElementById('img-container');
+      const featuredImage = document.getElementById('featured');
 
+      // Set the initial image to be displayed
+      const firstImage = document.getElementById('firstImage');
+      featuredImage.src = firstImage.src;
+
+      // Initialize Drift.js for each thumbnail image
+      driftDemoTriggers.forEach(function (trigger) {
+          trigger.addEventListener('mouseover', function () {
+              const zoomImageSrc = this.src;
+              featuredImage.src = zoomImageSrc;
+              // Destroy any existing Drift instance
+              if (imgContainer.driftInstance) {
+                  imgContainer.driftInstance.destroy();
+              }  
+          });
+      });
+
+      new Drift(featuredImage, {
+                  paneContainer: imgContainer,
+                  inlinePane: 769,
+                  inlineOffsetY: -85,
+                  containInline: true,
+                  hoverBoundingBox: true
+              });
+  });
 </script>
 
-<!-- logout -->
+ <style>
+  .zoomable-Image {
+      transition: transform 0.3s ease-in-out;
+  }
+
+  .zoomable-Image:hover {
+      transform: scale(1.2);
+  }
+</style> 
+
 <script>
-    document.getElementById('userLogout')
-    .addEventListener('click',()=>{
-     
-      fetch('/home/logout',{
-        method:'POST',
-        headers: {
-            "Content-Type": "application/json",
-          },
-      })
-      .then((response) => response.json())
-        .then((data) => {
-          console.log(data)
-          Swal.fire({
-            title: "Logout Successfully !",
-            icon: "success"
-          })
-          .then(() => {
-            window.location.href = '/home';
-            });
-        })
-        .catch((error)=>{
-          console.log(error)
-        })
-  
-    })
-  </script>
+const zoomableImages = document.querySelectorAll('.zoomable-Image');
+
+  function zoomImage(event, element) {
+  const rect = element.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const percentX = (x / rect.width) * 100;
+  const percentY = (y / rect.height) * 100;
+  element.style.transformOrigin =`${percentX}% ${percentY}%`;
+  element.style.transition = 'transform 0.3s ease-in-out';
+  element.style.transform = 'scale(2.3)';
+}
+
+zoomableImages.forEach(image => {
+  image.addEventListener('mousemove', function (event) {
+    zoomImage(event, this);
+  });
+
+  image.addEventListener('mouseleave', function () {
+    this.style.transition = 'transform 0.3s ease-in-out';
+    this.style.transform = 'scale(1)';
+  });
+});
+</script>
+
+
 
 
 
 <!-- add to cart -->
-<script>
+<!-- <script>
 
   const addToCartButtons = document.querySelectorAll('#addToCart');
 
@@ -285,6 +355,102 @@
       });
     });
   });
+</script> -->
+
+
+
+<!-- add to cart -->
+<script>
+
+  const addToCartButtons = document.querySelectorAll('#addToCart');
+
+ 
+  addToCartButtons.forEach(addToCart => {
+    addToCart.addEventListener('click', () => {
+      console.log("Clicked on add to cart");
+      const productId = addToCart.getAttribute('data-productId');
+      console.log(productId);
+     
+      fetch(`/home/addToCart`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ productId: productId })
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        console.log("Data added");
+        if (data[0]) {
+          Swal.fire({
+              title: "Added To Cart Successfully",
+              icon:"success",
+              html: "",
+              timer: 1000,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            })
+        } else{
+          if(data[1]==="No Stock")
+          {
+            Swal.fire({
+              title: "Sorry ! No Stock",
+              html: "",
+              timer: 800,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            })
+
+          }
+          else
+          {
+            Swal.fire({
+              title: "Already Added To Cart",
+              html: "",
+              timer: 600,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            })
+
+          }
+        
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Error data");
+      });
+    });
+  });
 </script>
+
 
 <%- include('../layout/user/footer') %>

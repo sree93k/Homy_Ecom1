@@ -10,7 +10,7 @@ const storageSingle=multer.diskStorage({
         cb(null,name)
     }
 })
-
+console.log("single storage", storageSingle);
 
 const uploadSingle = multer({
     storage: storageSingle,
@@ -19,10 +19,6 @@ const uploadSingle = multer({
     },
   }).array('productImage', 3); 
 
-
-
-  
- 
-
+console.log("uploads,",uploadSingle);
 
 module.exports={uploadSingle}

@@ -33,8 +33,11 @@ const addressScheme=mongoose.Schema({
     },
     addressType:{
         type:String
+    },
+    isDeleted:{
+        type:Boolean,
+        default:false
     }
-
 })
 
 module.exports=mongoose.model('Address',addressScheme)

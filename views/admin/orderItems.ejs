@@ -104,7 +104,8 @@
                 <section>
                   <div class="container">
                       <div class="row">
-                        <%if(orderData.productItem.length>0)
+                        <%
+                        if(orderData.productItem.length>0)
                         {
                          
                             %>
@@ -122,7 +123,7 @@
                                 <tr>
                                   <th style="background-color:#3b5d70 ;color: #ffffff"><%= orderData.deliveryDate ? orderData.deliveryDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '' %></th>
                                   <th style="background-color:#3b5d70 ;color: #ffffff">₹ <%=orderData.amount%></th>
-                                  <th style="background-color:#3b5d70 ;color: #ffffff"><%=orderData.orderStatus[0]%></th>
+                                  <th style="background-color:#3b5d70 ;color: #ffffff"><%=orderData.orderStatus%></th>
                                   <th style="background-color:#3b5d70 ;color: #ffffff"></th>
                                   <th style="background-color:#3b5d70 ;color: #ffffff">#<%=orderData.orderId%></th>
                                 </tr> 
@@ -180,6 +181,10 @@
                                                             <button type="button" class="btn btn-success  refund-Btn " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
                                                             id="orderRefundBtn"  data-product-status="<%= orderData.productStatus[index] %>" data-refundOrder-id="<%= orderData._id %>"  data-productRefund-id="<%=product._id %>">
                                                                 Re-Fund
+                                                              </button>
+                                                              <button type="button" class="btn btn-primary  complete-Btn " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                            id="orderCompleteBtn"  data-product-status="<%= orderData.productStatus[index] %>" data-refundOrder-id="<%= orderData._id %>"  data-productRefund-id="<%=product._id %>">
+                                                                Completed
                                                               </button>
                                                        
                                                         
@@ -434,24 +439,7 @@
       .then((data)=>{
         console.log(data);
         console.log("sucees update");
-        // const cancelledBtn = document.querySelector(`#cancelledOrderItem[data-productCancel-id="${modalProductId}"]`);
-        // const cancelBtn= document.querySelector(`#cancelOrderItem[data-productCancel-id="${modalProductId}"]`)  
-    
-        // console.log("status loaded");
-        // const cancelledStatus=cancelledBtn.getAttribute('data-product-status')
-        // console.log("track status is ",cancelledStatus);
-        // if(currentStatus==="Delivered")
-        // {
-        //   cancelledBtn.style.display="none"
-        //   cancelBtn.style.display='none'
-
-        // }
-        // else
-        // {
-        //   cancelledBtn.style.display="block"
-        //   cancelBtn.style.display='block'
-
-        // }
+   
           window.location.reload()
 
        
@@ -477,13 +465,13 @@
   const cancelledBtn=document.querySelectorAll('.cancellled-statusBtn')
   const returnStatus=document.querySelectorAll('.return-productStatus')
   const orderRefundBtn=document.querySelectorAll('.refund-Btn')
-
+  const orderCompleteBtn=document.querySelectorAll('.complete-Btn')
   //edit status
   editStatus.forEach(status=>{
     console.log("status laodeed");
       const trackStatus=status.getAttribute('data-product-status')
    
-      if(trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse")
+      if(trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse" || trackStatus==="Return Completed" || trackStatus==="Cancel Refund Initiated")
       {
         status.style.display="none"
       }
@@ -495,7 +483,7 @@
     console.log("status laodeed");
       const cancelStatus=cancelBtn.getAttribute('data-product-status')
      
-      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse")
+      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse" || cancelStatus==="Return Completed" || cancelStatus==="Cancel Refund Initiated")
       {
         cancelBtn.style.display="none"
       }
@@ -542,13 +530,28 @@
     //refund btn
     orderRefundBtn.forEach(refundBtn=>{
       const refundStatus=refundBtn.getAttribute('data-product-status')
-      if( refundStatus==="Return Initiated" || refundStatus==="Return Pending" || refundStatus==="Return Collected" || refundStatus==="Return Shipped" )
+      if(  refundStatus==="Return Arrived Warehouse" || refundStatus==="Cancel Refund Initiated")
       {
         refundBtn.style.display="block"
       }
       else
       {
+        
         refundBtn.style.display="none"
+      }
+    })
+
+     //Complete btn
+     orderCompleteBtn.forEach(completeBtn=>{
+      const completeStatus=completeBtn.getAttribute('data-product-status')
+      if(completeStatus==="Return Completed")
+      {
+        completeBtn.style.display="block"
+      }
+      else
+      {
+        
+        completeBtn.style.display="none"
       }
     })
 
@@ -638,11 +641,17 @@
   })
 </script>
 
+<!-- return status showing -->
 
-<!-- return product -->
+
+
+<!-- return product  -->
 <script>
   document.addEventListener('DOMContentLoaded',()=>{
     console.log("return started @@@@@@@");
+
+
+
     const retrunBtn=document.querySelectorAll('.return-productStatus')
 
     retrunBtn.forEach(returns=>{
@@ -653,13 +662,40 @@
 
       returns.addEventListener('click',()=>{
   
-      console.log(productId);
-      console.log(orderId);
-      console.log(orderStatus);
+    
+        console.log("orderId is ",orderId);
+        console.log("orderStatus is", orderStatus);
+        console.log("productId is ", productId);
+     
+        if(document.getElementById('retrunPending').value===orderStatus)
+        {
+          console.log("one");
+          document.getElementById('retrunPending').checked=true
+        }
+        else  if(document.getElementById('returnDispatch').value===orderStatus)
+        {
+          console.log("two");
+          document.getElementById('returnDispatch').checked=true
+        }
+        else  if(document.getElementById('returnShipped').value===orderStatus)
+        {
+          console.log("three");
+          document.getElementById('returnShipped').checked=true
+        }
+        else  if(document.getElementById('returnArrived').value===orderStatus)
+        {
+          console.log("four");
+          document.getElementById('returnArrived').checked=true
+        }else  if(orderStatus==="Return Initiated")
+        {
+          console.log("five");
+          document.getElementById('retrunPending').checked=true
+        }
 
-      $("#returnStatus").modal("show")
+     
       document.getElementById('returnProductId').value=productId
       document.getElementById('returnOrderId').value=orderId
+      $("#returnStatus").modal("show")
 
       })
     
@@ -725,6 +761,9 @@
   })
 
 </script>
+
+
+
 
 
 <!-- razorpay library-->
@@ -838,7 +877,7 @@ function verifyPayment(payment,order)
             icon: "success"
           })
           .then(() => {
-            window.location.href = '/admin/orderItems';
+            window.location.reload()
             });
       }
       else
@@ -848,7 +887,7 @@ function verifyPayment(payment,order)
             icon: "error"
           })
           .then(() => {
-            window.location.href = '/admin/orderItems';
+            window.location.reload()
             });
 
       }

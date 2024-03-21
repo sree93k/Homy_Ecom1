@@ -13,16 +13,48 @@ const orderSchema=mongoose.Schema({
         type:String,
         required:true
      },
-     deliveryAddress:{
-           type:ObjectId,
-           required:true,
-           ref:"Address"
-     },
+    //  deliveryAddress:{
+    //        type:ObjectId,
+    //        required:true,
+    //        ref:"Address"
+    //  },
+    deliveryAddress:{
+            name:{
+                type:String,
+            },
+            mobile:{
+                type:Number,
+            },
+            pincode:{
+                type:Number
+            },
+            locality:{
+                type:String
+            },
+            address:{
+                type:String
+            },
+            city:{
+                type:String
+            },
+            state:{
+                type:String
+            },
+            landmark:{
+                type:String
+            },
+            alterMobile:{
+                type:Number
+            },
+            addressType:{
+                type:String
+            }  
+    },
      orderDate:{
            type:Date,
            required:true
      },
-        productItem:{
+      productItem:{
            type:Array,
            required:true,
            ref:"Products"
@@ -40,11 +72,14 @@ const orderSchema=mongoose.Schema({
             type:ObjectId,
             ref:'OrderItems'
      },
+     totalPrice:{
+        type:Number
+     },
      amount:{
            type:Number,   
      },
      orderStatus:{
-           type:Array,
+           type:String,
            required:true
      },
      returnStatus:{
@@ -58,8 +93,51 @@ const orderSchema=mongoose.Schema({
      deliveryDate:{
            type:Date,
            required:true
-     }
-
+     },
+     coupon:{
+            type:Object
+     },
+     offer:{
+             type:Array
+     },
+     orderedItem: [{
+      productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'product',
+          required: true
+      },
+      quantity: {
+          type: Number,
+          required: true
+      },
+      productStatus: {
+          type: String,
+          default: "pending",
+          required: true
+      },
+      returReason: {
+          type: String,
+      },
+      productAmount: {
+          type: Number,
+          required: true
+      },
+      totalProductAmount: {
+          type: Number,
+          required: true
+      },
+      offerId: {
+          type: mongoose.Schema.Types.ObjectId,
+      },
+      
+  }],
+  deliveryCharge:{
+    type:Number,
+    default:0
+  }
+},
+{
+    timestamps: true
 })
 
 module.exports=mongoose.model('Order',orderSchema)

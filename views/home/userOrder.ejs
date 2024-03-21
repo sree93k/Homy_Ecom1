@@ -24,7 +24,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                                <a class="nav-link active" aria-current="page" href="/home/home">Home</a>
                             </li>
                             <li class="nav-item">
                               <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
@@ -136,15 +136,22 @@
                                     <th  style="background-color:#3b5d70 ;color: #ffffff; ">Delivery Date</th>
                                     <th style="background-color:#3b5d70 ;color: #ffffff">Total</th>
                                     <th style="background-color:#3b5d70 ;color: #ffffff"> Ship To</th>
-                                    <th style="background-color:#3b5d70 ;color: #ffffff"></th>
                                     <th style="background-color:#3b5d70 ;color: #ffffff">#<%=orderDetails[i].orderId%></th>
                                   </tr> 
                                   <tr>
                                     <th style="background-color:#3b5d70 ;color: #ffffff"><%= orderDetails[i].deliveryDate ? orderDetails[i].deliveryDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '' %></th>
                                     <th style="background-color:#3b5d70 ;color: #ffffff">₹ <%=orderDetails[i].amount%></th>
                                     <th style="background-color:#3b5d70 ;color: #ffffff"><%=orderDetails[i].deliveryAddress.name%></th>
-                                    <th style="background-color:#3b5d70 ;color: #ffffff"></th>
-                                    <th style="background-color:#3b5d70 ;color: #ffffff"><a href="" class="text-decoration-none text-light ">Order Details</a></th>
+                                    <th style="background-color:#3b5d70 ;color: #ffffff">
+                                      <button type="submit" class="orderDetails" style="background-color: transparent; border: none; color: inherit; padding: 0; font: inherit; width:110px"
+                                     data-name="<%=orderDetails[i].deliveryAddress.name%>" data-mobile="<%=orderDetails[i].deliveryAddress.mobile%>"
+                                     data-pincode="<%=orderDetails[i].deliveryAddress.pincode%>" data-locality="<%=orderDetails[i].deliveryAddress.locality%>"
+                                     data-address="<%=orderDetails[i].deliveryAddress.address%>" data-city="<%=orderDetails[i].deliveryAddress.city%>"
+                                     data-landmark="<%=orderDetails[i].deliveryAddress.landmark%>" data-alterMobile="<%=orderDetails[i].deliveryAddress.alterMobile%>"
+                                     data-type="<%=orderDetails[i].deliveryAddress.type%>" data-state="<%=orderDetails[i].deliveryAddress.state%>"
+                                      data-orderId="<%=orderDetails[i].orderId%>" data-orderDate="<%=orderDetails[i].orderDate%>"
+                                      data-amount="<%=orderDetails[i].amount%>" data-payment="<%=orderDetails[i].payment%>">
+                                        Order Details</button></th>
                                   </tr> 
                                 
                                 </thead>
@@ -155,14 +162,34 @@
                                   <div class="container" style="background-color: rgb(250, 248, 248);">
                                     <div class="row">
                                       <div class="col-12" >
-                                        <div class="userOrderTop">
-                                          <p class="orderP order-status" style="font-size: medium; font-weight: bold;" id="orderSt"><%=orderDetails[i].orderStatus[0]%></p>
-                                          <p class="orderP">Deliver : Xpress Courier </p>                                         
+                                        <div class="userOrderTop d-flex ">
+                                          <div class="topOne">
+                                            <p class="orderP order-status" style="font-size: medium; font-weight: bold;" id="orderSt"><%=orderDetails[i].orderStatus%></p>
+                                          <p class="orderP">Deliver : Xpress Courier </p>     
+                                          </div>
+                                          <div class="topTwo d-flex ">
+                                            <div class="orderOneTop">
+                                              <a href="/home/downloadInvoice?orderId=<%= orderDetails[i]._id %>"><button type="button" class="btn btn-success   order-invoice " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;margin-top: 7px;margin-left: 100px;"
+                                                id="cancelOrderItem"  data-orderInvoice-id="<%= orderDetails[i]._id %>"  >
+                                                Invoice
+                                              </button></a>
+
+                                            </div>
+                                            <div class="orderTwoTop">
+                                              <button type="button" class="btn btn-warning  payment-pending" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 135px;margin-left: 130px; margin-top: 7px;"
+                                            id="paymentPending"  data-repayment-id="<%= orderDetails[i]._id %>" data-order-Status="<%=orderDetails[i].orderStatus%>" data-amount="<%=orderDetails[i].amount%>" >
+                                             Payment Pending
+                                            </button>
+
+                                            </div>
+  
+                                          </div>
+                                                                              
                                         </div>
-                                        <div class="userOrderBottom  " >
+                                        <div class="userOrderBottom" >
                                          <div class="container">
                                           <div class="row">
-                                            <% orderDetails[i].productItem.forEach((product, index) => { %>
+                                            <% orderDetails[i].productItem.forEach((product,index) => { %>
                                               <div class="col-3 bg-body-secondary mb-2" style="align-content:center">
                                                   <img src="../images/adminpage/<%= product.productImage[0] %>" width="90px" height="90px" alt="">
                                               </div>
@@ -178,13 +205,16 @@
                                                           <div class="col-3" style="display: flex; flex-direction: column; justify-content: center;">
                                                             <button type="button" class="btn btn-primary  track-productItem" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
                                                             data-productTrack-id="<%=product._id %>" data-orderTrack-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>"
-                                                            data-bs-toggle="modal" data-bs-target="#orderStatus">
+                                                           >
                                                               Track Order
                                                           </button>
-                                                              <button type="button" class="btn btn-primary product-buyAgain" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
+                                                
+                                                            <a href="/home/product/?product=<%= product._id %>">
+                                                              <button type="submit" class="btn btn-primary product-buyAgain" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
                                                               data-productBuyAgain-id="<%=product._id %>" data-orderBuyAgain-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>">
                                                                   Buy It Again
-                                                              </button>
+                                                              </button></a>
+                                                     
                                                               <button type="button" class="btn btn-danger cancel-productItem " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
                                                                       id="cancelOrderItem" data-productCancel-id="<%=product._id %>" data-orderCancel-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" >
                                                                Cancel
@@ -193,14 +223,17 @@
                                                                       id="cancelOrderItem" data-productReturn-id="<%=product._id %>" data-orderReturn-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" >
                                                                Return
                                                             </button>
-                                                            <button type="button" class="btn btn-success   order-invoice " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
-                                                                      id="cancelOrderItem" data-productReturn-id="<%=product._id %>" data-orderReturn-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" >
-                                                               Invoice
-                                                            </button>
+                                                            
                                                             <button type="button" class="btn btn-success   track-return" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
                                                                       id="returnOrderItem" data-productReturn-id="<%=product._id %>" data-orderReturn-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>" 
-                                                                      data-bs-toggle="modal" data-bs-target="#returnStatus">
+                                                                      >
                                                                Track Return
+                                                            </button>
+                                                           
+                                                            <button type="button" class="btn btn-success   review-rating" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 135px; "
+                                                            id="reviewRating" data-product-id="<%=product._id %>" data-order-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>"
+                                                           data-user-id="<%=userId._id%>">
+                                                             Review & Rating  
                                                             </button>
 
                                                           </div>
@@ -210,7 +243,6 @@
                                               </div>
                                           <% }) %>
                                           
-
                                           
                                           </div>
                                          </div>
@@ -218,9 +250,6 @@
                                         </div>
                                        
                                       </div>
-                                     
-                                     
-                                        
 
                                       </div>
                                     </div>
@@ -232,15 +261,9 @@
                             }
                           }
                           %>
-
-
                         </div>
                     </div>
                  
-
-
-
-
                   </section>
                     <!-- section end -->
                 </div>
@@ -271,33 +294,33 @@
         <input type="hidden" id="modalOrderId" value="">
 
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="pending" value="Order Pending " disabled >
-          <label class="form-check-label" for="pendingDispatch">Order Pending </label>
-        </div>
-        . <br>
-        . <br>
+          <input class="form-check-input" type="radio" name="orderStatus" id="itemStatusPending" value="Pending " disabled >
+          <label class="form-check-label" for="pendingDispatch"><h5> Order Pending</h5> </label>
+        </div><br>
+        &nbsp;. <br>
+        &nbsp;. <br><br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="dispatch" value="Order Dispatch" disabled>
-          <label class="form-check-label" for="readyDispatch">Order Dispatch</label>
-        </div>
-        . <br>
-        . <br>
+          <input class="form-check-input" type="radio" name="orderStatus" id="itemStatuDispatch" value="Dispatch" disabled>
+          <label class="form-check-label" for="readyDispatch"> <h5>Order Dispatch</h5> </label>
+        </div><br>
+        &nbsp;. <br>
+        &nbsp;. <br><br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="shipped" value="Order Shipped" disabled>
-          <label class="form-check-label" for="shipped">Order Shipped</label>
-        </div>
-        . <br>
-        . <br>
+          <input class="form-check-input" type="radio" name="orderStatus" id="itemStatuShipped" value="Shipped" disabled>
+          <label class="form-check-label" for="shipped"><h5>Order Shipped</h5> </label>
+        </div><br>
+        &nbsp;. <br>
+        &nbsp;. <br><br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="delivered" value=" Order Delivered" disabled>
-          <label class="form-check-label" for="delivered">OrderDelivered</label>
+          <input class="form-check-input" type="radio" name="orderStatus" id="itemStatusDelivered" value="Delivered" disabled>
+          <label class="form-check-label" for="delivered"><h5>OrderDelivered</h5> </label>
         </div>
         
       </div>
       
       <div class="modal-footer">
         
-        <button type="button" class="btn btn-primary" id="statusUpdateBtn" >Close</button>
+        <button type="button" class="btn btn-primary" id="statusUpdateBtn" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -320,25 +343,25 @@
         <input type="hidden" id="modalOrderId" value="">
 
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="pending" value="Return Pending " disabled>
+          <input class="form-check-input" type="radio" name="orderStatus" id="returnPending" value="Return Pending " disabled>
           <label class="form-check-label" for="pendingDispatch"> Return Pending </label>
-        </div>
+        </div><br>
         . <br>
-        . <br>
+        . <br><br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="dispatch" value=" ReturnCollected" disabled>
+          <input class="form-check-input" type="radio" name="orderStatus" id="returnDispatch" value="Return Collected" disabled>
           <label class="form-check-label" for="readyDispatch"> ReturnCollected</label>
-        </div>
+        </div><br>
         . <br>
-        . <br>
+        . <br><br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="shipped" value="Return Shipped" disabled>
+          <input class="form-check-input" type="radio" name="orderStatus" id="returnShipped" value="Return Shipped" disabled>
           <label class="form-check-label" for="shipped">Return Shipped</label>
-        </div>
+        </div><br>
         . <br>
-        . <br>
+        . <br><br>
         <div class="form-check form-check-inline me-2">
-          <input class="form-check-input" type="radio" name="orderStatus" id="delivered" value="Return Arrived Warehouse" disabled>
+          <input class="form-check-input" type="radio" name="orderStatus" id="returnDelivered" value="Return Arrived Warehouse" disabled>
           <label class="form-check-label" for="delivered">Return Arrived Warehouse</label>
         </div>
         
@@ -346,7 +369,7 @@
       
       <div class="modal-footer">
         
-        <button type="button" class="btn btn-primary" id="statusUpdateBtn" >Close</button>
+        <button type="button" class="btn btn-primary" id="statusReturnUpdateBtn" data-bs-dismiss="modal" >Close</button>
       </div>
     </div>
   </div>
@@ -354,188 +377,142 @@
 
 <!-- modal two end -->
 
+<!-- modal three rating start-->
 
-
-
-
-
-
-
-
-
-
-  <!-- modal ending -->
-  
-<!-- cancel order -->
-<!-- <script>
-  document.addEventListener('DOMContentLoaded',()=>{
-
-    
-const cancelOrderButtons = document.querySelectorAll('#cancelOrder');
-  
-  cancelOrderButtons.forEach(cancelOrderButton => {
-  
-    cancelOrderButtons.addEventListener('click',()=>{
-  
-const swalWithBootstrapButtons = Swal.mixin({
-  customClass: {
-    confirmButton: "btn btn-primary ",
-    cancelButton: "btn  btn-outline-primary "
-  },
-  buttonsStyling: false
-});
-swalWithBootstrapButtons.fire({
-  title: "Sure to Cancel the Order?",
-  text: "",
-  icon: "",
-  showCancelButton: true,
-  confirmButtonText: "Confirm ",
-  cancelButtonText: "Cancel ",
-  reverseButtons: true
-}).then((result) => {
-  if (result.isConfirmed) {
-    swalWithBootstrapButtons.fire({
-      title: "Cancelled!",
-      text: "Your Order has been Cancelled.",
-      icon: "success"
-    });
-    window.location.href('/home/')
-  } else if (
-   
-    result.dismiss === Swal.DismissReason.cancel
-  ) {
-    swalWithBootstrapButtons.fire({
-  title: "Not Cancelled!",
-  html: "",
-  timer: 500,
-  timerProgressBar: true,
-  didOpen: () => {
-    Swal.showLoading();
-    const timer = Swal.getPopup().querySelector("b");
-    timerInterval = setInterval(() => {
-      timer.textContent = `${Swal.getTimerLeft()}`;
-    }, 100);
-  },
-  willClose: () => {
-    clearInterval(timerInterval);
-  }
-});
-  }
-});
-  })
-})
-  })
-</script> -->
-
-<!-- cencel order -->
-
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', () => {
-  const cancelOrderButtons = document.querySelectorAll('.cancel-order-btn');
-  
-  cancelOrderButtons.forEach(cancelOrderButton => {
-    cancelOrderButton.addEventListener('click', (event) => {
-      event.preventDefault(); 
-      
-      const orderId = cancelOrderButton.dataset.orderId; 
-      
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-primary",
-          cancelButton: "btn btn-outline-primary"
-        },
-        buttonsStyling: false
-      });
-      
-      swalWithBootstrapButtons.fire({
-        title: "Sure to Cancel the Order?",
-        icon: "",
-        showCancelButton: true,
-        confirmButtonText: "Confirm",
-        cancelButtonText: "Cancel",
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log("one");
-          cancelOrderButton.style.display="none";
-          console.log("two");
-          fetch(`/home/cancelOrder?orderId=${orderId}`, {
-            method: 'POST',
-          })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-            throw new Error('Network response was not ok.');
-          })
-          .then(data => {
+<div class="modal fade" id="reviewRatings" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Product Rating</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+          <div class="starRating m-5">
+            <input type="hidden" class="ratingDetails" id="ratingDetails" data-product-id="" data-user-id="" data-order-id="" >
+              <div class="rating-container">
+                  <button class="ratingBtns ratingBtn1" id="ratingBtn1">
+                      <i class="fa-solid fa-star solidStar star1" data-rating="" id="star1" ></i>
+                      <i class="fa-regular fa-star regularStar"></i>
+                  </button>
+                  <button class="ratingBtns ratingBtn2 " id="ratingBtn2">
+                      <i class="fa-solid fa-star solidStar star2" id="star2"></i>
+                      <i class="fa-regular fa-star regularStar"></i>
+                  </button>
+                  <button class="ratingBtns ratingBtn3" id="ratingBtn3">
+                      <i class="fa-solid fa-star solidStar star3" id="star3"></i>
+                      <i class="fa-regular fa-star regularStar"></i>
+                  </button>
+                  <button class="ratingBtns ratingBtn4" id="ratingBtn4">
+                      <i class="fa-solid fa-star solidStar star4" id="star4"></i>
+                      <i class="fa-regular fa-star regularStar"></i>
+                  </button>
+                  <button class="ratingBtns ratingBtn5" id="ratingBtn5">
+                      <i class="fa-solid fa-star solidStar star5" id="star5"></i>
+                      <i class="fa-regular fa-star regularStar"></i>
+                  </button>
+              </div>
+          </div>
           
-            swalWithBootstrapButtons.fire({
-              title: "Cancelled!",
-              text: "Your Order has been Cancelled.",
-              icon: "success"
-            }).then(() => {
-              window.location.href = '/home/userOrders'; 
-            });
-          })
-          .catch(error => {
-            console.error('There was a problem with the cancel order request:', error);
-            swalWithBootstrapButtons.fire({
-              title: "Error",
-              text: "Failed to cancel the order.",
-              icon: "error"
-            });
-          });
-        }
-        else if (
-   
-   result.dismiss === Swal.DismissReason.cancel
- ) {
-   swalWithBootstrapButtons.fire({
- title: "Not Cancelled!",
- html: "",
- timer: 400,
- timerProgressBar: true,
- didOpen: () => {
-   Swal.showLoading();
-   const timer = Swal.getPopup().querySelector("b");
-   timerInterval = setInterval(() => {
-     timer.textContent = `${Swal.getTimerLeft()}`;
-   }, 100);
- },
- willClose: () => {
-   clearInterval(timerInterval);
- }
-});
- }
-      });
-    });
-  });
-});
+              <label for="multilineInput">Enter Review :</label><br>
+              <textarea id="multilineInput" name="multilineInput" rows="4" cols="50"></textarea>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" id="ratingSubmitBtn" data-bs-dismiss="modal" class="btn btn-primary">Submit</button>
+          </div>
+      </div>
+  </div>
+</div>
 
-</script> -->
+<!-- modal three rating end-->
 
 
-<!-- canclled should have hidden button ------------------------------------------------------------------>
-<!-- <script>
-
-document.addEventListener('DOMContentLoaded',()=>{
-console.log("auto hidden cancel button start");
-      const hiddenCancelBtn=document.querySelectorAll('.cancel-order-btn')
-
-    hiddenCancelBtn.forEach(cancelOrder=>{
-    if(cancelOrder.getAttribute('data-order-id')==="Cancelled")
-    {
-      cancelOrder.style.display='none'
-    }
-    })
-
-})
-</script> -->
+<!-- order details modal starting -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5 mt-2">Order Details</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <!-- Delivery Address -->
+                  <div class="col-lg-6 mb-3">
+                      <div class="card">
+                          <div class="card-body">
+                              <h5 class="card-title">Delivery Address</h5>
+                              <div class="addressSection bg-white " style="max-height:fit-content ;">
+                                  <p id="name" class="mb-1"></p>
+                                  <p id="address" class="mb-1"></p>
+                                  <div class="joinedAddress d-flex ">
+                                    <div class="joinOne">
+                                      <p id="locality" class="mb-1">,</p>
+                                    </div>,
+                                    <div class="joinOne">
+                                      <p id="city" class="mb-1 ms-1"></p>
+                                    </div>,
+                                  </div>
+                                  <div class="joinedAddress2 d-flex ">
+                                    <div class="joinTwo">
+                                      <p id="state" class="mb-1 "></p>
+                                    </div>,
+                                    <div class="joinTwo ms-2">
+                                      <p id="pincode" class="mb-1"></p>
+                                    </div>
+                                  </div>
+                                  <p id="landmark" class="mb-1"></p>
+                                  <div class="contactNumbers d-flex ">
+                                    <div class="numberOne">
+                                      <p id="mobile" class="mb-1"></p>
+                                    </div>,
+                                    <div class="numberTwo ms-2 ">
+                                      <p id="alterMobile" class="mb-0"></p>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Order Info -->
+                  <div class="col-lg-6 mb-3">
+                      <div class="card">
+                          <div class="card-body">
+                              <h5 class="card-title">Order Info</h5>
+                              <table class="table mb-0">
+                                  <tbody>
+                                      <tr>
+                                          <th scope="row">Order Number</th>
+                                          <td id="orderId"></td>
+                                      </tr>
+                                      <tr>
+                                          <th scope="row">Order Date</th>
+                                          <td id="orderDate"></td>
+                                      </tr>
+                                      <tr>
+                                          <th scope="row">Total</th>
+                                          <td >₹<span id="amount"></span>/-</td>
+                                      </tr>
+                                      <tr>
+                                          <th scope="row">Payment Method</th>
+                                          <td id="payment"></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
 
 
 <!-- user logout -->
-
 <script>
   document.getElementById('userLogout')
   .addEventListener('click',()=>{
@@ -564,6 +541,8 @@ console.log("auto hidden cancel button start");
   })
 </script>
 
+
+<!-- order status -->
 <!-- button hidden/visibility setup -->
 <script>
   document.addEventListener('DOMContentLoaded',()=>{
@@ -574,23 +553,57 @@ console.log("auto hidden cancel button start");
     const returnProduct = document.querySelectorAll('.return-productItem');
     const orderInvoice = document.querySelectorAll('.order-invoice');
     const trackReturn=document.querySelectorAll('.track-return')
-    
+    const paymentPending=document.querySelectorAll('.payment-pending')
+    const reviewRating=document.querySelectorAll('.review-rating')
+console.log("review rating ",reviewRating);
+
+
     //track item
     trackItem.forEach(orderTrack=>{
       const trackStatus=orderTrack.getAttribute('data-product-status')
-      console.log("track status is ",trackStatus);
-      if(trackStatus==="Delivered" || trackStatus==="Return Initiated" ||  trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse")
+      
+      if(trackStatus==="Delivered" || trackStatus==="Return Initiated" ||  trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse" || trackStatus==="Return Completed" || trackStatus==="Cancel Refund Initiated" || trackStatus==="Delivered-Success")
       {
         orderTrack.style.display="none"
       }
+
+      orderTrack.addEventListener('click',()=>{
+        console.log("yesss");
+        const pending=document.getElementById('itemStatusPending')
+        const dispatch=document.getElementById('itemStatuDispatch')
+        const shipped=document.getElementById('itemStatuShipped')
+        const delivered=document.getElementById('itemStatusDelivered')
+
+        if(trackStatus==="Pending")
+        {
+          pending.checked=true
+        }
+        else  if(trackStatus==="Dispatch")
+        {
+          dispatch.checked=true
+        }
+        else  if(trackStatus==="Shipped")
+        {
+          shipped.checked=true
+        }
+        else  if(trackStatus==="Delivered")
+        {
+          delivered.checked=true
+        }
+
+        $('#orderStatus').modal('show');
+      })
+     
+    
     })
 
+    
 
     //cancel item
     cancelItem.forEach(cancelItem=>{
       const cancelStatus=cancelItem.getAttribute('data-product-status')
-      console.log("cancel status is ",cancelStatus);
-      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse")
+      
+      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse" || cancelStatus==="Return Completed" ||cancelStatus==="Cancel Refund Initiated" || cancelStatus==="Delivered-Success")
       {
         cancelItem.style.display="none"
       }
@@ -600,12 +613,12 @@ console.log("auto hidden cancel button start");
     //buy again
     buyAgainItem.forEach(buyAgainItem=>{
       const buyAgainStatus=buyAgainItem.getAttribute('data-product-status')
-      console.log("cancel status is ",buyAgainStatus);
+      
       if(buyAgainStatus!=="Delivered" )
       {
         buyAgainItem.style.display="none"
       }
-      if(buyAgainStatus==="Return Initiated" || buyAgainStatus==="Cancelled" || buyAgainStatus==="Return Arrived Warehouse")
+      if(buyAgainStatus==="Return Initiated" || buyAgainStatus==="Cancelled" || buyAgainStatus==="Return Arrived Warehouse" || buyAgainStatus==="Return Completed" || buyAgainStatus==="Cancel Refund Initiated" || buyAgainStatus==="Delivered-Success")
       {
         buyAgainItem.style.display="block"
       }
@@ -614,7 +627,7 @@ console.log("auto hidden cancel button start");
     //return item
     returnProduct.forEach(returnItem=>{
       const returnStatus=returnItem.getAttribute('data-product-status')
-      console.log("cancel status is ",returnStatus);
+
       if(returnStatus!=="Delivered")
       {
         returnItem.style.display="none"
@@ -623,23 +636,35 @@ console.log("auto hidden cancel button start");
       {
         returnItem.style.display="none"
       }
+      // console.log("Retrun pendingssssssssss");
+      // returnItem.addEventListener('click',()=>{
+      //   console.log("click yess");
+      //   if(returnStatus==="Return Pending" )
+      //   {
+      //     pending.checked=true
+      //   }
+      //   else  if(returnStatus==="Dispatch")
+      //   {
+      //     dispatch.checked=true
+      //   }
+      //   else  if(returnStatus==="Shipped")
+      //   {
+      //     shipped.checked=true
+      //   }
+      //   else  if(returnStatus==="Delivered")
+      //   {
+      //     delivered.checked=true
+      //   }
+      //   $('#returnStatus').modal('show');
+      // })
     })
 
-    //order invoice
-    orderInvoice.forEach(invoiceItem=>{
-      const invoiceStatus=invoiceItem.getAttribute('data-product-status')
-      console.log("cancel status is ",invoiceStatus);
-      if(invoiceStatus!=="Delivered")
-      {
-        invoiceItem.style.display="none"
-      }
-    })
 
 
     //track return
     trackReturn.forEach(returnItem=>{
       const returnStatus=returnItem.getAttribute('data-product-status')
-      console.log("cancel status is ",returnStatus);
+
       if(returnStatus==="Return Initiated" || returnStatus==="Return Pending" || returnStatus==="Return Collected" || returnStatus==="Return Shipped" )
       {
         returnItem.style.display="block"
@@ -648,12 +673,280 @@ console.log("auto hidden cancel button start");
       {
         returnItem.style.display="none"
       }
-     
+
+      returnItem.addEventListener('click',()=>{
+        console.log("yesss");
+        const pending=document.getElementById('returnPending')
+        const dispatch=document.getElementById('returnDispatch')
+        const shipped=document.getElementById('returnShipped')
+        const delivered=document.getElementById('returnDelivered')
+
+        if(returnStatus==="Return Pending" || returnStatus==="Return Initiated")
+        {
+          pending.checked=true
+        }
+        else  if(returnStatus==="Return Collected")
+        {
+          dispatch.checked=true
+        }
+        else  if(returnStatus==="Return Shipped")
+        {
+          shipped.checked=true
+        }
+        else  if(returnStatus==="Return Delivered")
+        {
+          delivered.checked=true
+        }
+
+        $('#returnStatus').modal('show');
+      })
     })
 
-  
+    //payment pending
+    paymentPending.forEach(pending=>{
+      const paymentStatus=pending.getAttribute('data-order-Status')
+      console.log("payment status is",paymentStatus);
+      if(paymentStatus==="Payment Pending")
+      {
+        pending.style.display='block'
+      }
+      else
+      {
+        pending.style.display='none'
+      }
+    })  
+
+    //review Rating
+    reviewRating.forEach(eachOne=>{
+      const eachOnestatus=eachOne.getAttribute('data-product-status')
     
+      if(eachOnestatus==="Delivered" )
+      {
+        eachOne.style.display='block'
+      }
+      else
+      {
+        eachOne.style.display='none'
+      }
+    })
+
   })
+</script>
+
+
+<!-- star rating visibility -->
+<script>
+   let rating ;
+  document.addEventListener('DOMContentLoaded',()=>{
+    const ratingBtn1=document.getElementById('ratingBtn1')
+    const ratingBtn2=document.getElementById('ratingBtn2')
+    const ratingBtn3=document.getElementById('ratingBtn3')
+    const ratingBtn4=document.getElementById('ratingBtn4')
+    const ratingBtn5=document.getElementById('ratingBtn5')
+   
+    document.getElementById('star1').setAttribute('data-rating',"false")
+    document.getElementById('star2').setAttribute('data-rating',"false")
+    document.getElementById('star3').setAttribute('data-rating',"false")
+    document.getElementById('star4').setAttribute('data-rating',"false")
+    document.getElementById('star5').setAttribute('data-rating',"false")
+    document.querySelectorAll('.solidStar').forEach(function(element) {
+        element.style.display = 'none';
+    });
+
+    ratingBtn1.addEventListener('click', () => {
+      console.log("hello");
+      if(document.getElementById('star1').getAttribute('data-rating')==="false")
+      {
+        console.log("test 1");
+        document.getElementById('star1').style.display = 'inline';
+        document.getElementById('star2').style.display = 'none';
+        document.getElementById('star3').style.display = 'none';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"true")
+        rating=1
+      }
+      else
+      {
+        console.log("test 2");
+        document.getElementById('star1').style.display = 'none';
+        document.getElementById('star2').style.display = 'none';
+        document.getElementById('star3').style.display = 'none';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"false")
+      }
+      });
+
+
+      ratingBtn2.addEventListener('click', () => {
+      console.log("hello");
+      if(document.getElementById('star2').getAttribute('data-rating')==="false")
+      {
+        console.log("test 1");
+        document.getElementById('star1').style.display = 'inline';
+        document.getElementById('star2').style.display = 'inline';
+        document.getElementById('star3').style.display = 'none';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"true")
+        rating=2
+      }
+      else
+      {
+        console.log("test 2");
+        document.getElementById('star1').style.display = 'none';
+        document.getElementById('star2').style.display = 'none';
+        document.getElementById('star3').style.display = 'none';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"false")
+      }
+      });
+
+      ratingBtn3.addEventListener('click', () => {
+      console.log("hello");
+      if(document.getElementById('star3').getAttribute('data-rating')==="false")
+      {
+        console.log("test 1");
+        document.getElementById('star1').style.display = 'inline';
+        document.getElementById('star2').style.display = 'inline';
+        document.getElementById('star3').style.display = 'inline';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"true")
+        rating=3
+      }
+      else
+      {
+        console.log("test 2");
+        document.getElementById('star1').style.display = 'none';
+        document.getElementById('star2').style.display = 'none';
+        document.getElementById('star3').style.display = 'none';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"false")
+      }
+      });
+
+
+      ratingBtn4.addEventListener('click', () => {
+      console.log("hello");
+      if(document.getElementById('star4').getAttribute('data-rating')==="false")
+      {
+        console.log("test 1");
+        document.getElementById('star1').style.display = 'inline';
+        document.getElementById('star2').style.display = 'inline';
+        document.getElementById('star3').style.display = 'inline';
+        document.getElementById('star4').style.display = 'inline';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"true")
+        rating=4
+      }
+      else
+      {
+        console.log("test 2");
+        document.getElementById('star1').style.display = 'none';
+        document.getElementById('star2').style.display = 'none';
+        document.getElementById('star3').style.display = 'none';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"false")
+      }    
+      });
+
+      ratingBtn5.addEventListener('click', () => {
+      console.log("hello");
+      if(document.getElementById('star5').getAttribute('data-rating')==="false")
+      {
+        console.log("test 1");
+        document.getElementById('star1').style.display = 'inline';
+        document.getElementById('star2').style.display = 'inline';
+        document.getElementById('star3').style.display = 'inline';
+        document.getElementById('star4').style.display = 'inline';
+        document.getElementById('star5').style.display = 'inline';
+        document.getElementById('star1').setAttribute('data-rating',"true")
+        rating=5
+      }
+      else
+      {
+        console.log("test 2");
+        document.getElementById('star1').style.display = 'none';
+        document.getElementById('star2').style.display = 'none';
+        document.getElementById('star3').style.display = 'none';
+        document.getElementById('star4').style.display = 'none';
+        document.getElementById('star5').style.display = 'none';
+        document.getElementById('star1').setAttribute('data-rating',"false")
+      }  
+      });
+  })
+
+const reviewBtn=document.querySelectorAll('.review-rating')
+
+reviewBtn.forEach(ratingBtn=>{
+  ratingBtn.addEventListener('click',()=>{
+    const userId=ratingBtn.getAttribute('data-user-id')
+  const productId=ratingBtn.getAttribute('data-product-id')
+  const orderId=ratingBtn.getAttribute('data-order-id')
+  console.log("user",userId);
+  console.log("productId",productId);
+  console.log("orderId",orderId);
+ console.log("rating",rating);
+
+ let ratingDetails=document.getElementById('ratingDetails')
+ ratingDetails.setAttribute('data-product-id',productId)
+ ratingDetails.setAttribute('data-order-id',orderId)
+ ratingDetails.setAttribute('data-user-id',userId)
+ 
+$("#reviewRatings").modal("show");
+    })
+})
+
+const ratingSubmitBtn=document.getElementById('ratingSubmitBtn')
+
+ratingSubmitBtn.addEventListener('click',()=>{
+  const ratingDetails=document.getElementById('ratingDetails')
+const userId=ratingDetails.getAttribute('data-user-id')
+const orderId=ratingDetails.getAttribute('data-order-id')
+const productId=ratingDetails.getAttribute('data-product-id')
+
+const review=document.getElementById('multilineInput').value
+console.log("user SS",userId);
+console.log("order SS",orderId);
+console.log("product SS",productId);
+console.log("review sss",review);
+const ratingData={
+    userId:userId,
+    productId:productId,
+    orderId:orderId,
+    rating:rating,
+    review:review
+  }
+  console.log("user",userId);
+  console.log("productId",productId);
+  console.log("orderId",orderId);
+  fetch('/home/userRating',{
+    method:"PATCH",
+    headers:{
+      "Content-Type":"application/json",
+    },
+    body:JSON.stringify(ratingData)
+  })
+  .then((response)=>response.json())
+  .then((data)=>{
+    console.log(data);
+    // const buttons = document.querySelectorAll(`.review-rating[data-product-id="${productId}"][data-order-id="${orderId}"]`);
+    //   buttons.forEach(button => {
+    //       button.style.display = 'none';
+    //   });
+    window.location.reload()
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+})
+
+
 </script>
 
 
@@ -910,6 +1203,193 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 </script>
+
+<!-- razorpay library-->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<!-- pending payment -->
+<script>
+   const paymentPending=document.querySelectorAll('.payment-pending')
+
+   paymentPending.forEach(paymentBtn=>{
+    paymentBtn.addEventListener('click',()=>{
+      const orderId=paymentBtn.getAttribute('data-repayment-id')
+      console.log("orderIUd is ,",orderId);
+      const amount=paymentBtn.getAttribute('data-amount')
+      console.log("amount",amount);
+         fetch(`/home/repayment`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({amount:amount})
+    })
+    .then((response)=>response.json()
+    .then((data)=>{
+      console.log("success order");
+      console.log(data);
+      razorpayPayment(data);
+    }))
+    .catch((error)=>{
+      console.log(error);
+    })
+  })
+  })
+
+function razorpayPayment(order)
+{
+  console.log("razor pay first funtion called..");
+  console.log(typeof(order.amount));
+  var options = {
+    "key": "rzp_test_HMZrUgnBYupd2b", 
+    "amount": order.amount, 
+    "currency": "INR",
+    "name": "Homy Furnitures",
+    "description": `Order ID :${order.receipt} `,
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, 
+    "handler": function (response){
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature)
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp = new Razorpay(options);
+
+  rzp.open();
+}
+
+function verifyPayment(payment,order)
+{
+  console.log("2nd funtion listeningg....");
+  console.log("payment",payment);
+  console.log("order",order);
+  $.ajax({
+    url:'/home/verifyPayment',
+    data:{
+      payment,
+      order
+    },
+    method:'POST',
+    success:function(data){
+      console.log("success data is ",data);
+      if(data[1]==="onlinePayment")
+      {
+        if(data[0])
+      {
+        Swal.fire({
+            title: "Order Done Successfully",
+            icon: "success"
+          })
+          .then(() => {
+            window.location.href = '/home/orderConfirmed';
+            });
+      }
+      else
+      {
+        Swal.fire({
+            title: "Order Failed",
+            icon: "error"
+          })
+          .then(() => {
+            window.location.href = '/home/checkout';
+            });
+
+      }
+
+      }
+    },
+    error:function(error){
+      console.error("error occured while making ajax",error)
+    }
+  })
+  console.log("2nd function end....");
+}
+</script>
+
+<!-- order details modal -->
+<script>
+  const orderDetails=document.querySelectorAll('.orderDetails')
+
+  orderDetails.forEach(eachOrder=>{
+   
+    eachOrder.addEventListener('click',()=>{
+   const name=eachOrder.getAttribute('data-name')
+   const mobile=eachOrder.getAttribute('data-mobile')
+   const pincode=eachOrder.getAttribute('data-pincode')
+   const locality=eachOrder.getAttribute('data-locality')
+   const address=eachOrder.getAttribute('data-address')
+   const city=eachOrder.getAttribute('data-city')
+   const landmark=eachOrder.getAttribute('data-landmark')
+   const type=eachOrder.getAttribute('data-type')
+   const orderId=eachOrder.getAttribute('data-orderId')
+   const orderDate=eachOrder.getAttribute('data-orderDate')
+   const amount=eachOrder.getAttribute('data-amount')
+   const payment=eachOrder.getAttribute('data-payment')
+   const state=eachOrder.getAttribute('data-state')
+   const alterMobile=eachOrder.getAttribute('data-alterMobile')
+
+   const date = new Date(orderDate);
+  const day = date.getDate();
+  const month = date.getMonth() + 1; 
+  const year = date.getFullYear();
+  const formattedDay = day < 10 ? '0' + day : day;
+  const formattedMonth = month < 10 ? '0' + month : month;
+  const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+
+
+document.getElementById('name').textContent=name
+document.getElementById('address').textContent=address
+document.getElementById('locality').textContent=locality
+document.getElementById('city').textContent=city
+document.getElementById('state').textContent=state
+document.getElementById('pincode').textContent=pincode
+document.getElementById('landmark').textContent=landmark
+document.getElementById('mobile').textContent=mobile
+document.getElementById('alterMobile').textContent=alterMobile
+document.getElementById('orderId').textContent=orderId
+document.getElementById('orderDate').textContent=formattedDate
+document.getElementById('amount').textContent=amount
+document.getElementById('payment').textContent=payment
+
+      $('#orderDetailsModal').modal('show');
+    })
+   
+  })
+</script>
+
+<!-- buy it again button -->
+<!-- <script>
+  const buyAgianBtn=document.querySelectorAll('.product-buyAgain')
+
+  buyAgianBtn.forEach(buyAgain=>{
+   
+    buyAgain/addEventListener('click',()=>{
+      const productId=buyAgain.getAttribute('data-productBuyAgain-id')
+      console.log("yess",productId);
+      axios.get('/home/buyAgain')
+      .then((data)=>{
+        console.log("data",data);
+      })
+      .catch((error)=>{
+        console.log("error",error);
+      })
+    })
+  })
+</script> -->
 
 
 

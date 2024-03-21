@@ -98,8 +98,8 @@
         </div>
         <div class="col-md-3">
           <form class="d-flex mt-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button> -->
           </form>
         </div>
         <div class="col-md-3 text-end">
@@ -137,7 +137,11 @@
                        <button class="btn btn-danger btn-sm coupon-remove" style="width: 80px;" data-coupon-id="<%= couponData[i]._id%>">Remove</button>
                     </div>
                     <div class="mt-2">
-                        <button class="btn btn-success  btn-sm" style="width: 80px;">Edit</button>
+                        <button class="btn btn-success  btn-sm editCoupon"  style="width: 80px;" data-couponID="<%= couponData[i]._id%>"
+                          data-coupon-id="<%= couponData[i].couponId%>" data-coupon-description="<%= couponData[i].couponDescription%>" 
+                          data-coupon-limit="<%= couponData[i].userLimit%>"  data-coupon-expiry="<%= couponData[i].expiryDate%>"
+                           data-coupon-type="<%= couponData[i].discountType%>"
+                          data-coupon-value="<%= couponData[i].discountValue%>"  >Edit</button>
                     </div>
                 </td>
                 
@@ -157,7 +161,7 @@
 <!-- modal 1 starting -->
 
 
-<!-- Modal -->
+<!-- Modal add coupon-->
 <div class="modal fade" id="addCouponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg"> <!-- Adjust modal size as needed -->
     <div class="modal-content">
@@ -210,11 +214,63 @@
   </div>
 </div>
 
-
-
-
-
 <!-- modal 1 ending -->
+
+<!-- Modal 2 edit coupon-->
+<div class="modal fade" id="editCouponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> 
+    <div class="modal-content">
+      <div class="modal-header  text-white" style="background-color: #3b5d70;">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit New Coupon</h1>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="couponID" class="form-label">Coupon ID</label>
+            <input type="text" class="form-control" id="editCouponID" placeholder="Enter Coupon ID">
+          </div>
+          <div class="mb-3">
+            <label for="couponDescription" class="form-label">Coupon Description</label>
+            <input type="text" class="form-control" id="editCouponDescription" placeholder="Enter Description">
+          </div>
+          <div class="mb-3">
+            <label for="userLimit" class="form-label">User Limit</label>
+            <input type="text" class="form-control" id="editUserLimit" placeholder="Enter Max User Allowed">
+          </div>
+          <div class="mb-3">
+            <label for="expiryDate" class="form-label">Expiry Date</label>
+            <input type="date" class="form-control" id="editExpiryDate" placeholder="Enter Expiry Date">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Discount Type</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="editDiscountType" id="editPercentage" value="editPercentage">
+              <label class="form-check-label" for="editPercentage">Discount Percentage</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="editDiscountType" id="editValue" value="editValue">
+              <label class="form-check-label" for="editValue">Discount Amount</label>
+            </div>
+            
+          </div>
+          <div class="mb-3">
+            <label for="couponDescription" class="form-label">Discount Value in Number</label>
+            <input type="text" class="form-control" id="editDiscountValue" placeholder="Enter Description">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="editCouponSubmitBtn">Submit</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- modal 2 edit ending -->
+
 
 
 
@@ -526,5 +582,68 @@
 
   })
 </script>
+
+
+<!-- edit coupon -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    const editCouponBtn=document.querySelectorAll('.editCoupon')
+    editCouponBtn.forEach(coupons=>{
+      coupons.addEventListener('click',()=>{
+        const coupondID=coupons.getAttribute('data-couponID')
+        const couponId=coupons.getAttribute('data-coupon-Id')
+        const description=coupons.getAttribute('data-coupon-description')
+        const limit=coupons.getAttribute('data-coupon-limit')
+        const expiry=coupons.getAttribute('data-coupon-expiry')
+        const type=coupons.getAttribute('data-coupon-type')
+        const value=coupons.getAttribute('data-coupon-value')
+
+        const expiryDate = new Date(expiry);
+        const year = expiryDate.getFullYear();
+        const month = String(expiryDate.getMonth() + 1).padStart(2, '0'); 
+        const day = String(expiryDate.getDate()).padStart(2, '0'); 
+        const formattedExpiry = `${year}-${month}-${day}`;
+
+        console.log("coupondID", coupondID);
+        console.log("couponId",couponId);
+        console.log("description",description);
+        console.log("limit",limit);
+        console.log("expiry",expiry);
+        console.log("type",type);
+        console.log("value",value);
+
+        document.getElementById('editCouponID').value=couponId
+        document.getElementById('editCouponDescription').value=description
+        document.getElementById('editUserLimit').value=limit
+        document.getElementById('editExpiryDate').value=formattedExpiry
+
+
+        if(type==="discountPercentage")
+        {
+          document.getElementById('editPercentage').checked=true
+        }
+        else if(type==="discountValue")
+        {
+          document.getElementById('editValue').checked=true
+        }
+        document.getElementById('editDiscountValue').value=value
+
+
+        $('#editCouponModal').modal('show');
+       
+      })
+    })
+  })
+</script>
+
+
+<!-- edit coupon submit btn -->
+<!-- <script>
+  const editSubmitBtn=document.getElementById('editCouponSubmitBtn')
+
+  editSubmitBtn.addEventListener('click',()=>{
+    
+  })
+</script> -->
 
 <%- include('../layout/admin/footer') %>

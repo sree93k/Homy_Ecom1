@@ -25,7 +25,13 @@
                                 <a class="nav-link active" aria-current="page" href="#">Home</a>
                             </li>
                             <li class="nav-item">
+                              <%if(loginStatus===false)
+                              {%>
+                                <a class="nav-link active" aria-current="page" href="#">Collections</a>
+                                
+                                <%} else {%>
                                 <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                                <%} %>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Projects</a>
@@ -91,6 +97,23 @@
 <section>
     <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
+          <%if(allBanners.length>0)
+          {
+            for(let i=0;i<allBanners.length;i++)
+            {%>
+              <div class="carousel-item active" data-bs-interval="10000">
+
+                <%if(loginStatus===false)
+                {%>
+                 <img src="./images/adminpage/<%=allBanners[i].bannerImage[0]%>" class="d-block w-100" alt="...">
+                  <%} else {%>
+                    <a href="/home/category"><img src="./images/adminpage/<%=allBanners[i].bannerImage[0]%>" class="d-block w-100" alt="..."></a> 
+                    <%}%>
+ 
+              </div>
+            <%}
+          }else{%>
+          
           <div class="carousel-item active" data-bs-interval="10000">
             <img src="./images/home/cozy-modern-loft-with-comfortable-design-elements-generated-by-ai-2-2.jpg" class="d-block w-100" alt="...">
           </div>
@@ -101,6 +124,7 @@
             <img src="./images/home/blue-armchair-against-blue-wall-living-room-interior-elegant-interior-design-with-copy-space-ai-generative.jpg" class="d-block w-100" alt="...">
           </div>
         </div>
+        <%}%>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>

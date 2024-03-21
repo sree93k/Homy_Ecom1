@@ -154,7 +154,7 @@
 
 
 <section>
-  <!-- Modal one start - Add Product-->
+  <!-- Modal one start - Add Offer-->
 <div class="modal fade" id="staticBackdropAdd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content" style="background-color: #f8f9fa; /* Set your desired background color here */">
@@ -184,6 +184,70 @@
                 </select>
                   
               </div>
+
+              <div class="offerProduct" id="offerProduct">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                Select Product
+                            </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                          <div class="accordion-body" style="max-height: 140px; overflow-y: auto;">
+                              <div class="table-responsive">
+                                  <table class="table">
+                                      <% if(allProducts.length > 0) { %>
+                                          <% for(let i=0; i<allProducts.length; i++) { %>
+                                              <tr>
+                                                  <div class="mainDiv">
+                                                      <td><%= allProducts[i].productName %></td>
+                                                      <td><img src="../images/adminpage/<%= allProducts[i].productImage[0] %>" alt="Product Image" width="30px"></td>
+                                                      <td><input type="checkbox" class="checkBoxProducts" data-productId="<%= allProducts[i]._id %>"></td> 
+                                                  </div>
+                                              </tr>
+                                          <% } %>
+                                      <% } %>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                      
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="offerCategory" id="offerCategory">
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                      <h2 class="accordion-header">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Select Category
+                          </button>
+                      </h2>
+                      <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                          <div class="accordion-body" style="max-height: 140px; overflow-y: auto;" >
+                            <div class="table-responsive">
+                              <table class="table" >
+                                  <% if(allCategory.length > 0) { %>
+                                      <% for(let i=0; i<allCategory.length; i++) { %>
+                                          <tr>
+                                              <div class="mainDiv">
+                                                  <td><%= allCategory[i].categoryName %></td>
+                    
+                                                  <td><input type="checkbox"  class="checkBoxCategory" data-categoryId="<%= allCategory[i]._id%>"></td> 
+                                              </div>
+                                          </tr>
+                                      <% } %>
+                                  <% } %>
+                              </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
               
               <label for="">Offer Dates</label>
               <div class="mb-3 d-flex ">
@@ -334,28 +398,24 @@
 </section>
 <!-- Modal edit end-->
 
-
-
-
-
  <!-- image add show at ` 1````  -->
 <script>
-  function previewImage(input, previewId) {
-      const previewContainer = document.getElementById(previewId);
-      const file = input.files[0];
+    function previewImage(input, previewId) {
+        const previewContainer = document.getElementById(previewId);
+        const file = input.files[0];
 
-      if (file) {
-          const reader = new FileReader();
+        if (file) {
+            const reader = new FileReader();
 
-          reader.onload = function () {
-              const imageElement = document.createElement("img");
-              imageElement.src = reader.result;
-              previewContainer.innerHTML = "";
-              previewContainer.appendChild(imageElement);
-          };
-          reader.readAsDataURL(file);
-      }
-  }
+            reader.onload = function () {
+                const imageElement = document.createElement("img");
+                imageElement.src = reader.result;
+                previewContainer.innerHTML = "";
+                previewContainer.appendChild(imageElement);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
 
 
@@ -364,19 +424,13 @@
   function editPreviewImage(input, previewId) {
       const previewContainer = document.getElementById(previewId);
       const file = input.files[0];
-
       if (file) {
           const reader = new FileReader();
-
           reader.onload = function () {
-
               const existingImage = previewContainer.querySelector('img');
-
-              if (existingImage) {
-                
+              if (existingImage) {               
                   existingImage.src = reader.result;
               } else {
-                 
                   const imageElement = document.createElement("img");
                   imageElement.src = reader.result;
                   imageElement.alt = file.name;
@@ -388,7 +442,6 @@
                   previewContainer.appendChild(imageElement);
               }
           };
-
           reader.readAsDataURL(file);
       }
   }
@@ -402,6 +455,27 @@
   addSubmitBtn.addEventListener('click',()=>{
     const offerName=document.getElementById('addName').value
     const addOfferType=document.getElementById('addOfferType').value
+    let checkedIds=[];
+    if (addOfferType === "Product Offer") {
+        //  checkedIds = Array.from(document.querySelectorAll('.checkBoxProducts:checked'))
+        //     .map(checkbox => checkbox.dataset.productId);
+            const checkedCheckboxes = document.querySelectorAll('.checkBoxProducts:checked');
+        checkedCheckboxes.forEach(checkbox => {
+            checkedIds.push(checkbox.getAttribute('data-productId'));
+            
+          });
+        
+    } else if (addOfferType === "Category Offer") {
+        //  checkedIds = Array.from(document.querySelectorAll('.checkBoxCategory:checked'))
+        //     .map(checkbox => checkbox.dataset.categoryId);
+            const checkedCheckboxes = document.querySelectorAll('.checkBoxCategory:checked');
+        checkedCheckboxes.forEach(checkbox => {
+            checkedIds.push(checkbox.getAttribute('data-categoryId'));
+        });
+
+     
+    }
+    console.log("checked Ids are ",checkedIds);
     const startDate=document.getElementById('startDate').value
     const endDate=document.getElementById('endDate').value
     let discountType;
@@ -430,6 +504,7 @@ formData.append('endDate', endDate);
 formData.append('discountType', discountType);
 formData.append('discountValue', discountValue);
 formData.append('offerDescription', offerDescription);
+formData.append('checkedIds',checkedIds)
 
 fetch('/admin/addOffer', {
     method: 'POST',
@@ -621,7 +696,7 @@ fetch('/admin/addOffer', {
 
 
 
-<!-- offer preview -->
+<!-- offer edit preview -->
 
 
 <script>
@@ -706,7 +781,7 @@ fetch('/admin/addOffer', {
           
           console.log(formData);
         fetch(`/admin/editUpadteOffer?offerId=${offerId}`,{
-          method:'POST',
+          method:'PATCH',
           body:formData
         })
         .then((response)=>response.json())
@@ -752,6 +827,32 @@ fetch('/admin/addOffer', {
 </script> 
 
 
+<!-- selection in add offer -->
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    
+    var offerProductDiv = document.getElementById('offerProduct');
+      var offerCategoryDiv = document.getElementById('offerCategory');
+      offerProductDiv.style.display = 'none';
+      offerCategoryDiv.style.display = 'none';
+
+    document.getElementById('addOfferType').addEventListener('change', function() {
+      var selectedOption = this.value;
+     
+
+      if (selectedOption === 'Product Offer') {
+          offerProductDiv.style.display = 'block';
+          offerCategoryDiv.style.display = 'none';
+
+      } else if (selectedOption === 'Category Offer') {
+          offerCategoryDiv.style.display = 'block';
+          offerProductDiv.style.display = 'none';
+      }
+  });
+
+  })
+  
+</script>
 
 
 

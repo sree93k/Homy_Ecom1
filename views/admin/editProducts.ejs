@@ -95,11 +95,29 @@
 
               <h1 class="modal-title" id="staticBackdropLabel">Edit <%=products.productName%></h1>
               <h5 class="productError text-danger "><%=productEditError%></h5>
-              <form action="/admin/editProducts" method="post" enctype="multipart/form-data">
-                  <div class="mb-3 mt-5">
-                      <label for="productName" class="form-label">Product Name</label>
-                      <input type="text" class="form-control" name="productName" placeholder="Product Name" id="ProductName" value="<%=products.productName%>">
-                  </div>
+              <!-- <form action="/admin/editProducts" method="post" enctype="multipart/form-data"> -->
+                 
+                  <div class="mb-3 d-flex">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="addProductNameTopOne  " style="width: 410px;">
+                                    <label for="productName" class="form-label">Product Name</label>
+                                    <input type="text" class="form-control" name="productName" placeholder="Product Name" id="ProductName" value="<%=products.productName%>">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="addProductNameTopTwo" style="width: 410px;margin-left: 20px;">
+                                    <label for="brandName" class="form-label">Brand Name</label>
+                                    <input type="text" class="form-control" name="productBrand" placeholder="Brand Name" id="productBrand" value="<%=products.productBrand%>">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    
+                    
+                </div>
                   <input type="hidden" name="productId" id="ProductId" value="<%=products._id%>">
                   <div class="mb-3">
                       <table class="table table-borderless">
@@ -156,31 +174,56 @@
                       <table class="image-table">
                           <tr>
                               <td>
-                                  <div class="card">
+                                  <!-- <div class="card">
                                       <div class="card-header">Image 1</div>
                                       <div class="card-body">
                                           <div id="preview1" class="image-preview"><img src="./images/adminpage/<%=products.productImage[0]%>" alt="<%=products.productImage[0]%>" class="img-fluid mb-2" style="max-height: 200px;"></div>
                                           <input type="file" name="productImage" id="ProductImage1" class="image-input"  onchange="previewImage(this, 'preview1')">
-                                      </td>
                                       </div>
+                                  </div> -->
+                                  <div class="card text-center mb-3" style="width: 18rem;">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Image one</h5>
+                                      <div class="close-icon" onclick="deleteImage('image1', 'preview1');">&times;
+                                    </div>
+                                    <label for="image1" class="form-label " >
+                                        <img id="preview1" src="./images/adminpage/<%=products.productImage[0]%>" alt="" style="width: 200px;">
+                                    </label>
+                                    <input type="file" class="form-control" id="image1" name="productImage"
+                                        style="display: none;" onchange="updateImage('image1', 'preview1')">
+                                        <button type="button" class="btn btn-success" onclick="document.getElementById('image1').click();">Upload Image</button>  
+                                    </div>
                                   </div>
+
+                              </td>
+                              <td>                                 
+                                        <div class="card text-center mb-3" style="width: 18rem;">
+                                        <div class="card-body">
+                                          <h5 class="card-title">Image two</h5>
+                                          <div class="close-icon" onclick="deleteImage('image2', 'preview2');">&times;
+                                        </div>
+                                        <label for="image2" class="form-label">
+                                            <img id="preview2" src="./images/adminpage/<%=products.productImage[1]%>" alt="" style="width: 200px;">
+                                        </label>
+                                        <input type="file" class="form-control" id="image2" name="productImage"
+                                            style="display: none;" onchange="updateImage('image2', 'preview2')" >
+                                            <button type="button" class="btn btn-success" onclick="document.getElementById('image2').click();">Upload Image</button>  
+                                        </div>
+                                        </div>
                               </td>
                               <td>
-                                  <div class="card">
-                                      <div class="card-header">Image 2</div>
-                                      <div class="card-body">
-                                          <div id="preview2" class="image-preview" ><img src="./images/adminpage/<%=products.productImage[1]%>" alt="<%=products.productImage[1]%>" class="img-fluid mb-2" style="max-height: 200px;"></div>
-                                          <input type="file" name="productImage" id="ProductImage2" class="image-input"  onchange="previewImage(this, 'preview2')" value="<%=products.productImage[1]%>">
-                                      </div>
-                                  </div>
-                              </td>
-                              <td>
-                                  <div class="card">
-                                      <div class="card-header">Image 3</div>
-                                      <div class="card-body">
-                                          <div id="preview3" class="image-preview"><img src="./images/adminpage/<%=products.productImage[2]%>" alt="<%=products.productImage[2]%>" class="img-fluid mb-2" style="max-height: 200px;"></div>
-                                          <input type="file" name="productImage" id="ProductImage3" class="image-input" onchange="previewImage(this, 'preview3')">
-                                      </div>
+                                <div class="card text-center mb-3" style="width: 18rem;">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Image one</h5>
+                                      <div class="close-icon" onclick="deleteImage('image3', 'preview3');">&times;
+                                    </div>
+                                    <label for="image3" class="form-label " >
+                                        <img id="preview3" src="./images/adminpage/<%=products.productImage[2]%>" alt="" style="width: 200px;">
+                                    </label>
+                                    <input type="file" class="form-control" id="image3" name="productImage"
+                                        style="display: none;" onchange="updateImage('image3', 'preview3')" >
+                                        <button type="button" class="btn btn-success" onclick="document.getElementById('image3').click();">Upload Image</button>  
+                                    </div>
                                   </div>
                               </td>
                           </tr>
@@ -189,12 +232,12 @@
               
               
                   <div class="modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropEditSuccess">Update</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton">Update</button>
                 </div>
                  
               
                  
-              </form>
+              <!-- </form> -->
               
 
               <!-- Modal one-success start-->
@@ -226,7 +269,33 @@
 
 
 
-<script>
+<!-- crop modal -->
+
+<div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 m-0">
+                <img id="imageToCrop" src="" alt="Crop this image"
+                    style="width: 100%;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary"
+                    id="cropImageBtn">Crop</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+<!-- <script>
   function previewImage(input, previewId) {
       const previewContainer = document.getElementById(previewId);
       const file = input.files[0];
@@ -258,19 +327,232 @@
           reader.readAsDataURL(file);
       }
   }
+</script> -->
+
+<script>
+    let currentInputId, currentPreviewId, cropper;
+let croppedImages = {};
+var oldimageUrl = []
+let originalFileNames = {};
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.getElementById('image1').addEventListener('change', function () { prepareImageForCropping('image1', 'preview1'); });
+    document.getElementById('image2').addEventListener('change', function () { prepareImageForCropping('image2', 'preview2'); });
+    document.getElementById('image3').addEventListener('change', function () { prepareImageForCropping('image3', 'preview3'); });
+    console.log("image 1",document.getElementById('preview1').src);
+    console.log("image 2",document.getElementById('preview2').src);
+    console.log("image 3",document.getElementById('preview3').src);
+    const url1=document.getElementById('preview1').src
+    const url2=document.getElementById('preview2').src
+    const url3=document.getElementById('preview3').src
+    const url = "http://localhost:4000/admin/images/adminpage/";
+
+    if (url1.startsWith(url)) {
+        const diff = url1.substring(url.length);
+        console.log("Difference1:", diff);
+        if(!diff)
+        {
+            document.getElementById('preview1').src = 'https://bit.ly/3ubuq5o';
+        }
+       
+    } 
+    
+    if (url2.startsWith(url)) {
+        const diff = url2.substring(url.length);
+        console.log("Difference2:", diff);
+        if(!diff)
+        {
+            document.getElementById('preview2').src = 'https://bit.ly/3ubuq5o';
+        }
+       
+    } 
+
+    if (url3.startsWith(url)) {
+        const diff = url3.substring(url.length);
+        console.log("Difference3:", diff);
+        if(!diff)
+        {
+            document.getElementById('preview3').src = 'https://bit.ly/3ubuq5o';
+        }
+       
+    } 
+
+    document.getElementById('cropImageBtn').addEventListener('click', function () {
+        performCropping();
+    });
+
+
+    $('#imageCropModal').on('shown.bs.modal', function () {
+        let image = document.getElementById('imageToCrop');
+        cropper = new Cropper(image, {
+            aspectRatio: 1,
+            viewMode: 1,
+            dragMode: "move",
+            minContainerWidth: 450,
+            minContainerHeight: 500,
+            minCropBoxWidth: 400,
+            minCropBoxHeight: 400,
+            minCanvasHeight: 500,
+            minCanvasWidth: 500,
+
+        });
+    });
+
+
+    $('#imageCropModal').on('hidden.bs.modal', function () {
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+    });
+});
+
+function prepareImageForCropping(inputId, previewId) {
+    currentInputId = inputId;
+    currentPreviewId = previewId;
+    const input = document.getElementById(inputId);
+    const file = input.files[0];
+    originalFileNames[inputId] = file.name;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        document.getElementById('imageToCrop').src = e.target.result;
+        $('#imageCropModal').modal('show');
+    };
+    reader.readAsDataURL(file);
+}
+
+
+function performCropping() {
+    if (!cropper) {
+        console.error("Cropper is not initialized.");
+        return;
+    }
+    cropper.getCroppedCanvas().toBlob((blob) => {
+
+        const preview = document.getElementById(currentPreviewId);
+        preview.src = URL.createObjectURL(blob);
+
+        croppedImages[currentInputId] = blob;
+
+
+        $('#imageCropModal').modal('hide');
+    }, 'image/png')
+
+
+}
+
+function deleteImage(inputId, previewId) {
+            const id = document.getElementById('ProductId').value
+            var preview = document.getElementById(previewId).getAttribute('src')
+            const segments = preview.split('/');
+            const filename = segments[segments.length - 1]
+            axios.post('/admin/deleteImage', { preview, filename, id })
+
+                .then(res => {
+                    if (res.data.success) {
+                        console.log("hiii");
+                        document.getElementById(inputId).value = '';
+                        document.getElementById(previewId).src = 'https://bit.ly/3ubuq5o';
+                    }
+                }).catch(err => {
+                    console.log('Error');
+                })
+
+        }
+
+
+       function updateImage(inputId, previewId) {
+
+            var input = document.getElementById(inputId);
+            var preview = document.getElementById(previewId);
+            const oldurl = preview.src
+            const segments = oldurl.split('/');
+            const filename = segments[segments.length - 1];
+            console.log(filename);
+
+            oldimageUrl.push(filename)
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+            }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const submitButton = document.getElementById('submitButton')
+    submitButton.addEventListener('click', function (e) {
+        e.preventDefault()
+        console.log("step 1");
+
+        console.log(document.getElementById('ProductName').value);
+        const productId=document.getElementById('ProductId').value
+        const productName = document.getElementById('ProductName').value
+        const category = document.getElementById('ProductCategory').value
+        const price = document.getElementById('ProductPrice').value
+        const productBrand=document.getElementById('productBrand').value
+        console.log("step 2");
+        const description = document.getElementById('ProductDescription').value
+        const quantity = document.getElementById('ProductQuantity').value
+        const image1 = document.getElementById('image1').files[0]
+        const image2 = document.getElementById('image2').files[0]
+        const image3 = document.getElementById('image3').files[0]
+        console.log("step 3");
+        console.log("img 1",image1);
+        console.log("img 2",image2);
+        console.log("img 3",image3);
+        
+
+        const formData = new FormData();
+        formData.append('productId',productId)
+        formData.append('productName', productName)
+        formData.append('productCategory', category)
+        formData.append('productPrice', price)
+        formData.append('productDescription', description)
+        formData.append('productQuantity', quantity)
+        formData.append('productBrand',productBrand)
+        formData.append('oldimageUrl', JSON.stringify(oldimageUrl))
+        console.log("step 4");
+        Object.keys(croppedImages).forEach(key => {
+            const originalFileName = originalFileNames[key];
+            formData.append(`productImage`, croppedImages[key],originalFileName);
+        });
+        console.log(formData);
+        console.log("hello .....,...>>>>>>");
+        axios.post('/admin/editProducts', formData, {
+            headers: {
+                'Content-type': "multipart/form-data"
+            }
+        }).then((res) => {
+            if (res.data.success) {
+                window.location.href = '/admin/allProducts'
+            }else{
+                window.location.href = '/admin/allProducts'
+            }
+
+        }).catch((err) => {
+            console.log('error', err);
+        });
+
+    })
+})
 </script>
 
+<!-- category name -->
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
     const categoryName=document.getElementById('ProductCategory')
     const name=categoryName.getAttribute('aria-label')
     categoryName.value=name
-    
- 
-
 })
 </script>
-
 
 
 

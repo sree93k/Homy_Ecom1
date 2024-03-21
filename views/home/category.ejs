@@ -25,7 +25,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                                <a class="nav-link active" aria-current="page" href="/home/home">Home</a>
                             </li>
                             <li class="nav-item">
                               <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
@@ -86,15 +86,27 @@
 <section>
     <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
+          <%if(allBanners.length>0)
+          {
+            for(let i=0;i<allBanners.length;i++)
+            {%>
+              <div class="carousel-item active" data-bs-interval="10000">
+                <img src="./images/adminpage/<%=allBanners[i].bannerImage[0]%>" class="d-block w-100" alt="...">
+              </div>
+            <%}
+          }else{%>
+          
           <div class="carousel-item active" data-bs-interval="10000">
-            <img src="./images/home/minimalistic-modern-living-room-furniture-background-2.jpg" class="d-block w-100" alt="...">
+            <img src="./images/home/cozy-modern-loft-with-comfortable-design-elements-generated-by-ai-2-2.jpg" class="d-block w-100" alt="...">
           </div>
           <div class="carousel-item" data-bs-interval="2000">
-            <img src="./images/home/cozy-modern-loft-with-comfortable-design-elements-generated-by-ai-2-2.jpg" class="d-block w-100" alt="..."" class="d-block w-100" alt="...">
+            <img src="./images/home/minimalistic-modern-living-room-furniture-background-2.jpg" class="d-block w-100" alt="..."" class="d-block w-100" alt="...">
           </div>
           <div class="carousel-item">
             <img src="./images/home/blue-armchair-against-blue-wall-living-room-interior-elegant-interior-design-with-copy-space-ai-generative.jpg" class="d-block w-100" alt="...">
           </div>
+        </div>
+        <%}%>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -332,7 +344,22 @@
                                               <input type="hidden" name="" id="productId" value="<%=products[i]._id%>">
                                               <input type="hidden" id="userId" value="<%=userId._id%>">
                                               <h5 class="card-title"><%= products[i].productName %></h5>
-                                              <p class="card-text text-muted">₹<%= products[i].productPrice %></p>
+
+                                              <%if(products[i].productOffer)
+                                              {%>
+                                                <div class="mainPrice d-flex justify-content-center">
+                                                <div class="priceOne">
+                                                  <p class="card-text text-muted" style="text-decoration: line-through;">₹<%= products[i].productOffer.totalAmount %> </p>
+                                                </div>
+                                                <div class="priceTwo ms-4  ">
+                                                  <p class="card-text text-muted" >
+                                                    ₹  <%= products[i].productPrice %></p>
+                                                </div>
+                                              </div>
+                                                <%} else {%>
+                                                  <p class="card-text text-muted">₹<%= products[i].productPrice %></p>
+                                                  <%}%>
+                                              
                                               <div class="d-flex justify-content-between align-items-center mt-4">
                                                   <button class="btn btn-outline-primary btn-sm" id="addToCart" data-productId="<%=products[i]._id%>">Add to Cart</button>
                                                   <button class="btn btn-primary btn-sm" value="<%=products[i]._id%>" id="buyNowBtn">Buy Now</button>
@@ -533,7 +560,7 @@
       const userId = document.getElementById('userId').value;
       console.log(userId);
       
-      fetch(`/home/addToCart?id=${userId}`, {
+      fetch(`/home/addToCart`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"

@@ -13,6 +13,9 @@ const CategorySchema=mongoose.Schema({
     },
     isBlocked:{
         type:String
+    },
+    categoryOffer:{
+        type:Object
     }
 
 })

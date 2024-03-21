@@ -92,15 +92,15 @@
       <div class="cols col-3 d-flex">
 
       </div>
-      <div class="cols col-3 d-flex">
+      <!-- <div class="cols col-3 d-flex">
           <form class="d-flex mt-3" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
-      </div>
+      </div> -->
       <div class="cols col-3 d-flex">
        
-        <button type="button" class="btn align text-bg-primary  text-light rounded-0 ms-auto" id="addNewUser"><a href="/admin/addUser" class="text-light " >Add New User</a></button>
+        <!-- <button type="button" class="btn align text-bg-primary  text-light rounded-0 ms-auto" id="addNewUser"><a href="/admin/addUser" class="text-light " >Add New User</a></button> -->
     </div>
   </div>
 
@@ -115,7 +115,7 @@
           <th>Image</th>
           <th>Mobile</th>
           <th>Email</th>
-          <th>Details</th>
+          <!-- <th>Details</th> -->
           <th>Block Status</th>
           <th>Delete</th>
         </thead>
@@ -139,11 +139,11 @@
                           <td><img src="./images/userpage/user.jpg" alt="<%= users[i].image%>" width="50px" height="50px"></td>
                           <td><%= users[i].mobile%></td>
                           <td><%= users[i].email%></td>
-                          <td>
+                          <!-- <td>
                             <button type="button" class="btn bg-success w-75   text-light  rounded-0 " 
                             data-bs-toggle="modal" data-bs-target="#staticBackdropDelete" 
                             data-product-id="<%= users[i]._id %>">Details</button>
-                          </td>
+                          </td> -->
                           
                           <td>
                             <%if(users[i].isBlocked)

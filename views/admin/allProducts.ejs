@@ -94,10 +94,10 @@
           
                 </div>
                 <div class="cols col-3 d-flex">
-                    <form class="d-flex mt-3" role="search">
+                    <!-- <form class="d-flex mt-3" role="search">
                       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                       <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    </form> -->
                 </div>
                 <div class="cols col-3 d-flex justify-content-end">
                  
@@ -110,10 +110,11 @@
               
               <table class="table mt-4">
                   <thead class="table-light">
-                    <th>SI No</th>
+                    <!-- <th>SI No</th> -->
                     <th>ProductID</th>
                     <th>Image</th>
                     <th>Product</th>
+                    <th>Brand</th>
                     <th>Category</th>
                     <th>Description</th>
                     <th>Price</th>
@@ -131,10 +132,11 @@
                       {
                         %>
                         <tr>
-                          <td><%=i+1%></td>
+                          <!-- <td><%=i+1%></td> -->
                           <td><%= products[i].productIDNumber%></td>
                           <td><img src="./images/adminpage/<%= products[i].productImage[0]%>" alt="<%= products[i].productImage%>" width="50px" height="50px"></td>
                           <td><%= products[i].productName%></td>
+                          <td><%= products[i].productBrand%></td>
                           <td><%= products[i].productCategory?.categoryName%></td>
                           <td><%= products[i].productDescription%></td>
                           <td><%= products[i].productPrice%></td>

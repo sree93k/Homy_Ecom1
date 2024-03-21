@@ -1,4 +1,4 @@
-
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //express
 const express=require('express')
 const admin_route=express()
@@ -60,15 +60,19 @@ const blockAuth=require('../middlewares/userBlock')
 // public static
 admin_route.use(express.static('public'))
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //login 
 admin_route.get('/login',auth.isLogout,adminController.adminLogin)
 admin_route.post('/login',auth.isLogout,adminController.adminValidation)
 
 //logout
 admin_route.post('/logout',auth.isLogin,adminController.adminLogout)
-
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //dashboard
 admin_route.get('/dashboard',auth.isLogin,adminController.adminDashboard)
+
+// //yearlyChart
+admin_route.get('/yearlyChart',auth.isLogin,adminController.yearlyChart)
 
 //salesReport
 admin_route.get('/salesReport',auth.isLogin,adminController.salesReport)
@@ -85,6 +89,15 @@ admin_route.get('/weeklySalesReport',auth.isLogin,adminController.weeklySalesRep
 //monthlySalesReport
 admin_route.get('/monthlySalesReport',auth.isLogin,adminController.monthlySalesReport)
 
+// bestSellingProduct
+admin_route.get('/bestSellingProduct',auth.isLogin,adminController.bestSellingProduct)
+
+//bestSellingBrand
+admin_route.get('/bestSellingBrand',auth.isLogin,adminController.bestSellingBrands)
+
+//bestSellingCategory
+admin_route.get('/bestSellingCategory',auth.isLogin,adminController.bestSellingCategories)
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //all orders
 admin_route.get('/allOrders',auth.isLogin,adminController.allOrders)
 
@@ -108,7 +121,7 @@ admin_route.post('/refundWallet',auth.isLogin,adminController.refundWallet)
 
 //verifyRefundPayment
 admin_route.post('/verifyRefundPayment',auth.isLogin,adminController.verifyRefundPayment)
-
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //users
 admin_route.get('/allUsers',auth.isLogin,adminController.allUsers)
 
@@ -121,6 +134,7 @@ admin_route.delete('/deleteUser',auth.isLogin,adminController.deleteUser)
 //Block user
 admin_route.post('/blockUser/:userid',auth.isLogin,adminController.blockUser)
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //products
 
 //all products
@@ -137,7 +151,10 @@ admin_route.post('/editProducts',auth.isLogin,uploads.uploadSingle,adminControll
 //delete product
 admin_route.delete('/deleteProduct',auth.isLogin,adminController.deleteProduct)
 
+// delete image
+admin_route.post('/deleteImage',auth.isLogin,adminController.deleteImage)
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //all category
 admin_route.get('/allCategory',auth.isLogin,adminController.allCategory)
 
@@ -150,6 +167,7 @@ admin_route.post('/editCategory',auth.isLogin,adminController.editCategory)
 //delete Category
 admin_route.delete('/deleteCategory',auth.isLogin,adminController.deleteCategory)
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //offers
 admin_route.get('/allOffers',auth.isLogin,adminController.allOffers)
 
@@ -165,6 +183,7 @@ admin_route.get('/editOffer',auth.isLogin,adminController.editOffer)
 //editUpadteOffer
 admin_route.post('/editUpadteOffer',auth.isLogin,upload.single('editImage'),adminController.editUpadteOffer)
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //coupons
 admin_route.get('/allCoupons',auth.isLogin,adminController.allCoupons)
 
@@ -174,10 +193,20 @@ admin_route.post('/addCoupons',auth.isLogin,adminController.addCoupons)
 //remove coupon
 admin_route.post('/removeCoupon',auth.isLogin,adminController.removeCoupon)
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //banners
 admin_route.get('/allBanners',auth.isLogin,adminController.allBanners)
 
+// addBanner
+admin_route.post('/addBanner',auth.isLogin,upload.single('bannerImage'),adminController.addBanner)
 
+// editUpadteBanner
+admin_route.patch('/editUpadteBanner',auth.isLogin,upload.single('bannerImage'),adminController.editUpadteBanner)
+
+// deleteBanner
+admin_route.delete('/deleteBanner',auth.isLogin,adminController.deleteBanner)
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
 //query misdirection avoid setup
 admin_route.get('*',(req,res)=>{
     res.redirect('/admin/dashboard')

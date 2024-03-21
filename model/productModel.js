@@ -52,8 +52,17 @@ const productSchema=new mongoose.Schema({
         required:true
     },
     productRating:{
-        type:Number
-    }
+       rating:[Number],
+       userName:[String],
+       review:[String]
+    },
+    productBrand:{
+        type:String,
+        required:true
+    },
+    productOffer:{
+        type:Object
+    }  
 })
 
 module.exports=mongoose.model('Products',productSchema)

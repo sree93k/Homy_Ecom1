@@ -24,7 +24,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                                <a class="nav-link active" aria-current="page" href="/home/home">Home</a>
                             </li>
                             <li class="nav-item">
                               <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
@@ -150,7 +150,7 @@
                                                     </div>
                                                   </div>
                                                   <div class="col-3" style="text-align: right;">
-                                                    <a href="#" class="btn  text-decoration-none " data-remove="<%=cartItem[i]._id%>" id="cartRemoveBtn">| Remove |</a>
+                                                    <a href="#" class="btn  text-decoration-none " data-remove="<%=cartItem[i]._id%>" id="cartRemoveBtn" >| Remove |</a>
                                                   </div>
                                                   <div class="col-6" style="text-align: right;">
                                                     
@@ -220,7 +220,7 @@
                             ₹
                           </div>
                           <div class="cartPrice ">
-                            <h5 id="checkPrice" data-price="userId.totalCart"><%= userId.totalCart %></h5></td>
+                            <h5 id="checkPrice" data-price="<%=userId.totalCart%>"><%= userId.totalCart %></h5></td>
                           </div>
                         </div>
                          
@@ -230,7 +230,18 @@
                       <td><i class="fas fa-minus-circle"></i> 0</td> </tr>
                     <tr>
                       <th scope="row">Delivery Charges</th>
-                      <td><i class="fas fa-truck"></i> Free</td> </tr>
+                      <!-- <td><i class="fas fa-truck"></i> Free</td> </tr> -->
+                      <td>
+                        <div class="deliveryOne d-flex ">
+                          <div class="innerDeliveryOne">
+                            ₹
+                          </div>
+                          <div class="innerDeliveryTwo ms-1 " style=" margin-top: 2px;">
+                            <h6 id=deliveryCharge></h6>
+                          </div>
+                        </div>
+                       </td> 
+                        </tr>
                     <tr>
                       <th scope="row">Total Amount</th>
                       <td>
@@ -238,15 +249,18 @@
                           <div class="sign">
                             ₹
                           </div>
-                          <div class="totalPrice ms-1">
-                            <h5 id="totalPrice" data-total-price="<%= userId.totalCart %>"><%= userId.totalCart %></h5></td>
+                          <div class="totalPrice ms-1" >
+                            <!-- <h5 id="totalPrice" data-total-price="<%= userId.totalCart %>"><%= userId.totalCart %></h5></td> -->
+                            <h5 id="totalPrice"   data-total-price="<%= userId.totalCart %>"></h5></td>
                           </div>
                         </div>
                     </tr>
                   </table>
                 </div>
-                <form action="/home/checkout" method="get">
+                <form action="/home/checkout?id=fromCart" method="post">
                 <div class="card-footer text-center">
+                  <input type="hidden" name="cartTotalDelivery" id="cartTotalDelivery" value="">
+                  <input type="hidden" name="cartTotalPrice" id="cartTotalPrice" value="a">
                   <input type="hidden" value="<%= userId.totalCart %>" id="totalValue">
                   <button type="submit" class="btn btn-primary btn-lg" id="checkoutBtn">Proceed To Checkout</button>
                 </div>
@@ -322,44 +336,7 @@
   })
 </script>
 
-  <!--cart remove  -->
-  
-  <script>
-    const cartRemoveBtn=document.querySelectorAll('#cartRemoveBtn')
-    
-    cartRemoveBtn.forEach(cartRemoveBtn=>{
-    cartRemoveBtn.addEventListener('click',()=>{
-      const cartId=cartRemoveBtn.getAttribute('data-remove')
-      fetch('/home/removeCart',{
-        method:'POST',
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({cartId:cartId})
-      })
-      .then((response)=>response.json())
-      .then((data)=>{
-        console.log(data);
-        console.log("remove data successfully");
-        if(data[0])
-        {
-          console.log(data[1]);
-          window.location.href='/home/userCart'
-        }
-        else
-        {
-          console.log(data[1]);
-          window.location.href='/home/userCart'
-        }
-      })
-      .then((error)=>{
-        console.log(error);
-        console.log("remoave data failed");
-      })
-    })
-  })
-  </script>
-  
+
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -368,8 +345,47 @@
   <!-- qunntity Adding/.Removing -->
  
 
-<!-- quantity adding -->
-     <script>
+    <!--cart remove  -->
+  
+    <script>
+      const cartRemoveBtn=document.querySelectorAll('#cartRemoveBtn')
+      
+      cartRemoveBtn.forEach(cartRemoveBtn=>{
+      cartRemoveBtn.addEventListener('click',()=>{
+        const cartId=cartRemoveBtn.getAttribute('data-remove')
+        fetch('/home/removeCart',{
+          method:'POST',
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({cartId:cartId})
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+          console.log(data);
+          
+          console.log("remove data successfully");
+          if(data[0])
+          {
+            console.log(data[1]);
+            window.location.href='/home/userCart'
+          }
+          else
+          {
+            console.log(data[1]);
+            window.location.href='/home/userCart'
+          }
+        })
+        .then((error)=>{
+          console.log(error);
+          console.log("remoave data failed");
+        })
+      })
+    })
+ 
+    
+// <!-- quantity adding -->
+  
   
     document.addEventListener('DOMContentLoaded', () => {
     const quantityPlus = document.querySelectorAll('#quantityPlus');
@@ -425,6 +441,7 @@
         console.log("plus success");
         console.log(data);
      console.log("success");
+    
      //quantity
        correspondingProductQuantity.setAttribute('data-cartQuantity',data[0].quantity)
        correspondingProductQuantity.innerText = data[0].quantity;
@@ -446,6 +463,7 @@
         console.log("totoal price",data[1].totalCart);
       //checkout total price
       document.getElementById('totalPrice').innerText=data[1].totalCart
+      totalDelivery()
       })
       .catch((error)=>{
         console.log("plus failed");
@@ -474,15 +492,15 @@
 
     });
 });
-  </script>
+ 
 
 
 
 
 
-<!-- quantity minus -->
+// <!-- quantity minus -->
 
-<script>
+
   
   document.addEventListener('DOMContentLoaded', () => {
   const quantityMinus = document.querySelectorAll('#quantityMinus');
@@ -539,6 +557,7 @@
       console.log("plus success");
       console.log(data);
    console.log("success");
+   
         //quantity
         correspondingProductQuantity.setAttribute('data-cartQuantity',data[0].quantity)
        correspondingProductQuantity.innerText = data[0].quantity;
@@ -560,6 +579,7 @@
         console.log("totoal price",data[1].totalCart);
       //checkout total price
       document.getElementById('totalPrice').innerText=data[1].totalCart
+      totalDelivery()
     })
     .catch((error)=>{
       console.log("plus failed");
@@ -590,17 +610,68 @@
   });
 });
 
-</script>
 
 
-<!-- procced to checkout -->
-<script>
+// <!-- procced to checkout -->
+
  document.addEventListener('DOMContentLoaded',()=>{
   if(document.getElementById('totalValue').value==='0')
   {
     document.getElementById('checkoutBtn').style.display='none'
   }
  })
+
+
+// <!-- offer and devilvery charge -->
+
+
+
+
+
+  function totalDelivery(){
+
+    let deliveryCharge;
+    console.log("hello started");
+    const deliveryChargeInput=document.getElementById('deliveryCharge')
+    const totalPrice=document.getElementById('totalPrice')
+    let checkPrice =Number(document.getElementById('checkPrice').textContent);
+    const cartTotalPrice=document.getElementById('cartTotalPrice')
+    const cartTotalDelivery=document.getElementById('cartTotalDelivery')
+    // let priceAmount = Number(checkPrice.getAttribute('data-price'));
+    console.log("pricr iss",checkPrice);
+    if(checkPrice===0)
+    {
+      deliveryCharge=0;
+    }
+    else if(checkPrice<10000)
+    {
+      deliveryCharge=1500;
+    }
+    else if(checkPrice<20000)
+    {
+      deliveryCharge=2000;
+    }
+    else 
+    {
+      deliveryCharge=2500
+    }
+    console.log("deliveryCharge ####" ,deliveryCharge);
+
+    deliveryChargeInput.innerHTML=deliveryCharge
+    console.log("checkPrice",checkPrice);
+    checkPrice.innerHTML=checkPrice
+    console.log("added>>>>>>>>>>>>>>>>>");
+    console.log("deliveryChargeInput.textContent",deliveryChargeInput.textContent);
+    // totalPrice.textContent=Number(priceAmount)+Number(deliveryChargeInput.textContent)
+    totalPrice.innerHTML=Number(checkPrice)+Number(deliveryChargeInput.textContent)
+    cartTotalPrice.value=Number(checkPrice)+Number(deliveryChargeInput.textContent)
+    cartTotalDelivery.value=deliveryCharge
+    console.log("cart TOTAL### *****",cartTotalPrice.value);
+    console.log("cartTotalDelivery $$$$$",cartTotalDelivery.value);
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+ totalDelivery()
+  })
 </script>
 
 

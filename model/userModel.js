@@ -2,7 +2,6 @@ const mongoose=require("mongoose")
 const ObjectId= mongoose.Schema.Types.ObjectId
 const { use } = require("../routes/userRoute")
 
-
 const userSchema=new mongoose.Schema({
     name:{
         type:String,
@@ -22,8 +21,7 @@ const userSchema=new mongoose.Schema({
         required:true
 },
     dob:{
-        type:String
-        
+        type:String      
 },
     gender:{
         type:String,
@@ -55,12 +53,18 @@ const userSchema=new mongoose.Schema({
     },
     deafultAddrss:{
         type:ObjectId,
-        ref:"defaultAddress"
+        ref:"Address"
     },
     referrals:{
         type:Array
+    },
+    referralUserId:{
+        type:ObjectId
     }
 
 })
 
 module.exports=mongoose.model("User",userSchema)
+
+
+   

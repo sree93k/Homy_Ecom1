@@ -102,7 +102,7 @@
                         <span class="material-symbols-outlined">
                           groups
                           </span>
-                        <p class="card-text">5</p>
+                        <p class="card-text"><%=totalUser%></p>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,14 @@
                         <span class="material-symbols-outlined">
                           payments
                           </span>
-                        <p class="card-text"> ₹ 7,770</p>
+                        <p class="card-text"> ₹ 
+                          <%if(totalRevenue!=0)
+                          {%>
+                            <%=totalRevenue[0].totalAmount%>
+                          <%}else{%>
+                            0
+                            <%}%>
+                          </p>
                     </div>
                 </div>
             </div>
@@ -124,7 +131,7 @@
                         <span class="material-symbols-outlined">
                           shopping_cart
                           </span>
-                        <p class="card-text">25</p>
+                        <p class="card-text"><%=totalOrders%></p>
                     </div>
                 </div>
             </div>
@@ -135,7 +142,7 @@
                       <span class="material-symbols-outlined">
                         local_mall
                         </span>
-                      <p class="card-text">21</p>
+                      <p class="card-text"><%=totalProducts%></p>
                   </div>
               </div>
           </div>
@@ -150,18 +157,15 @@
     <div class="innerChart">
       <div class="chartTops ">
         <div class="leftChart">
-          <button type="button" class="btn btn-warning "
-        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;">
-          7 Days
-        </button>
-        <button type="button" class="btn btn-warning"
-                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;">
-          14 Days
-        </button>
-        <button type="button" class="btn btn-warning"
-                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;">
-          30 days
-        </button>
+        
+        <a href="/admin/yearlyChart" class="reportlink"><button type="button" class="btn btn-warning" 
+          style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;">
+           Yearly Sales
+          </button></a>
+          <a href="/admin/dashboard" class="reportlink"><button type="button" class="btn btn-warning"
+                  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 1rem;">
+            Monthly Sales
+          </button></a>
         </div>
         <div class="rightChart">
           
@@ -184,6 +188,19 @@
         <div id="timeline-chart"></div>
       </div>
     </div>
+    
+    </div>
+    <div class="container">
+      <div class="row ms-5">
+        <div id="chart" class="col-11"></div>
+        <div class="col-7 mt-5" > 
+          
+          <p  class="btn btn-secondary mb-5" id="bestProducts"  value="product">Best selling product</p>
+          <p  class="btn btn-secondary mb-5" id="bestBrand" value="brand">Best selling Brands</p>
+          <p class="btn btn-secondary mb-5" id="bestCategory" value="category">Best selling Category</p>
+          <div id="chart2"></div>
+        </div>
+      </div>
     </div>
 </section>
 </div>
@@ -199,21 +216,29 @@
 
 <!-- script chart -->
 <script>
-
-      
+var ordersData = <%- JSON.stringify(OrderCounts) %>;
+var revenewData= <%- JSON.stringify(TotalAmounts) %>;
+var discount= <%- JSON.stringify(CouponDiscounts) %>;
+var category=<%- JSON.stringify(categories) %>;
+var text=<%- JSON.stringify(text) %>;
+      console.log("orderData",ordersData);
+      console.log("revenuDtata",revenewData);
+      console.log("discount",discount);
+      console.log("category",category);
+      console.log("text",text);
 var options = {
           series: [{
-          name: 'Income',
+          name: 'Orders',
           type: 'column',
-          data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6]
-        }, {
-          name: 'Cashflow',
-          type: 'column',
-          data: [1.1, 3, 3.1, 4, 4.1, 4.9, 6.5, 8.5]
+          data: ordersData
         }, {
           name: 'Revenue',
           type: 'line',
-          data: [20, 29, 37, 36, 44, 45, 50, 58]
+          data: revenewData
+        }, {
+          name: 'Discount',
+          type: 'line',
+          data: discount
         }],
           chart: {
           height: 350,
@@ -227,13 +252,15 @@ var options = {
           width: [1, 1, 4]
         },
         title: {
-          text: 'XYZ - Stock Analysis (2009 - 2016)',
+          text: `Homy ${text} Sales Data`,
           align: 'left',
           offsetX: 110
         },
-        xaxis: {
-          categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
-        },
+        
+        labels: category,
+          xaxis: {
+              type: 'category'
+          },
         yaxis: [
           {
             axisTicks: {
@@ -249,7 +276,7 @@ var options = {
               }
             },
             title: {
-              text: "Income (thousand crores)",
+              text: "Orders",
               style: {
                 color: '#008FFB',
               }
@@ -259,58 +286,21 @@ var options = {
             }
           },
           {
-            seriesName: 'Income',
-            opposite: true,
-            axisTicks: {
-              show: true,
-            },
-            axisBorder: {
-              show: true,
-              color: '#00E396'
-            },
-            labels: {
-              style: {
-                colors: '#00E396',
-              }
-            },
-            title: {
-              text: "Operating Cashflow (thousand crores)",
-              style: {
-                color: '#00E396',
-              }
-            },
-          },
-          {
-            seriesName: 'Revenue',
-            opposite: true,
-            axisTicks: {
-              show: true,
-            },
-            axisBorder: {
-              show: true,
-              color: '#FEB019'
-            },
-            labels: {
-              style: {
-                colors: '#FEB019',
-              },
-            },
-            title: {
-              text: "Revenue (thousand crores)",
-              style: {
-                color: '#FEB019',
-              }
-            }
-          },
+        opposite: true, 
+        title: {
+            text: 'Revenue / Discount' 
+        },
+    }
         ],
         tooltip: {
-          fixed: {
-            enabled: true,
-            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
-            offsetY: 30,
-            offsetX: 60
-          },
-        },
+        shared: true,
+        intersect: false,
+        y: {
+            formatter: function (val) {
+                return val + " ";
+            }
+        }
+    },
         legend: {
           horizontalAlign: 'left',
           offsetX: 40
@@ -319,9 +309,100 @@ var options = {
 
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
+
+        
+    function updateChart(interval) {
+      console.log(`Updating chart for ${interval}`);
+      let newData = fetchDataForInterval(interval);
+      ApexCharts.exec('yourChartId', 'updateSeries', newData);
+    }
 </script>
 
 
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let chart2;
+  
+    const updateChart = (url, itemDescription) => {
+      axios.get(url)
+        .then((res) => {
+          const data = res.data.bestSellingProducts;
+          const brandData=res.data.bestSellingBrands
+          const categoryData=res.data.bestSellingCategories
+        
+          let labels = [];
+          let totalSales =[]
+          if (itemDescription === 'Products') {
+            labels = data.map(product => product.productId);
+            totalSales = data.map(product => product.totalSales);
+          } else  if(itemDescription === 'Brands') {
+            labels = brandData.map(product => product.brand);
+            totalSales = brandData.map(product => product.totalSales);
+          }else{
+            labels = categoryData.map(product => product.categoryName);
+            totalSales = categoryData.map(product => product.totalSales);
+  
+          }
+  
+        
+          const item = res.data.item;
+  
+          const options = {
+            series: [{
+              name: `Total Sales`,
+              data: totalSales
+            }],
+            chart: {
+              height: 350,
+              type: 'bar'
+            },
+            title: {
+              text: `Best selling ${itemDescription || item}`
+            },
+            xaxis: {
+              categories: labels
+            }
+          };
+  
+          if (chart2) {
+            chart2.destroy();
+          }
+  
+          chart2 = new ApexCharts(document.querySelector("#chart2"), options);
+          chart2.render();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+  
+    const bestProduct = document.getElementById('bestProducts');
+    bestProduct.addEventListener('click', function(e) {
+      e.preventDefault();
+      updateChart('/admin/bestSellingProduct', 'Products');
+    });
+  
+    const brandBtn = document.getElementById('bestBrand');
+    brandBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+   
+      updateChart('/admin/bestSellingBrand', 'Brands');
+    });
+  
+    const categoryBtn=document.getElementById('bestCategory')
+    bestCategory.addEventListener('click',function(e){
+      e.preventDefault()
+      updateChart('/admin/bestSellingCategory', 'Category');
+  
+    })
+    
+  });
+  
+    </script>
+  </body>
 
 
 <%- include('../layout/admin/footer') %>
