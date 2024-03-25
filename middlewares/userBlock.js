@@ -9,7 +9,7 @@ const isBlocked=async(req,res,next)=>{
             {
                 console.log("blockAuth ****** req.session.isBlocked is true ");
                 req.session.destroy()
-                res.redirect('/home')
+                res.redirect('/')
 
             }
             else

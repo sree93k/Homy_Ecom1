@@ -128,7 +128,7 @@ const homeCategoryLogin=async(req,res)=>{
           console.log("allBanners",allBanners);
       if(CategoryData.categoryName==="All Category")
       {
-        res.redirect('/home/category')
+        res.redirect('/category')
       }
       else
       {

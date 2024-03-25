@@ -30,7 +30,7 @@
                                 <a class="nav-link active" aria-current="page" href="#">Collections</a>
                                 
                                 <%} else {%>
-                                <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                                <a class="nav-link active" aria-current="page" href="/category">Collections</a>
                                 <%} %>
                             </li>
                             <li class="nav-item">
@@ -52,7 +52,7 @@
                 <input type="text" class="form-control m-3" placeholder="Search">
                 <%if(loginStatus===false)
                   {%>
-                    <a href="/home/login" class="nav-link m-3 ">Login</a>
+                    <a href="/login" class="nav-link m-3 ">Login</a>
                     
                     <%} else {%>
                     
@@ -66,9 +66,9 @@
                                 Hi, <%= userId.name %>
                               </a>
                               <ul class="dropdown-menu dropdown-menu-light dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
-                                <a href="/home/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
-                                <a href="/home/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
-                                <a href="/home/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
+                                <a href="/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
+                                <a href="/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
+                                <a href="/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><button class="dropdown-item" id="userLogout" data-user-userId="<%= userId._id %>">Logout</button></li>
                               </ul>
@@ -80,12 +80,12 @@
 
                
                 
-                <a href="/home/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
+                <a href="/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
                 <%if(loginStatus===false)
                 {%>
-                  <a href="/home/login" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+                  <a href="/" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
                   <%} else {%>
-                    <a href="/home/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+                    <a href="/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
                   <%}%>
                 
             </div>
@@ -107,7 +107,7 @@
                 {%>
                  <img src="./images/adminpage/<%=allBanners[i].bannerImage[0]%>" class="d-block w-100" alt="...">
                   <%} else {%>
-                    <a href="/home/category"><img src="./images/adminpage/<%=allBanners[i].bannerImage[0]%>" class="d-block w-100" alt="..."></a> 
+                    <a href="/category"><img src="./images/adminpage/<%=allBanners[i].bannerImage[0]%>" class="d-block w-100" alt="..."></a> 
                     <%}%>
  
               </div>
@@ -307,7 +307,7 @@
   document.getElementById('userLogout')
   .addEventListener('click',()=>{
    
-    fetch('/home/logout',{
+    fetch('/logout',{
       method:'POST',
       headers: {
           "Content-Type": "application/json",
@@ -321,7 +321,7 @@
           icon: "success"
         })
         .then(() => {
-          window.location.href = '/home';
+          window.location.href = '/';
           });
       })
       .catch((error)=>{

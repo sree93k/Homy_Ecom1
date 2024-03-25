@@ -24,10 +24,10 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home/home">Home</a>
+                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                              <a class="nav-link active" aria-current="page" href="/category">Collections</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Projects</a>
@@ -48,7 +48,7 @@
                 <input type="text" class="form-control m-3" placeholder="Search">
                 <%if(loginStatus===false)
                 {%>
-                  <a href="/home/login" class="nav-link m-3 ">Login</a>
+                  <a href="/login" class="nav-link m-3 ">Login</a>
                   
                   <%} else {%>
                   
@@ -59,9 +59,9 @@
                               Hi, <%= userId.name %>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-light dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
-                              <a href="/home/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
-                              <a href="/home/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
-                              <a href="/home/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
+                              <a href="/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
+                              <a href="/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
+                              <a href="/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
                               <li><hr class="dropdown-divider"></li>
                               <li><button class="dropdown-item" id="userLogout" data-user-userId="<%= userId._id %>">Logout</button></li>
                             </ul>
@@ -71,8 +71,8 @@
                     
                     <%}%>
                 
-                    <a href="/home/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
-                    <a href="/home/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+                    <a href="/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
+                    <a href="/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
             </div>
         </div>
     </nav>
@@ -212,7 +212,7 @@
   document.getElementById('userLogout')
   .addEventListener('click',()=>{
    
-    fetch('/home/logout',{
+    fetch('/logout',{
       method:'POST',
       headers: {
           "Content-Type": "application/json",
@@ -226,7 +226,7 @@
           icon: "success"
         })
         .then(() => {
-          window.location.href = '/home';
+          window.location.href = '/';
           });
       })
       .catch((error)=>{
@@ -371,7 +371,7 @@ zoomableImages.forEach(image => {
       const productId = addToCart.getAttribute('data-productId');
       console.log(productId);
      
-      fetch(`/home/addToCart`, {
+      fetch(`/addToCart`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"

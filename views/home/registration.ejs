@@ -68,7 +68,7 @@
         <!-- Add your search bar, login, wishlist, and cart links here -->
         <!-- Example: -->
         <input type="text" class="form-control m-3" placeholder="Search" />
-        <a href="/home/login" class="nav-link m-3">Login</a>
+        <a href="/login" class="nav-link m-3">Login</a>
         <a href="#" class="nav-link m-3">Wishlist</a>
         <a href="#" class="nav-link m-3">Cart</a>
       </div>
@@ -210,7 +210,7 @@
       const UserID=document.getElementById('UserID')
       
      const registerError=document.getElementById("registerError")
-      fetch("/home/register", {
+      fetch("/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -290,7 +290,7 @@ Swal.fire({
 } else {
   const currentOtp = `${otpOne}${otpTwo}${otpThree}${otpFour}${otpFive}${otpSix}`;
   console.log('otp sending');
-  fetch(`/home/otpVerification?id=${currentOtp}`,{
+  fetch(`/otpVerification?id=${currentOtp}`,{
     method:'POST',
     headers: {
       "Content-Type": "application/json",
@@ -310,7 +310,7 @@ Swal.fire({
           icon: "success"
         })
         .then(()=>{
-          window.location.href='/home';
+          window.location.href='/';
         })
       }
       else
@@ -493,7 +493,7 @@ Swal.fire({
   // Function to resend OTP
   function resendOTP() {
     console.log("resend otp started");
-    fetch('/home/resendOTP', { method: 'GET' })
+    fetch('/resendOTP', { method: 'GET' })
       .then(response => response.json())
       .then(data => {
         console.log("Resend OTP response:", data);

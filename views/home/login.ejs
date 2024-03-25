@@ -21,10 +21,10 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home/home">Home</a>
+                                <a class="nav-link active" aria-current="page" href="/">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                                <a class="nav-link active" aria-current="page" href="#">Collections</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Projects</a>
@@ -76,7 +76,7 @@
                     </div>
                 </form>
 
-                <form action="/home/register">
+                <form action="/register">
                     <div class="mb-3 text-center">
                         <input type="submit" class="btn btn-success btn-block" value="SignUp">
                     </div>
@@ -254,7 +254,7 @@
         console.log(ForgotPasswordEmail)
        const UserId=document.getElementById('userIdOtp')
         
-        fetch(`/home/forgotPassword`,{
+        fetch(`/forgotPassword`,{
            method:'POST',
            headers:{
             "Content-Type":"application/json"
@@ -305,7 +305,7 @@ ForgotPasswordOtpBtn.addEventListener('click',()=>{
     const forgotPasswordOtp=`${otpOne}${otpTwo}${otpThree}${otpFour}`
     console.log(forgotPasswordOtp)
     console.log(userID);
-    fetch(`/home/forgotPasswordOtpVerification?id=${forgotPasswordOtp}`,{
+    fetch(`/forgotPasswordOtpVerification?id=${forgotPasswordOtp}`,{
         method:'POST',
         headers:{
             "Content-Type": "application/json",
@@ -356,7 +356,7 @@ forgotPasswordNewEmail.addEventListener('click',()=>{
     
     if(newPassword===confirmPassword)
     {
-        fetch(`/home/forgotPasswordNewEmail?id=${UserId}`,{
+        fetch(`/forgotPasswordNewEmail?id=${UserId}`,{
         method:'POST',
         headers:{
             "Content-Type":"application/json",

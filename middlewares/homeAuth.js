@@ -7,7 +7,7 @@ const isLogin=async(req,res,next)=>{
         else
         {
             console.log('middleware home')
-            res.redirect('/home')
+            res.redirect('/')
         }
         next() 
     } catch (error) {
@@ -20,7 +20,7 @@ const isLogout=async(req,res,next)=>{
         if(req.session.user_id)
         {
             console.log('middleware home and home')
-            res.redirect('/home/home')
+            res.redirect('/home')
         }
         next()
         
@@ -34,7 +34,7 @@ const orderConfirm=async(req,res,next)=>{
         if(req.session.orderConfirmed===false)
         {
             console.log("req.session.orderConfirmed false");
-            res.redirect('/home/home')
+            res.redirect('/home')
         }
         next()
         
@@ -48,7 +48,7 @@ const checkout=async(req,res,next)=>{
         if(req.session.checkout===false)
         {
             console.log("req.session.checkout false");
-            res.redirect('/home/home')
+            res.redirect('/home')
         }
         next()
     } catch (error) {

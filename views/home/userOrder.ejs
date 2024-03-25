@@ -24,10 +24,10 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home/home">Home</a>
+                                <a class="nav-link active" aria-current="page" href="/home">Home</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link active" aria-current="page" href="/home/category">Collections</a>
+                              <a class="nav-link active" aria-current="page" href="/category">Collections</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">Projects</a>
@@ -47,7 +47,7 @@
                 <input type="text" class="form-control m-3" placeholder="Search">
                 <%if(locals.loginStatus===false)
                 {%>
-                  <a href="/home/login" class="nav-link m-3 ">Login</a>
+                  <a href="/login" class="nav-link m-3 ">Login</a>
                   
                   <%} else {%>
                 
@@ -58,9 +58,9 @@
                             Hi, <%= userId.name %>
                           </a>
                           <ul class="dropdown-menu dropdown-menu-light dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
-                            <a href="/home/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
-                            <a href="/home/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
-                            <a href="/home/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
+                            <a href="/userProfile"><li><button class="dropdown-item" id="userProfile" >Profile</button></li></a>
+                            <a href="/userOrders"><li><button class="dropdown-item" id="userOrder" >Orders</button></li></a>
+                            <a href="/userAddress"><li><button class="dropdown-item" id="userAddress" >Address</button></li></a>
                             <li><hr class="dropdown-divider"></li>
                             <li><button class="dropdown-item" id="userLogout" data-user-userId="<%= userId._id %>">Logout</button></li>
                           </ul>
@@ -70,8 +70,8 @@
                     
                     <%}%>
                 
-                    <a href="/home/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
-                    <a href="/home/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+                    <a href="/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
+                    <a href="/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
             </div>
         </div>
     </nav>
@@ -97,13 +97,13 @@
                               <hr style="height: 2px; background-color: #ffffff; border: none; width: 250px; margin-left: 25px;">
                               <div class="leftTwo ">
                                 <ul class="account-nav">
-                                  <li><a href="/home/userProfile">My Account</a></li>
+                                  <li><a href="/userProfile">My Account</a></li>
                                   <li><a href="#">My Orders</a></li>
-                                  <li><a href="/home/userWishlist">My Wishlist</a></li>
-                                  <li><a href="/home/userAddress">My Address</a></li>
-                                  <li><a href="/home/resetPassword">Change Password</a></li>
-                                  <li><a href="/home/userWallet">Wallet</a></li>
-                                  <li><a href="/home/referals">My Referrals</a></li>
+                                  <li><a href="/userWishlist">My Wishlist</a></li>
+                                  <li><a href="/userAddress">My Address</a></li>
+                                  <li><a href="/resetPassword">Change Password</a></li>
+                                  <li><a href="/userWallet">Wallet</a></li>
+                                  <li><a href="/referals">My Referrals</a></li>
                                 </ul>
                               </div>
     
@@ -169,7 +169,7 @@
                                           </div>
                                           <div class="topTwo d-flex ">
                                             <div class="orderOneTop">
-                                              <a href="/home/downloadInvoice?orderId=<%= orderDetails[i]._id %>"><button type="button" class="btn btn-success   order-invoice " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;margin-top: 7px;margin-left: 100px;"
+                                              <a href="/downloadInvoice?orderId=<%= orderDetails[i]._id %>"><button type="button" class="btn btn-success   order-invoice " style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;margin-top: 7px;margin-left: 100px;"
                                                 id="cancelOrderItem"  data-orderInvoice-id="<%= orderDetails[i]._id %>"  >
                                                 Invoice
                                               </button></a>
@@ -209,7 +209,7 @@
                                                               Track Order
                                                           </button>
                                                 
-                                                            <a href="/home/product/?product=<%= product._id %>">
+                                                            <a href="/product/?product=<%= product._id %>">
                                                               <button type="submit" class="btn btn-primary product-buyAgain" style="--bs-btn-padding-y: .25rem;--bs-btn-font-size: .75rem; margin-bottom: 3px; width: 110px;"
                                                               data-productBuyAgain-id="<%=product._id %>" data-orderBuyAgain-id="<%= orderDetails[i]._id %>" data-product-status="<%= orderDetails[i].productStatus[index] %>">
                                                                   Buy It Again
@@ -517,7 +517,7 @@
   document.getElementById('userLogout')
   .addEventListener('click',()=>{
    
-    fetch('/home/logout',{
+    fetch('/logout',{
       method:'POST',
       headers: {
           "Content-Type": "application/json",
@@ -531,7 +531,7 @@
           icon: "success"
         })
         .then(() => {
-          window.location.href = '/home';
+          window.location.href = '/';
           });
       })
       .catch((error)=>{
@@ -925,7 +925,7 @@ const ratingData={
   console.log("user",userId);
   console.log("productId",productId);
   console.log("orderId",orderId);
-  fetch('/home/userRating',{
+  fetch('/userRating',{
     method:"PATCH",
     headers:{
       "Content-Type":"application/json",
@@ -985,7 +985,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   else
                   {
                     console.log("step 2");
-                    fetch('/home/returnProduct', { 
+                    fetch('/returnProduct', { 
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -1129,7 +1129,7 @@ document.addEventListener('DOMContentLoaded', () => {
               console.log("one");
         
           console.log("two");
-          fetch(`/home/cancelOrderItem?orderId=${orderId}&productId=${productId}`, {
+          fetch(`/cancelOrderItem?orderId=${orderId}&productId=${productId}`, {
             method: 'POST',
           })
           .then(response => {
@@ -1180,7 +1180,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
 
-      fetch('/home/productCancel',{
+      fetch('/productCancel',{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
@@ -1218,7 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log("orderIUd is ,",orderId);
       const amount=paymentBtn.getAttribute('data-amount')
       console.log("amount",amount);
-         fetch(`/home/repayment`,{
+         fetch(`/repayment`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json"
@@ -1278,7 +1278,7 @@ function verifyPayment(payment,order)
   console.log("payment",payment);
   console.log("order",order);
   $.ajax({
-    url:'/home/verifyPayment',
+    url:'/verifyPayment',
     data:{
       payment,
       order
@@ -1295,7 +1295,7 @@ function verifyPayment(payment,order)
             icon: "success"
           })
           .then(() => {
-            window.location.href = '/home/orderConfirmed';
+            window.location.href = '/orderConfirmed';
             });
       }
       else
@@ -1305,7 +1305,7 @@ function verifyPayment(payment,order)
             icon: "error"
           })
           .then(() => {
-            window.location.href = '/home/checkout';
+            window.location.href = '/checkout';
             });
 
       }

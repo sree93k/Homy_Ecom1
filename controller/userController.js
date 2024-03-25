@@ -111,13 +111,13 @@ const userVerify = async (req, res) => {
           // res.render("home",{loginStatus:loginStatus});
 
            
-          res.redirect('/home/home')
+          res.redirect('/home')
           }
           else
           {
             console.log("step -is verified failed login ");
             req.session.login_error="Account Not Exist"
-            res.redirect("/home/login");
+            res.redirect("/login");
           }
         }
         else
@@ -125,20 +125,20 @@ const userVerify = async (req, res) => {
           console.log("step -blocked failed login ");
         
         req.session.login_error="Account is Blocked"
-        res.redirect("/home/login");
+        res.redirect("/login");
         }
        
       } else {
       
         console.log("step -5 failed login ");
         req.session.login_error="Invalid Password"
-        res.redirect("/home/login");
+        res.redirect("/login");
       }
     } else {
      
       console.log("step-6 failed login ");
       req.session.login_error="Account Not Exist"
-      res.redirect("/home/login");
+      res.redirect("/login");
     }
   } catch (error) {
    

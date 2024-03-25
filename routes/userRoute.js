@@ -275,10 +275,10 @@ user_route.get('/product',auth.isLogout,blockAuth.isBlocked,productController.ea
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 //query misdirection avoid setup
-user_route.get('*',(req,res)=>{
-    res.redirect('/home/home')
+// user_route.get('*',(req,res)=>{
+//     res.redirect('/home')
 
-})
+// })
 
 
 module.exports=user_route 
