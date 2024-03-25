@@ -103,14 +103,14 @@ const verifyOtp=async(req,res)=>{
           })
           await newUserWallet.save()
           
-          // res.redirect('/home')
+       
           res.json(true)
         }
         else
         {
           console.log("otp error occured 1")
          await User.findByIdAndDelete({_id:otpUserId})
-        //  await OTP.findByIdAndDelete({userId:otpUserId})
+   
           console.log("Incorrect OTP");
           // res.redirect('/home')
           res.json(false)
@@ -121,8 +121,7 @@ const verifyOtp=async(req,res)=>{
       {
         await User.findByIdAndDelete({_id:otpUserId})
         console.log("otp error occured 2")
-        // console.log(actualUserId)
-        // await OTP.findByIdAndDelete({userId:actualUserId})
+       
         console.log("Incorrect OTP");
           // res.redirect('/home')
           res.json(false)
@@ -130,7 +129,7 @@ const verifyOtp=async(req,res)=>{
       
     } catch (error) {
       console.log(error)
-      // res.status(500).json({ success: false, message: 'Internal Server Error' });
+
       res.render('errorPage')
       
     }

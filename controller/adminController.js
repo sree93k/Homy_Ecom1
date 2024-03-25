@@ -55,7 +55,6 @@ const securePassword = async (password) => {
 const adminLogin=async(req,res)=>{
     try {
         res.set("Cache-control","no-store")
-        console.log("admin login page")
         const loginError=req.session.loginError
         req.session.loginError=" "
         res.render('login',{loginError:loginError})
@@ -68,12 +67,8 @@ const adminLogin=async(req,res)=>{
 //amdin logout
 const adminLogout=async(req,res)=>{
     try {
-       
-        console.log("logout 1")
         req.session.destroy()
-        console.log("logout 2")
         res.redirect('/admin/login')
-        console.log("logout ")
     } catch (error) {
         console.log(error)
         res.render('errorPage',{error:error})
@@ -83,18 +78,12 @@ const adminLogout=async(req,res)=>{
 //admin validation
 const adminValidation=async(req,res)=>{
     try {
-        
         const email=req.body.email
         const password=req.body.password
-
         const adminData=await Admin.findOne({email:email})
-
     if(adminData)
     {
         const passwordMatch=await bcrypt.compare(password,adminData.password)
-        console.log(password)
-        console.log(adminData.password)
-        console.log(passwordMatch)
         if(passwordMatch)
         {
             res.set("Cache-control","no-store")
@@ -127,9 +116,7 @@ const adminDashboard=async(req,res)=>{
     try {
         res.set("Cache-control","no-store")
         const totalUser=await User.countDocuments({})
-        console.log("total users >>>",totalUser);
         const totalOrders=await Order.countDocuments({})
-        console.log("total orders ",totalOrders);
         const totalRevenue = await Order.aggregate([
             {
               $group: {
@@ -138,9 +125,7 @@ const adminDashboard=async(req,res)=>{
               }
             }
           ]);
-          console.log("totoal revenue",totalRevenue);
           const totalProducts=await Products.countDocuments({})
-          console.log("total products ",totalProducts);
 
 
         //   start
@@ -207,10 +192,8 @@ const adminDashboard=async(req,res)=>{
 // yearlyChart
 const yearlyChart=async(req,res)=>{
     try {
-        console.log("yearlyChart  started >###$@@@@@@@@");
         res.set("Cache-control","no-store")
         const totalUser=await User.countDocuments({})
-        console.log("total users >>>",totalUser);
         const totalOrders=await Order.countDocuments({})
         console.log("total orders ",totalOrders);
         const totalRevenue = await Order.aggregate([

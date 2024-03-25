@@ -636,27 +636,7 @@ console.log("review rating ",reviewRating);
       {
         returnItem.style.display="none"
       }
-      // console.log("Retrun pendingssssssssss");
-      // returnItem.addEventListener('click',()=>{
-      //   console.log("click yess");
-      //   if(returnStatus==="Return Pending" )
-      //   {
-      //     pending.checked=true
-      //   }
-      //   else  if(returnStatus==="Dispatch")
-      //   {
-      //     dispatch.checked=true
-      //   }
-      //   else  if(returnStatus==="Shipped")
-      //   {
-      //     shipped.checked=true
-      //   }
-      //   else  if(returnStatus==="Delivered")
-      //   {
-      //     delivered.checked=true
-      //   }
-      //   $('#returnStatus').modal('show');
-      // })
+      
     })
 
 
@@ -935,10 +915,7 @@ const ratingData={
   .then((response)=>response.json())
   .then((data)=>{
     console.log(data);
-    // const buttons = document.querySelectorAll(`.review-rating[data-product-id="${productId}"][data-order-id="${orderId}"]`);
-    //   buttons.forEach(button => {
-    //       button.style.display = 'none';
-    //   });
+ 
     window.location.reload()
   })
   .catch((error)=>{
@@ -1371,25 +1348,7 @@ document.getElementById('payment').textContent=payment
   })
 </script>
 
-<!-- buy it again button -->
-<!-- <script>
-  const buyAgianBtn=document.querySelectorAll('.product-buyAgain')
 
-  buyAgianBtn.forEach(buyAgain=>{
-   
-    buyAgain/addEventListener('click',()=>{
-      const productId=buyAgain.getAttribute('data-productBuyAgain-id')
-      console.log("yess",productId);
-      axios.get('/home/buyAgain')
-      .then((data)=>{
-        console.log("data",data);
-      })
-      .catch((error)=>{
-        console.log("error",error);
-      })
-    })
-  })
-</script> -->
 
 
 

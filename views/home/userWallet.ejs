@@ -187,9 +187,9 @@
                                     <td>₹ <%=userWallet.transaction[i].amount%></td>
                                     <td>
                                       <%if(userWallet.transaction[i].type==="credit"){%>
-                                      <button class="green"></button>
+                                      <span>Credit</span> <button class="green ms-3"></button>
                                       <%}else if(userWallet.transaction[i].type==="debit"){%>
-                                        <button class="red"></button>
+                                        <span>Debit</span>  <button class="red ms-3"></button>
                                       <%}%>
                                     </td>
                                   </tr>

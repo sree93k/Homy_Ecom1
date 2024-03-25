@@ -111,29 +111,6 @@
                         </div>
                     </div>
                    
-                      <!-- <div class="col-md-6 col-lg-7 p-b-30">
-                        <div class="p-l-25 p-r-30 p-lr-0-lg">
-                          <div class="wrap-slick3 flex-sb flex-w">
-                            <div class="wrap-slick3-dots"></div>
-                            <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-                            <div class="slick3 gallery-lb">
-              
-                              <% for(let i=0; i < products.productImage.length; i++) { %>
-                                <div class="item-slick3" data-thumb="../images/adminpage/<%= products.productImage[i] %>" width="100px">
-                                  <div class="wrap-pic-w pos-relative zoomable-Image">
-                                    <img src="../images/adminpage/<%= products.productImage[i] %>" alt="IMG-PRODUCT" width="100px">
-                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                      href="../images/adminpage/<%= products.productImage[i] %>">
-                                      <i class="fa fa-expand"></i>
-                                    </a>
-                                  </div>
-                                </div>
-                                <% } %>
-              
-                            </div>
-                          </div>
-                        </div>
-                      </div> -->
 
                 </div>
                 
@@ -156,7 +133,7 @@
                       A comfortable and stylish chair that blends perfectly with any decor.
                     </p>
                     <div class="d-flex justify-content-center">
-                      <button class="btn btn-primary px-4 rounded-pill mx-2">BUY NOW</button>
+                      <!-- <button class="btn btn-primary px-4 rounded-pill mx-2">BUY NOW</button> -->
                       <button class="btn btn-outline-primary px-4 rounded-pill" id="addToCart" data-productId="<%=products._id%>">ADD TO CART</button>
                     </div>
                   </div>
@@ -312,50 +289,6 @@ zoomableImages.forEach(image => {
 
 
 
-<!-- add to cart -->
-<!-- <script>
-
-  const addToCartButtons = document.querySelectorAll('#addToCart');
-
- 
-  addToCartButtons.forEach(addToCart => {
-    addToCart.addEventListener('click', () => {
-      console.log("Clicked on add to cart");
-      const productId = addToCart.getAttribute('data-productId');
-      console.log(productId);
-      const userId = document.getElementById('userId').value;
-      console.log(userId);
-      
-      fetch(`/home/addToCart?id=${userId}`, {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ productId: productId })
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        console.log("Data added");
-        if (data[0]) {
-          Swal.fire({
-            title: "Added To cart",
-            icon: "Successfully Added"
-          });
-        } else {
-          Swal.fire({
-            title: "Product Already Added",
-            icon: "error"
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("Error data");
-      });
-    });
-  });
-</script> -->
 
 
 

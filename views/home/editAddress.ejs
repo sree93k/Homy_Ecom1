@@ -269,6 +269,27 @@ console.log("address edit start");
    {
     addressType=document.getElementById('addressTypeOffice').value
    }
+
+        userName=document.getElementById('userName').value
+        userMobile=document.getElementById('userMobile').value
+        userPincode=document.getElementById('userPincode').value
+        userLocality=document.getElementById('userLocality').value
+        userAddress=document.getElementById('address').value
+        userCity=document.getElementById('userCity').value
+        userState=document.getElementById('userState').value
+        userLandmark=document.getElementById('userLandmark').value
+        userAltMobile=document.getElementById('userAltMobile').value
+
+   const nameRegix=/^[a-zA-Z]+(?:\s[a-zA-Z]+)?$/;
+const numberRegix=/^\d{10}$/;
+const pincodeRegix=/^\d{6}$/;
+const emptyRegix= /^\s*$/;
+if(nameRegix.test(userName)===true && emptyRegix.test(userName)===false)
+{
+if(numberRegix.test(userMobile)===true && emptyRegix.test(userMobile)===false && numberRegix.test(userAltMobile)===true && emptyRegix.test(userAltMobile)===false)
+{
+  if(pincodeRegix.test(userPincode)===true)
+  {
     
     const UserAddress={
         addressId:document.getElementById('addressId').value,
@@ -313,6 +334,37 @@ console.log("address edit start");
     console.log(error);
     console.log("error failed");
    })
+  }
+  else
+  {
+    Swal.fire({
+  title: "Incorrect Pincode",
+  text: "",
+  icon: "error"
+});
+
+  }
+
+}
+else
+{
+  Swal.fire({
+  title: "Incorrect Number",
+  text: "",
+  icon: "error"
+});
+
+}
+
+}
+else
+{
+  Swal.fire({
+  title: "Enter Correct Name",
+  text: "",
+  icon: "error"
+});
+}
     
   })
 //  })

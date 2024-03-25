@@ -331,48 +331,7 @@
   })
 </script>
 
-<!-- <script src="/socket.io/socket.io.js"></script>
-<script>
 
-  const socket = io();
-  console.log('socket started')
-
-  socket.on('userBlocked', ({ userId, isBlocked }) => {
-  console.log(userId+"and "+isBlocked);
-    const currentUserId = userId;
-
-    if (userId === currentUserId && isBlocked) {
-     
-      window.location.href = '/home/logout'; 
-    }
-  });
-</script> -->
-
-<!-- user profile -->
-<!-- <script>
-  const userProfile=document.getElementById('userProfile')
-  console.log("user profile started")
-  userProfile.addEventListener('click',()=>{
-    const userId=userProfile.getAttribute('data-user-userId')
-    console.log("userId is="+userId)
-    fetch(`/home/userProfile?id=${userId}`,{
-      method:'POST',
-      headers:{
-        "Content-Type":"application/json"
-      },
-    })
-    .then((response)=>response.json())
-    .then((data)=>{
-      console.log("sucess")
-      console.log(data);
-      window.location.href='/home/showUerProfile';
-    })
-    .then((error)=>{
-      console.log("failed");
-      console.log(error)
-    })
-  })
-</script> -->
 
 
 

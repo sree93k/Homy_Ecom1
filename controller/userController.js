@@ -537,7 +537,7 @@ const checkout=async(req,res)=>{
     }
     await UserData.save()
     console.log("applycouponData is>>>>>>>>>>>>>>>>>>>>",applycouponData);
-    res.render('checkout',{isLogin:isLogin,userId:UserData,cartItem:userCart,address:defaultAddress,Address:allAddress,couponData:couponData,applycouponData:applycouponData,deliveryCharge:cartTotalDelivery,totalPrice:totalPrice,totalCart:totalCart})
+    res.render('checkout',{isLogin:isLogin,userId:UserData,cartItem:userCart,address:defaultAddress,allAddress:allAddress,couponData:couponData,applycouponData:applycouponData,deliveryCharge:cartTotalDelivery,totalPrice:totalPrice,totalCart:totalCart})
   } catch (error) {
     console.log(error);
     res.render('errorPage')

@@ -220,11 +220,7 @@
                                       <tr>
                                         <td><label for="">Email</label></td>
                                         <td ><input type="text" class="form-control" style="width: 300px;" value="<%=userId.email%>" id="userEmail" readonly></td>
-                                        <!-- <td>
-                                          <a href="#" id="emailEditButton">Edit</a>
-                                          <a href="#" id="emailCancelButton" style="display: none;" class="text-danger ">Cancel</a>
-                                          <a href="#" id="emailSubmitButton" style="display: none;" class="text-success  ">Submit</a>
-                                        </td> -->
+                  
 
                                       </tr>
                                       <!-- mobile -->
@@ -342,9 +338,6 @@
 <!-- user image -->
 <script>
 
-
-
-
   document.addEventListener('DOMContentLoaded', function () {
   const userProfileEdit = document.getElementById('userProfileEdit');
   const userProfileUpload = document.getElementById('userProfileUpload');
@@ -371,12 +364,6 @@
         formData.append('file', file);
         console.log("form data i s", formData);
         return formData;
-      //   return {
-      // name: file.name,
-      // type: file.type,
-      // size: file.size,
-      // data: new FormData([['file', file]]) 
-    // };
     }
 
   userProfileEdit.addEventListener('click', function (event) {
@@ -390,8 +377,6 @@
   cancelButton.addEventListener('click', function (event) {
     event.preventDefault();
     userProfileUpload.setAttribute('disabled', true); 
-    // userProfileUpload.value=' '
-    // userPhoto.src="../images/adminpage/1706273704356-user_4385254.png"
     userProfileEdit.style.display = 'inline-block'
     submitButton.style.display = 'none'; 
     cancelButton.style.display = 'none'; 
@@ -539,8 +524,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   submitButton.addEventListener('click', function (event) {
     event.preventDefault();
-    
-  const name=inputName.value
+    const pattern = /^[a-zA-Z]+(?:\s[a-zA-Z]+)?$/
+
+    if(pattern.test(inputName.value)===false)
+    {
+      Swal.fire({
+      title: "Enter Correct Name",
+      text: "",
+      icon: "error"
+});
+    }
+    else
+    {
+      const name=inputName.value
   const updateOn="name"
   console.log(name);
   fetch(`/editUserProfile?id=${userId}`,{
@@ -561,6 +557,9 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log("error failed");
     window.location.href='/userProfile'
   })
+
+
+    }
 
 
   }); 
@@ -668,7 +667,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const dobEditButton = document.getElementById('dobEditButton');
   const dobSubmitButton = document.getElementById('dobSubmitButton');
   const dobCancelButton = document.getElementById('dobCancelButton');
-  // const inputField = document.querySelector('input[type="text"]');
 
   const userDob=document.getElementById('userDob')
   const calender=document.getElementById('calender')
@@ -772,7 +770,21 @@ mobileSubmitButton.addEventListener('click', function (event) {
   mobileSubmitButton.style.display = 'none'; 
   mobileCancelButton.style.display = 'none';
   const mobile=userMobile.value
-  const updateOn='mobile'
+
+  const pattern = /^\d{10}$/;
+
+  if(pattern.test(mobile)===false)
+  {
+    Swal.fire({
+      title: "Enter Correct Phone Number",
+      text: "",
+      icon: "error"
+});
+
+  }
+  else
+  {
+    const updateOn='mobile'
   fetch(`/editUserProfile?id=${userId}`,{
     method:'POST',
       headers:{
@@ -792,6 +804,7 @@ mobileSubmitButton.addEventListener('click', function (event) {
       window.location.href='/userProfile'
     })
 
+  }
 
 });
 });
