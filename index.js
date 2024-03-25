@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/Homy_Project1')
+require('dotenv').config()
+mongoose.connect(process.env.MONGO_URL).then(()=>console.log("connected monogo"))
 
 const logger=require('morgan')
 
@@ -15,4 +16,4 @@ const adminRoute=require('./routes/adminRoute')
 app.use('/admin',adminRoute)
 
 
-app.listen(4000,()=>console.log("Hi Sree,....Server Started..!!"))
+app.listen(3000,()=>console.log("Hi Sree,....Server Started..!!"))
