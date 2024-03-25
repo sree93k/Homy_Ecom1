@@ -10,7 +10,7 @@ const app=express()
 app.use(logger('dev'))
 app.use(express.static('public'))
 const userRoute=require('./routes/userRoute')
-app.use('/home',userRoute)
+app.use('/',userRoute)
 
 const adminRoute=require('./routes/adminRoute')
 app.use('/admin',adminRoute)
