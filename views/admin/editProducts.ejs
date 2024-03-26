@@ -214,7 +214,7 @@
                               <td>
                                 <div class="card text-center mb-3" style="width: 18rem;">
                                     <div class="card-body">
-                                      <h5 class="card-title">Image one</h5>
+                                      <h5 class="card-title">Image three</h5>
                                       <div class="close-icon" onclick="deleteImage('image3', 'preview3');">&times;
                                     </div>
                                     <label for="image3" class="form-label " >
@@ -294,41 +294,6 @@
   </div>
 
 
-
-<!-- <script>
-  function previewImage(input, previewId) {
-      const previewContainer = document.getElementById(previewId);
-      const file = input.files[0];
-
-      if (file) {
-          const reader = new FileReader();
-
-          reader.onload = function () {
-
-              const existingImage = previewContainer.querySelector('img');
-
-              if (existingImage) {
-                
-                  existingImage.src = reader.result;
-              } else {
-                 
-                  const imageElement = document.createElement("img");
-                  imageElement.src = reader.result;
-                  imageElement.alt = file.name;
-                  imageElement.classList.add('img-fluid', 'mb-2');
-                  imageElement.style.maxHeight = '200px';
-
-              
-                  previewContainer.innerHTML = "";
-                  previewContainer.appendChild(imageElement);
-              }
-          };
-
-          reader.readAsDataURL(file);
-      }
-  }
-</script> -->
-
 <script>
     let currentInputId, currentPreviewId, cropper;
 let croppedImages = {};
@@ -354,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Difference1:", diff);
         if(!diff)
         {
-            document.getElementById('preview1').src = 'https://bit.ly/3ubuq5o';
+            document.getElementById('preview1').src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
         }
        
     } 
@@ -364,7 +329,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Difference2:", diff);
         if(!diff)
         {
-            document.getElementById('preview2').src = 'https://bit.ly/3ubuq5o';
+            document.getElementById('preview2').src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
         }
        
     } 
@@ -374,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Difference3:", diff);
         if(!diff)
         {
-            document.getElementById('preview3').src = 'https://bit.ly/3ubuq5o';
+            document.getElementById('preview3').src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
         }
        
     } 
@@ -455,7 +420,7 @@ function deleteImage(inputId, previewId) {
                     if (res.data.success) {
                         console.log("hiii");
                         document.getElementById(inputId).value = '';
-                        document.getElementById(previewId).src = 'https://bit.ly/3ubuq5o';
+                        document.getElementById(previewId).src = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
                     }
                 }).catch(err => {
                     console.log('Error');
