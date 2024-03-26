@@ -238,10 +238,10 @@ const userRating=async(req,res)=>{
      {
        console.log("matching");
        console.log(orderData.productStatus[i]);
-       if(orderData.payment==="cashOnDelivery")
-       {
+      //  if(orderData.payment==="cashOnDelivery")
+      //  {
          orderData.productStatus[i]="Delivered-Success"
-       }
+      //  }
       
        
        await orderData.save()

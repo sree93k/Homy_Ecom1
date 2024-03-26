@@ -471,7 +471,7 @@
     console.log("status laodeed");
       const trackStatus=status.getAttribute('data-product-status')
    
-      if(trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse" || trackStatus==="Return Completed" || trackStatus==="Cancel Refund Initiated")
+      if(trackStatus==="Cancelled" || trackStatus==="Return Initiated" || trackStatus==="Return Initiated" || trackStatus==="Return Pending" || trackStatus==="Return Collected" || trackStatus==="Return Shipped" || trackStatus==="Return Arrived Warehouse" || trackStatus==="Return Completed" || trackStatus==="Cancel Refund Initiated" || trackStatus==="Delivered-Success")
       {
         status.style.display="none"
       }
@@ -483,7 +483,7 @@
     console.log("status laodeed");
       const cancelStatus=cancelBtn.getAttribute('data-product-status')
      
-      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse" || cancelStatus==="Return Completed" || cancelStatus==="Cancel Refund Initiated")
+      if(cancelStatus==="Cancelled" || cancelStatus==="Delivered" || cancelStatus==="Return Initiated" || cancelStatus==="Return Pending" || cancelStatus==="Return Collected" || cancelStatus==="Return Shipped" || cancelStatus==="Return Arrived Warehouse" || cancelStatus==="Return Completed" || cancelStatus==="Cancel Refund Initiated" || cancelStatus==="Delivered-Success")
       {
         cancelBtn.style.display="none"
       }
@@ -544,7 +544,7 @@
      //Complete btn
      orderCompleteBtn.forEach(completeBtn=>{
       const completeStatus=completeBtn.getAttribute('data-product-status')
-      if(completeStatus==="Return Completed")
+      if(completeStatus==="Return Completed" || completeStatus==="Delivered-Success")
       {
         completeBtn.style.display="block"
       }

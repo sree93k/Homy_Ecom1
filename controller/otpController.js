@@ -29,6 +29,14 @@ const { application } = require("express");
 const { createHash, createHmac } = require("crypto");
 const crypto = require('crypto');
 
+//node mailer Transporter
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
 
 //Verify OTP
 const verifyOtp=async(req,res)=>{
@@ -135,7 +143,8 @@ const verifyOtp=async(req,res)=>{
     }
   }
   
-  
+  // otp creating 
+const secret=speakeasy.generateSecret({length:20})
   //resendOTP
   const resendOTP=async(req,res)=>{
     try {
