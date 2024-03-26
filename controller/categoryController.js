@@ -605,26 +605,143 @@ const homeCategoryLogin=async(req,res)=>{
                                 break;
         case "A - Z":if(categoryName==="All Category")
                                   {
-                                    categoryProductsList=await Product.aggregate([{$sort:{productName:1}}])
+                                    // categoryProductsList=await Product.aggregate([{$sort:{productName:1}}])
+                                    categoryProductsList = await Product.aggregate([
+                                      {
+                                        $project: {
+                                          productName: { $toLower: "$productName" },
+                                          _id:1,
+                                          productIDNumber:1,
+                                          productCategory:1,
+                                          productPrice:1,
+                                          productQuantity:1,
+                                          productImage:1,
+                                          productDescription:1,
+                                          productIsBlocked:1,
+                                          createdDate:1,
+                                          lastUpdated:1,
+                                          isCategoryBlocked:1,
+                                          isDelete:1,
+                                          productRating:1,
+                                          productBrand:1
+                                          
+                                        }
+                                      },
+                                      {
+                                        $sort: { productName: 1 }
+                                      }
+                                    ]);
+                                    
+                                    console.log(categoryProductsList);
+                                    
+                                    
                                   }
                                   else
                                   {
                                     categoryData=await Category.findOne({categoryName:categoryName})
-                                    categoryProductsList=await Product.aggregate([{$match:{productCategory:categoryData._id}},{$sort:{productName:1}}])
+                                    // categoryProductsList=await Product.aggregate([{$match:{productCategory:categoryData._id}},{$sort:{productName:1}}])
+                                    categoryProductsList = await Product.aggregate([
+                                      {
+                                        $match:{productCategory:categoryData._id}
+                                      },
+                                      {
+                                        $project: {
+                                          productName: { $toLower: "$productName" },
+                                          _id:1,
+                                          productIDNumber:1,
+                                          productCategory:1,
+                                          productPrice:1,
+                                          productQuantity:1,
+                                          productImage:1,
+                                          productDescription:1,
+                                          productIsBlocked:1,
+                                          createdDate:1,
+                                          lastUpdated:1,
+                                          isCategoryBlocked:1,
+                                          isDelete:1,
+                                          productRating:1,
+                                          productBrand:1
+                                          
+                                        }
+                                      },
+                                      {
+                                        $sort: { productName: 1 }
+                                      }
+                                    ]);
+                                    
+                                    console.log(categoryProductsList);
                                   }
                                 break;
         case "Z - A":if(categoryName==="All Category")
                         {
-                          categoryProductsList=await Product.aggregate([{$sort:{createdDate:-1}}])
+                          // categoryProductsList=await Product.aggregate([{$sort:{productName:-1}}])
+                          categoryProductsList = await Product.aggregate([
+                            {
+                              $project: {
+                                productName: { $toLower: "$productName" },
+                                _id:1,
+                                productIDNumber:1,
+                                productCategory:1,
+                                productPrice:1,
+                                productQuantity:1,
+                                productImage:1,
+                                productDescription:1,
+                                productIsBlocked:1,
+                                createdDate:1,
+                                lastUpdated:1,
+                                isCategoryBlocked:1,
+                                isDelete:1,
+                                productRating:1,
+                                productBrand:1
+                                
+                              }
+                            },
+                            {
+                              $sort: { productName: -1 }
+                            }
+                          ]);
+                          
+                          console.log(categoryProductsList);
                         }
                         else
                         {
                           categoryData=await Category.findOne({categoryName:categoryName})
-                          categoryProductsList=await Product.aggregate([{$match:{productCategory:categoryData._id}},{$sort:{productName:-1}}])
+                          // categoryProductsList=await Product.aggregate([{$match:{productCategory:categoryData._id}},{$sort:{productName:-1}}])
+                          categoryProductsList = await Product.aggregate([
+                            {
+                              $match:{productCategory:categoryData._id}
+                            },
+                            {
+                              $project: {
+                                productName: { $toLower: "$productName" },
+                                _id:1,
+                                productIDNumber:1,
+                                productCategory:1,
+                                productPrice:1,
+                                productQuantity:1,
+                                productImage:1,
+                                productDescription:1,
+                                productIsBlocked:1,
+                                createdDate:1,
+                                lastUpdated:1,
+                                isCategoryBlocked:1,
+                                isDelete:1,
+                                productRating:1,
+                                productBrand:1
+                                
+                              }
+                            },
+                            {
+                              $sort: { productName: -1 }
+                            }
+                          ]);
+                          
+                          console.log(categoryProductsList);
                         }
                       break;
         
       }
+      console.log("category >>>",categoryProductsList);
       const userWishlist=await Wishlist.findOne({userId:userId})
       const page = parseInt(req.query.page) || 1;
          const limit = 9;
