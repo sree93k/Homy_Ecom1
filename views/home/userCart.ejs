@@ -71,7 +71,16 @@
                     <%}%>
                 
                     <a href="/userWishlist" class="nav-link m-3" ><i class="fa-regular fa-heart fa-lg" style="color: #31415e;"></i></a>
-                    <a href="/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a>
+                    <!-- <a href="/userCart" class="nav-link m-3 "><i class="fa-solid fa-cart-arrow-down"></i></a> -->
+                    <a href="/userCart" class="nav-link m-3 position-relative">
+                      <i class="fa-solid fa-cart-arrow-down"></i>
+               
+                      <span class="position-absolute top-0 ms-3 start-100 translate-middle badge rounded-pill bg-success">
+                          <%=cartCount%>
+                          <span class="visually-hidden">items in cart</span>
+                      </span>
+                  </a>
+                  
             </div>
         </div>
     </nav>
@@ -96,6 +105,7 @@
                      <div class="cartBox">
                       
                       <table class="table table-bordered   ">
+                       
                      
                         <%if(cartItem.length>0)
 

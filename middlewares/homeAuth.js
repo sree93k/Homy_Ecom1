@@ -7,7 +7,7 @@ const isLogin=async(req,res,next)=>{
         else
         {
             console.log('middleware home')
-            res.redirect('/')
+            res.redirect('/error')
         }
         next() 
     } catch (error) {

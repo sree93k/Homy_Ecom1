@@ -43,7 +43,17 @@ const userCart=async(req,res)=>{
       console.log("step1");
       UserData.save()
       console.log(userCart);
-      res.render('userCart',{isLogin:isLogin,userId:UserData,cartItem:userCart})
+      let cartCount;
+      if(userCart)
+      {
+        cartCount=userCart.length;
+      }
+      else
+      {
+        cartCount=0;
+      }
+       
+      res.render('userCart',{isLogin:isLogin,userId:UserData,cartItem:userCart,cartCount:cartCount})
     } catch (error) {
       console.log(error);
       res.render('errorPage')

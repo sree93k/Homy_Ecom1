@@ -62,6 +62,7 @@ admin_route.use(express.static('public'))
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 //login 
+// admin_route.get('/',auth.isLogout,adminController.adminLogin)
 admin_route.get('/login',auth.isLogout,adminController.adminLogin)
 admin_route.post('/login',auth.isLogout,adminController.adminValidation)
 
@@ -209,8 +210,19 @@ admin_route.delete('/deleteBanner',auth.isLogin,adminController.deleteBanner)
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 //query misdirection avoid setup
 admin_route.get('*',(req,res)=>{
-    res.redirect('/admin/dashboard')
+    console.log("noo");
+    if(req.session.adminId)
+    {
+        res.redirect('/admin/dashboard')
+    }
+    else
+    {
+        res.redirect('/admin/login')
+    }
+    
 
 })
+
+
 
 module.exports=admin_route

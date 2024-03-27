@@ -9,11 +9,14 @@ const app=express()
 
 app.use(logger('dev'))
 app.use(express.static('public'))
+
+// user route
 const userRoute=require('./routes/userRoute')
 app.use('/',userRoute)
-
+// admin route
 const adminRoute=require('./routes/adminRoute')
 app.use('/admin',adminRoute)
 
 
-app.listen(3000,()=>console.log("Hi Sree,....Server Started..!!"))
+
+app.listen(3000,()=>console.log("Hi SreeKuttan,....The Homy Server Started..!!"))

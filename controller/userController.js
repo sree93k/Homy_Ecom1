@@ -29,6 +29,7 @@ const moment=require('moment');
 const { application } = require("express");
 const { createHash, createHmac } = require("crypto");
 const crypto = require('crypto');
+const { error } = require("console");
 
 async function computeHmac()
 {
@@ -87,59 +88,70 @@ const userVerify = async (req, res) => {
     const password = req.body.password;
     console.log("step2 ");
     const userData = await User.findOne({ email: email });
-    if (userData) {
-      console.log("step3");
-      const passwordMatch = await bcrypt.compare(password, userData.password);
-      console.log(email)
-      console.log(userData.email)
-      console.log(password)
-      console.log(userData.password)
-      console.log(passwordMatch)
-      if (passwordMatch) {
-        if(!userData.isBlocked)
-        {
-          if(userData.isVerified)
+    const emailRegix=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if(emailRegix.test(email)===true)
+    {
+      if (userData) {
+        console.log("step3");
+        const passwordMatch = await bcrypt.compare(password, userData.password);
+        console.log(email)
+        console.log(userData.email)
+        console.log(password)
+        console.log(userData.password)
+        console.log(passwordMatch)
+        if (passwordMatch) {
+          if(!userData.isBlocked)
           {
-            console.log(userData.isBlocked)
-          console.log("step 4 success login");
-          req.session.loginStatus=true
-           const loginStatus=req.session.loginStatus
-           console.log(loginStatus)
-           console.log("verify login")
-           req.session.user_id=userData._id;
-           res.set("Cache-control","no-store")
-          // res.render("home",{loginStatus:loginStatus});
-
-           
-          res.redirect('/home')
+            if(userData.isVerified)
+            {
+              console.log(userData.isBlocked)
+            console.log("step 4 success login");
+            req.session.loginStatus=true
+             const loginStatus=req.session.loginStatus
+             console.log(loginStatus)
+             console.log("verify login")
+             req.session.user_id=userData._id;
+             res.set("Cache-control","no-store")
+            // res.render("home",{loginStatus:loginStatus});
+  
+             
+            res.redirect('/home')
+            }
+            else
+            {
+              console.log("step -is verified failed login ");
+              req.session.login_error="Account Not Exist"
+              res.redirect("/login");
+            }
           }
           else
           {
-            console.log("step -is verified failed login ");
-            req.session.login_error="Account Not Exist"
-            res.redirect("/login");
+            console.log("step -blocked failed login ");
+          
+          req.session.login_error="Account is Blocked"
+          res.redirect("/login");
           }
-        }
-        else
-        {
-          console.log("step -blocked failed login ");
+         
+        } else {
         
-        req.session.login_error="Account is Blocked"
-        res.redirect("/login");
+          console.log("step -5 failed login ");
+          req.session.login_error="Invalid Password"
+          res.redirect("/login");
         }
-       
       } else {
-      
-        console.log("step -5 failed login ");
-        req.session.login_error="Invalid Password"
+       
+        console.log("step-6 failed login ");
+        req.session.login_error="Account Not Exist"
         res.redirect("/login");
       }
-    } else {
-     
+    }
+    else
+    {
       console.log("step-6 failed login ");
-      req.session.login_error="Account Not Exist"
+      req.session.login_error="Enter a Valid Email Address"
       res.redirect("/login");
     }
+  
   } catch (error) {
    
     console.log(error);

@@ -59,7 +59,7 @@
                
                 <h1 class="text-center mb-4"> Login</h1>
 
-                <form action="" method="post">
+                <form action="/login" method="post">
                     <div class="mb-3">
                       
                               <%= login_error %>
@@ -209,6 +209,8 @@
 </section>
 
 
+
+
 <!-- otp input automatically moves -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -236,7 +238,12 @@
         const ForgotPasswordEmail=document.getElementById('ForgotPasswordEmail').value
         console.log(ForgotPasswordEmail)
        const UserId=document.getElementById('userIdOtp')
-        
+
+       const emailRegix=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
+       if(emailRegix.test(ForgotPasswordEmail))
+       {
+
         fetch(`/forgotPassword`,{
            method:'POST',
            headers:{
@@ -269,6 +276,21 @@
             console.log("error");
             console.log(error);
         })
+       }
+       else
+       {
+        console.log("error");
+        Swal.fire({
+            title: "Enter Correct Email Format",
+            text: "",
+            icon: "error"
+            })
+            .then(()=>{
+                document.getElementById('ForgotPasswordEmail').value=" "
+            })
+            
+       }
+        
 
     })
 </script>
@@ -288,6 +310,7 @@ ForgotPasswordOtpBtn.addEventListener('click',()=>{
     const forgotPasswordOtp=`${otpOne}${otpTwo}${otpThree}${otpFour}`
     console.log(forgotPasswordOtp)
     console.log(userID);
+
     fetch(`/forgotPasswordOtpVerification?id=${forgotPasswordOtp}`,{
         method:'POST',
         headers:{
@@ -378,6 +401,7 @@ forgotPasswordNewEmail.addEventListener('click',()=>{
                     title: "Password Not Matching",
                     icon: "error"
             })
+         
     }
     
 })

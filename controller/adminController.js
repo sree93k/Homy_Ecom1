@@ -57,6 +57,7 @@ const adminLogin=async(req,res)=>{
         res.set("Cache-control","no-store")
         const loginError=req.session.loginError
         req.session.loginError=" "
+        
         res.render('login',{loginError:loginError})
     } catch (error) {
         console.log(error)
