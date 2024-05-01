@@ -19,4 +19,4 @@ app.use('/admin',adminRoute)
 
 
 
-app.listen(3000,()=>console.log("Hi SreeKuttan,....The Homy Server Started..!!"))
+app.listen(4000,()=>console.log("Hi SreeKuttan,....The Homy Server Started..!!"))
